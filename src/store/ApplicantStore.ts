@@ -1,9 +1,10 @@
 import { makeAutoObservable } from "mobx";
-import { IApplicantGeneralInfo, IApplicantRelative } from "../models/types/applicant.model";
+import { IApplicantDocument, IApplicantGeneralInfo, IApplicantRelative } from "../models/types/applicant.model";
 
 
 class ApplicantStore {
   applicantGeneralInfo: IApplicantGeneralInfo | undefined = undefined;
+  applicantDocument: IApplicantDocument | undefined = undefined;
   applicantRelative: IApplicantRelative | undefined = undefined;
 
   constructor() {
@@ -18,7 +19,11 @@ class ApplicantStore {
   setApplicantRelative(applicantRelative: IApplicantRelative | undefined) {
     this.applicantRelative = applicantRelative;
   }
-
+  
+  setApplicantDocument(applicantDocument: IApplicantDocument | undefined) {
+    this.applicantDocument = applicantDocument;
+  }
+  
   deleteApplicantGeneralInfo() {
     this.setApplicantGeneralInfo(undefined);
   }
@@ -27,9 +32,13 @@ class ApplicantStore {
     this.setApplicantRelative(undefined);
   }
 
-  // get getApplicant() {
-  //   return Object.assign(this.applicantGeneralInfo!, { relative: "123123" });
-  // }
+  deleteApplicantDocument() {
+    this.setApplicantDocument(undefined);
+  }
+  
+  getApplicant() {
+    return Object.assign(this.applicantGeneralInfo!, this.applicantDocument!, this.applicantRelative!);
+  }
 }
 
 

@@ -1,0 +1,18 @@
+.card_confirmation_applicant_header,
+.card_confirmation_document_header {
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  text-align: center;
+  border-bottom: 1px solid rgba(5, 5, 5, 0.06);
+}
+
+.card_confirmation_applicant_inner,
+.card_confirmation_document_inner {
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgba(5, 5, 5, 0.06);
+}
+
+.card_confirmation_document_header {
+  margin-top: 20px;
+}
