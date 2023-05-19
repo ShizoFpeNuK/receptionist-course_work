@@ -17,6 +17,11 @@ interface ValuesFormGeneralInfo extends IApplicantGeneralInfo {
   date_of_birth: dayjs.Dayjs,
 }
 
+interface ValuesFormDocument extends IApplicantDocument {
+  date_of_issue: dayjs.Dayjs,
+}
+
+
 interface ValuesFormRelative extends IApplicantRelative {
   date_of_conclusion: dayjs.Dayjs,
   date_of_birth_spouse: dayjs.Dayjs,
@@ -41,17 +46,18 @@ const ApplicantComponent = () => {
       ...values,
       "date_of_birth": values["date_of_birth"].format("YYYY-MM-DD"),
     }
-
     applicant.setApplicantGeneralInfo(correctValues);
-    console.log(applicant.applicantGeneralInfo);
   }
 
-  const onFinishDocument = (values: IApplicantDocument) => {
+  const onFinishDocument = (values: ValuesFormDocument) => {
     setIsOpenFormDocument(false);
     setIsOpenFormRelative(true);
 
-    applicant.setApplicantDocument(values);
-    console.log(applicant.applicantDocument);
+    const correctValues: IApplicantDocument = {
+      ...values,
+      "date_of_issue": values["date_of_issue"].format("YYYY-MM-DD"),
+    }
+    applicant.setApplicantDocument(correctValues);
   }
 
   const onFinishRelative = (values: ValuesFormRelative) => {
@@ -63,9 +69,7 @@ const ApplicantComponent = () => {
       "date_of_conclusion": values["date_of_conclusion"]?.format("YYYY-MM-DD"),
       "date_of_birth_spouse": values["date_of_birth_spouse"]?.format("YYYY-MM-DD"),
     }
-
     applicant.setApplicantRelative(correctValues);
-    console.log(applicant.applicantRelative);
   }
 
   const cancelDocument = () => {
@@ -85,6 +89,9 @@ const ApplicantComponent = () => {
 
   const onClickConfirm = () => {
     //service
+    console.log(applicant.getApplicant());
+
+    setIsOpenConfirmation(false);
     formGenetalInfo.resetFields();
     formDocument.resetFields();
     formRelative.resetFields();
@@ -132,7 +139,11 @@ const ApplicantComponent = () => {
           />
         }
         {isOpenConfirmation &&
-          <CardConfirmation applicant={applicant.getApplicant()} />
+          <CardConfirmation
+            applicant={applicant.getApplicant()}
+            onClickCreate={onClickConfirm}
+            onClickCancel={cancelConfirmation}
+          />
         }
       </div>
     </div>

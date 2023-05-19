@@ -1,20 +1,24 @@
 import '../../../style/css/ApplicantComponent/cardConfirmation.css';
-import { Card, Space } from "antd";
+import { Button, Card, Space } from "antd";
 import { observer } from "mobx-react";
 import { IApplicant } from "../../../models/types/applicant.model";
 import { CardBodyForm, CardForm } from "../../../style/typescript/cardForm";
+import ButtonStep from '../../Buttons/ButtonStep';
 
 
 interface CardConfirmationProps {
   applicant: IApplicant,
+  onClickCancel: () => void,
+  onClickCreate: () => void,
 }
 
 
 const CardConfirmation = observer((props: CardConfirmationProps) => {
   return (
     <Card
-      title="Карточка-подтверждение"
+      // title="Карточка-подтверждение"
       style={CardForm}
+      headStyle={{ fontSize: "20px", fontWeight: 600 }}
       bodyStyle={CardBodyForm}
     >
       <div className="card_confirmation_applicant">
@@ -22,7 +26,8 @@ const CardConfirmation = observer((props: CardConfirmationProps) => {
         <div className="card_confirmation_applicant_inner">
           <h3 className="card_confirmation_applicant_title"> ФИО заявителя </h3>
           <p className="card_confirmation_applicant_fullname">
-            {props.applicant.full_name.last_name} {props.applicant.full_name.last_name}
+            {props.applicant.full_name.last_name}&nbsp;
+            {props.applicant.full_name.first_name}&nbsp;
             {props.applicant.full_name.middle_name}
           </p>
         </div>
@@ -100,6 +105,65 @@ const CardConfirmation = observer((props: CardConfirmationProps) => {
           </p>
         </div>
       </div>
+
+      <div className="card_confirmation_relative">
+        <h2 className="card_confirmation_relative_header"> Сведения о родственниках и браке </h2>
+        <div className="card_confirmation_relative_inner">
+          <h3 className="card_confirmation_relative_title"> Родственники </h3>
+          <p className="card_confirmation_relative_father">
+            Отец: {props.applicant.relatives.full_name_father ?? "Отсутствует"}
+          </p>
+          <p className="card_confirmation_relative_mother">
+            Матерь: {props.applicant.relatives.full_name_mother ?? "Отсутствует"}
+          </p>
+        </div>
+        <div className="card_confirmation_relative_inner">
+          <h3 className="card_confirmation_relative_title"> Семейное положение </h3>
+          <p className="card_confirmation_relative_family_status">
+            {props.applicant.family_status}
+          </p>
+        </div>
+        <div className="card_confirmation_relative_inner">
+          <h3 className="card_confirmation_relative_title"> Дата заключения/расторжения брака </h3>
+          <p className="card_confirmation_relative_date_of_conclusion">
+            {props.applicant.date_of_conclusion
+              ? new Date(props.applicant.date_of_conclusion.toString()).toLocaleDateString()
+              : "Отсутствует"
+            }
+          </p>
+        </div>
+        <div className="card_confirmation_relative_inner">
+          <h3 className="card_confirmation_relative_title"> ФИО супруга/супруги </h3>
+          <p className="card_confirmation_relative_full_name_spouse">
+            {props.applicant.full_name_spouse ?? "Отсутствует"}
+          </p>
+        </div>
+        <div className="card_confirmation_relative_inner">
+          <h3 className="card_confirmation_relative_title"> Дата рождения супруга/супруги </h3>
+          <p className="card_confirmation_relative_date_of_birth_spouse">
+            {props.applicant.date_of_birth_spouse
+              ? new Date(props.applicant.date_of_birth_spouse.toString()).toLocaleDateString()
+              : "Отсутствует"
+            }
+          </p>
+        </div>
+      </div>
+
+      <Space.Compact style={{ width: "100%", marginTop: "30px" }}>
+          <ButtonStep
+            onClick={props.onClickCancel}
+            style={{ width: "50%" }}
+          >
+            Очистить
+          </ButtonStep>
+          <Button
+            type="primary"
+            onClick={props.onClickCreate}
+            style={{ width: "50%" }}
+          >
+            Создать
+          </Button>
+        </Space.Compact>
     </Card>
   )
 });

@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Button, DatePicker, Form, Input, Select, Space } from "antd";
+import { Button, DatePicker, Form, Input, Space } from "antd";
 import FormBaseProps from "../../../models/props/FormBaseProps";
 
 import "dayjs/locale/ru";
@@ -7,21 +7,14 @@ import locale from "antd/es/date-picker/locale/ru_RU";
 
 
 const dateFormat = "DD.MM.YYYY";
-const selectTypeDocument = [
-  { label: "Временное удостоверение личности гражданина", value: 5 },
-  { label: "Паспорт гражданина РФ", value: 2 },
-  { label: "Свидетельство о рождении", value: 4 },
-  { label: "Служебный паспорт РФ", value: 3 },
-  { label: "Удостоверение личности военнослужащего РФ", value: 6 },
-  { label: "Удостоверение личности гражданина РФ", value: 1 },
-]
 
-interface FormApplicantDocumentProps extends FormBaseProps {
-  buttons?: ReactNode,
+
+interface FormTemporaryCertificateProps extends FormBaseProps {
+  // buttons?: ReactNode,
 }
 
 
-const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
+const FormTemporaryCertificate = (props: FormTemporaryCertificateProps) => {
   return (
     <Form
       layout="vertical"
@@ -29,30 +22,10 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
       onFinish={props.onFinish}
       onFinishFailed={props.onFinishFailed}
     >
-      <Form.Item
-        label="Тип предъявленного документа"
-        name="type_document"
-        rules={[
-          {
-            required: true,
-            message: "Это поле является обязательным!",
-          },
-        ]}
-      >
-        <Select
-          // labelInValue
-          options={selectTypeDocument}
-          placeholder="Выберите тип документа"
-        />
-      </Form.Item>
-
-      <Form.Item
-        label="Серия и номер паспорта (доделать, не все поля обязательны)"
-        required={true}
-      >
+      <Form.Item label="Серия и номер" required={true}>
         <Space.Compact direction="horizontal" style={{ width: "100%" }}>
           <Form.Item
-            name={["document", "series"]}
+            name={["temporary_certificate", "series"]}
             noStyle
             style={{ width: "50%" }}
             rules={[
@@ -69,7 +42,7 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
             <Input placeholder="Введите серию" />
           </Form.Item>
           <Form.Item
-            name={["document", "id"]}
+            name={["temporary_certificate", "id"]}
             noStyle
             style={{ width: "50%" }}
             rules={[
@@ -89,8 +62,21 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
       </Form.Item>
 
       <Form.Item
-        label="Дата выдачи документа"
-        name="date_of_issue"
+        label="Причина выдачи"
+        name="reason"
+        rules={[
+          {
+            required: true,
+            message: "Это поле является обязательным!",
+          },
+        ]}
+      >
+        <Input placeholder="Введите причину выдачи" />
+      </Form.Item>
+
+      <Form.Item
+        label="Удостоверение действительно до"
+        name="valid_until"
         rules={[
           {
             required: true,
@@ -106,34 +92,23 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
         />
       </Form.Item>
 
-      <Form.Item
-        label="Кем выдан предъявленный документ"
-        name="issued_by"
-        rules={[
-          {
-            required: true,
-            message: "Это поле является обязательным!",
-          },
-        ]}
-      >
-        <Input placeholder="Введите кем выдан документ" />
-      </Form.Item>
-
       <Form.Item style={{ marginBottom: 0, marginTop: "30px", textAlign: "center" }}>
         <Space.Compact style={{ width: "100%" }}>
-          {props.buttons}
+          {/* {props.buttons} */}
           <Button
             type="primary"
             danger
             onClick={() => props.form.resetFields()}
-            style={{ width: "33.333%" }}
+            // style={{ width: "33.333%" }}
+            style={{ width: "50%" }}
           >
             Очистить
           </Button>
           <Button
             type="primary"
             onClick={props.form.submit}
-            style={{ width: "33.333%" }}
+            // style={{ width: "33.333%" }}
+            style={{ width: "50%" }}
           >
             Продолжить
           </Button>
@@ -144,4 +119,4 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
 }
 
 
-export default FormApplicantDocument;
+export default FormTemporaryCertificate;

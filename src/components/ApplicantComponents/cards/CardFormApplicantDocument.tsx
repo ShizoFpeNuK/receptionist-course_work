@@ -16,6 +16,7 @@ const CardFormApplicantDocument = (props: CardFormApplicantDocumentProps) => {
       className={props.className}
       title={props.title}
       style={{ ...CardForm, ...props.style }}
+      headStyle={{ fontSize: "20px", fontWeight: 600 }}
       bodyStyle={CardBodyForm}
     >
       <FormApplicantDocument

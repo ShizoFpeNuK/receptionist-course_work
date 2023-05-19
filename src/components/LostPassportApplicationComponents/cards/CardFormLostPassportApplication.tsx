@@ -1,16 +1,16 @@
 import { Card } from "antd";
 import { ReactNode } from "react";
 import { CardBodyForm, CardForm } from "../../../style/typescript/cardForm";
-import FormApplicantRelative from "../forms/FormApplicantRelative";
 import CardFormApplicantProps from "../../../models/props/CardFormApplicantProps";
+import FormLostPassportApplication from "../forms/FormLostPassportApplication";
 
 
-interface CardFormApplicantRelativeProps extends CardFormApplicantProps {
+interface CardFormLostPassportApplicationProps extends CardFormApplicantProps {
   buttons?: ReactNode,
 }
 
 
-const CardFormApplicantRelative = (props: CardFormApplicantRelativeProps) => {
+const CardFormLostPassportApplication = (props: CardFormLostPassportApplicationProps) => {
   return (
     <Card
       className={props.className}
@@ -19,11 +19,10 @@ const CardFormApplicantRelative = (props: CardFormApplicantRelativeProps) => {
       headStyle={{ fontSize: "20px", fontWeight: 600 }}
       bodyStyle={CardBodyForm}
     >
-      <FormApplicantRelative
+      <FormLostPassportApplication
         form={props.form}
         onFinish={props.onFinish}
         onFinishFailed={props.onFinishFailed}
-        buttons={props.buttons}
       />
       {props.children}
     </Card>
@@ -31,4 +30,4 @@ const CardFormApplicantRelative = (props: CardFormApplicantRelativeProps) => {
 }
 
 
-export default CardFormApplicantRelative;
+export default CardFormLostPassportApplication;

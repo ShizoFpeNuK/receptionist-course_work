@@ -164,9 +164,22 @@ const FormApplicantGeneralInfo = (props: FormBaseProps) => {
       </Form.Item>
 
       <Form.Item style={{ marginBottom: 0, marginTop: "30px", textAlign: "center" }}>
-        <Space.Compact style={{width: "100%"}}>
-          <Button type="primary" danger onClick={() => props.form.resetFields()} style={{width: "50%"}}> Очистить </Button>
-          <Button type="primary" onClick={props.form.submit} style={{width: "50%"}}> Продолжить </Button>
+        <Space.Compact style={{ width: "100%" }}>
+          <Button
+            type="primary"
+            danger
+            onClick={() => props.form.resetFields()}
+            style={{ width: "50%" }}
+          >
+            Назад
+          </Button>
+          <Button
+            type="primary"
+            onClick={props.form.submit}
+            style={{ width: "50%" }}
+          >
+            Продолжить
+          </Button>
         </Space.Compact>
       </Form.Item>
     </Form>

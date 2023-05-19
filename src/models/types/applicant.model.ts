@@ -17,26 +17,24 @@ export interface IApplicantGeneralInfo {
 
 export interface IApplicantDocument {
   document: {
-    series: number,
+    series: string | undefined,
     id: number,
   },
   type_document: string,
-  date_of_issue: string,
+  date_of_issue: string | dayjs.Dayjs,
   issued_by: string,
 }
 
 export interface IApplicantRelative {
   relatives: {
-    full_name_father: string,
-    full_name_mother: string,
+    full_name_father: string | undefined,
+    full_name_mother: string | undefined,
   }
   family_status: string,
   date_of_conclusion: string | dayjs.Dayjs,
-  full_name_spouse: string,
+  full_name_spouse: string | undefined,
   date_of_birth_spouse: string | dayjs.Dayjs,
 }
 
 
-export interface IApplicant extends IApplicantGeneralInfo, IApplicantDocument, IApplicantRelative {
-
-}
+export type IApplicant = IApplicantGeneralInfo & IApplicantDocument & IApplicantRelative;

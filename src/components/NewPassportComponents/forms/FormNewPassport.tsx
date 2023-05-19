@@ -7,21 +7,12 @@ import locale from "antd/es/date-picker/locale/ru_RU";
 
 
 const dateFormat = "DD.MM.YYYY";
-const selectTypeDocument = [
-  { label: "Временное удостоверение личности гражданина", value: 5 },
-  { label: "Паспорт гражданина РФ", value: 2 },
-  { label: "Свидетельство о рождении", value: 4 },
-  { label: "Служебный паспорт РФ", value: 3 },
-  { label: "Удостоверение личности военнослужащего РФ", value: 6 },
-  { label: "Удостоверение личности гражданина РФ", value: 1 },
-]
-
-interface FormApplicantDocumentProps extends FormBaseProps {
-  buttons?: ReactNode,
+interface FormNewPassportProps extends FormBaseProps {
+  // buttons?: ReactNode,
 }
 
 
-const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
+const FormNewPassport = (props: FormNewPassportProps) => {
   return (
     <Form
       layout="vertical"
@@ -30,29 +21,15 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
       onFinishFailed={props.onFinishFailed}
     >
       <Form.Item
-        label="Тип предъявленного документа"
-        name="type_document"
-        rules={[
-          {
-            required: true,
-            message: "Это поле является обязательным!",
-          },
-        ]}
-      >
-        <Select
-          // labelInValue
-          options={selectTypeDocument}
-          placeholder="Выберите тип документа"
-        />
-      </Form.Item>
-
-      <Form.Item
-        label="Серия и номер паспорта (доделать, не все поля обязательны)"
+        label="Серия и номер паспорта"
         required={true}
       >
-        <Space.Compact direction="horizontal" style={{ width: "100%" }}>
+        <Space.Compact
+          direction="horizontal"
+          style={{ width: "100%" }}
+        >
           <Form.Item
-            name={["document", "series"]}
+            name={["new_passport", "series"]}
             noStyle
             style={{ width: "50%" }}
             rules={[
@@ -69,7 +46,7 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
             <Input placeholder="Введите серию" />
           </Form.Item>
           <Form.Item
-            name={["document", "id"]}
+            name={["new_passport", "id"]}
             noStyle
             style={{ width: "50%" }}
             rules={[
@@ -89,7 +66,7 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
       </Form.Item>
 
       <Form.Item
-        label="Дата выдачи документа"
+        label="Дата выдачи паспорта"
         name="date_of_issue"
         rules={[
           {
@@ -107,33 +84,39 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
       </Form.Item>
 
       <Form.Item
-        label="Кем выдан предъявленный документ"
-        name="issued_by"
+        label="Код подразделения"
+        name="division_code"
         rules={[
           {
             required: true,
             message: "Это поле является обязательным!",
           },
+          {
+            pattern: new RegExp(/^\d{3}[\-]\d{3}$/),
+            message: "Код подразделения состоит из 6 цифр и дефиса!"
+          }
         ]}
       >
-        <Input placeholder="Введите кем выдан документ" />
+        <Input placeholder="Введите код подразделения" />
       </Form.Item>
 
       <Form.Item style={{ marginBottom: 0, marginTop: "30px", textAlign: "center" }}>
         <Space.Compact style={{ width: "100%" }}>
-          {props.buttons}
+          {/* {props.buttons} */}
           <Button
             type="primary"
             danger
             onClick={() => props.form.resetFields()}
-            style={{ width: "33.333%" }}
+            // style={{ width: "33.333%" }}
+            style={{ width: "50%" }}
           >
             Очистить
           </Button>
           <Button
             type="primary"
             onClick={props.form.submit}
-            style={{ width: "33.333%" }}
+            // style={{ width: "33.333%" }}
+            style={{ width: "50%" }}
           >
             Продолжить
           </Button>
@@ -144,4 +127,4 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
 }
 
 
-export default FormApplicantDocument;
+export default FormNewPassport;
