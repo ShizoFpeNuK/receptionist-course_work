@@ -3,6 +3,7 @@ import { Button, DatePicker, Form, Input, Select, Space } from "antd";
 import FormBaseProps from "../../../models/props/FormBaseProps";
 
 import "dayjs/locale/ru";
+import dayjs from "dayjs";
 import locale from "antd/es/date-picker/locale/ru_RU";
 
 
@@ -32,6 +33,7 @@ const FormApplicantRelative = (props: FormApplicantRelativeProps) => {
             name={["relatives", "full_name_father"]}
             noStyle
             style={{ width: "33%" }}
+            initialValue="Иванов Иван Петрович" //
             rules={[
               {
                 pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
@@ -45,6 +47,7 @@ const FormApplicantRelative = (props: FormApplicantRelativeProps) => {
             name={["relatives", "full_name_mother"]}
             noStyle
             style={{ width: "33%" }}
+            initialValue="Иванова Елена Васильевна" //
             rules={[
               {
                 pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
@@ -60,6 +63,7 @@ const FormApplicantRelative = (props: FormApplicantRelativeProps) => {
       <Form.Item
         label="Семейное положение"
         name="family_status"
+        initialValue="In_brake" //
         rules={[
           {
             required: true,
@@ -68,7 +72,6 @@ const FormApplicantRelative = (props: FormApplicantRelativeProps) => {
         ]}
       >
         <Select
-          // labelInValue
           options={selectFamilyStatus}
           placeholder="Выберите статус семьи"
         />
@@ -77,6 +80,7 @@ const FormApplicantRelative = (props: FormApplicantRelativeProps) => {
       <Form.Item
         label="Дата заключения/расторжения брака"
         name="date_of_conclusion"
+        initialValue={dayjs("11.03.2003", dateFormat)} //
       >
         <DatePicker
           format={dateFormat}
@@ -89,10 +93,11 @@ const FormApplicantRelative = (props: FormApplicantRelativeProps) => {
       <Form.Item
         label="ФИО супруга/супруги"
         name="full_name_spouse"
+        initialValue={"Иванова Алена Сергеевна"} //
         rules={[
           {
             pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
-            message: "Имя начинается с заглавной буквы"
+            message: "ФИО начинается с заглавной буквы"
           }
         ]}
       >
@@ -102,6 +107,7 @@ const FormApplicantRelative = (props: FormApplicantRelativeProps) => {
       <Form.Item
         label="Дата рождения супруга/супруги"
         name="date_of_birth_spouse"
+        initialValue={dayjs("04.07.1981", dateFormat)} //
       >
         <DatePicker
           format={dateFormat}

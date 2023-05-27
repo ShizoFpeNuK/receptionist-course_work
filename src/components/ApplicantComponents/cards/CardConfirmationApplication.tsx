@@ -1,4 +1,4 @@
-import '../../../style/css/ApplicantComponent/cardConfirmation.css';
+import '../../..//style/css/components/ApplicantComponents/cardConfirmationApplication.css';
 import { Button, Card, Space } from "antd";
 import { observer } from "mobx-react";
 import { IApplicant } from "../../../models/types/applicant.model";
@@ -6,14 +6,14 @@ import { CardBodyForm, CardForm } from "../../../style/typescript/cardForm";
 import ButtonStep from '../../Buttons/ButtonStep';
 
 
-interface CardConfirmationProps {
+interface CardConfirmationApplicationProps {
   applicant: IApplicant,
   onClickCancel: () => void,
   onClickCreate: () => void,
 }
 
 
-const CardConfirmation = observer((props: CardConfirmationProps) => {
+const CardConfirmationApplication = observer((props: CardConfirmationApplicationProps) => {
   return (
     <Card
       // title="Карточка-подтверждение"
@@ -154,7 +154,7 @@ const CardConfirmation = observer((props: CardConfirmationProps) => {
             onClick={props.onClickCancel}
             style={{ width: "50%" }}
           >
-            Очистить
+            Назад
           </ButtonStep>
           <Button
             type="primary"
@@ -169,4 +169,4 @@ const CardConfirmation = observer((props: CardConfirmationProps) => {
 });
 
 
-export default CardConfirmation;
+export default CardConfirmationApplication;

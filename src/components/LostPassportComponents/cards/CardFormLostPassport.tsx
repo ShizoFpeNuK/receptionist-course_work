@@ -1,28 +1,29 @@
 import { Card } from "antd";
 import { ReactNode } from "react";
 import { CardBodyForm, CardForm } from "../../../style/typescript/cardForm";
+import FormLostPassport from "../forms/FormLostPassportApplication";
 import CardFormApplicantProps from "../../../models/props/CardFormApplicantProps";
-import FormLostPassportApplication from "../forms/FormLostPassportApplication";
 
 
-interface CardFormLostPassportApplicationProps extends CardFormApplicantProps {
+interface CardFormLostPassportProps extends CardFormApplicantProps {
   buttons?: ReactNode,
 }
 
 
-const CardFormLostPassportApplication = (props: CardFormLostPassportApplicationProps) => {
+const CardFormLostPassport = (props: CardFormLostPassportProps) => {
   return (
     <Card
       className={props.className}
-      title={props.title}
+      title={props.title ?? "Заявление об утрате паспорта"}
       style={{ ...CardForm, ...props.style }}
       headStyle={{ fontSize: "20px", fontWeight: 600 }}
       bodyStyle={CardBodyForm}
     >
-      <FormLostPassportApplication
+      <FormLostPassport
         form={props.form}
         onFinish={props.onFinish}
         onFinishFailed={props.onFinishFailed}
+        buttons={props.buttons}
       />
       {props.children}
     </Card>
@@ -30,4 +31,4 @@ const CardFormLostPassportApplication = (props: CardFormLostPassportApplicationP
 }
 
 
-export default CardFormLostPassportApplication;
+export default CardFormLostPassport;

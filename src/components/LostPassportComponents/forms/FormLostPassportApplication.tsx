@@ -3,6 +3,7 @@ import { Button, DatePicker, Form, Input, Select, Space } from "antd";
 import FormBaseProps from "../../../models/props/FormBaseProps";
 
 import "dayjs/locale/ru";
+import dayjs from "dayjs";
 import locale from "antd/es/date-picker/locale/ru_RU";
 
 
@@ -15,7 +16,7 @@ const selectResponse = [
 ];
 
 interface FormLostPassportApplicationProps extends FormBaseProps {
-  // buttons?: ReactNode,
+  buttons?: ReactNode,
 }
 
 
@@ -28,8 +29,9 @@ const FormLostPassportApplication = (props: FormLostPassportApplicationProps) =>
       onFinishFailed={props.onFinishFailed}
     >
       <Form.Item
-        label="Дата потери документа"
+        label="Дата утери документа"
         name="date_of_loss"
+        initialValue={dayjs("20.07.2023", dateFormat)}//
         rules={[
           {
             required: true,
@@ -46,8 +48,9 @@ const FormLostPassportApplication = (props: FormLostPassportApplicationProps) =>
       </Form.Item>
 
       <Form.Item
-        label="Место потери документа"
+        label="Место утери документа"
         name="place_of_loss"
+        initialValue="г. Москва, бар на Ломаносовкой, д.24" //
         rules={[
           {
             required: true,
@@ -59,8 +62,9 @@ const FormLostPassportApplication = (props: FormLostPassportApplicationProps) =>
       </Form.Item>
 
       <Form.Item
-        label="Обстоятельства потери документа"
+        label="Обстоятельства утери документа"
         name="circumstances_of_loss"
+        initialValue="Утеря возникла по причине алкогольного опъянения" //
         rules={[
           {
             required: true,
@@ -73,7 +77,8 @@ const FormLostPassportApplication = (props: FormLostPassportApplicationProps) =>
 
       <Form.Item
         label="Дата обращения по факту похищения"
-        name="date_of_the_kidnapping"
+        name="date_of_kidnapping"
+        initialValue={dayjs("23.07.2023", dateFormat)} //
         rules={[
           {
             required: true,
@@ -92,6 +97,7 @@ const FormLostPassportApplication = (props: FormLostPassportApplicationProps) =>
       <Form.Item
         label="Метод ответа"
         name="response_method"
+        initialValue="По телефону" //
         rules={[
           {
             required: true,
@@ -108,6 +114,7 @@ const FormLostPassportApplication = (props: FormLostPassportApplicationProps) =>
       <Form.Item
         label="Наименование организации по факту похищения"
         name="name_of_organization_on_FOA"
+        initialValue="МВД по г. Москве по району Чертаново Северное" //
         rules={[
           {
             required: true,
@@ -121,6 +128,7 @@ const FormLostPassportApplication = (props: FormLostPassportApplicationProps) =>
       <Form.Item
         label="Дата заполнения заявления"
         name="date_of_application"
+        initialValue={dayjs("24.07.2023", dateFormat)} //
         rules={[
           {
             required: true,
@@ -139,7 +147,7 @@ const FormLostPassportApplication = (props: FormLostPassportApplicationProps) =>
 
       <Form.Item style={{ marginBottom: 0, marginTop: "30px", textAlign: "center" }}>
         <Space.Compact style={{ width: "100%" }}>
-          {/* {props.buttons} */}
+          {props.buttons}
           <Button
             type="primary"
             danger

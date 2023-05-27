@@ -3,6 +3,7 @@ import { Button, DatePicker, Form, Input, Select, Space } from "antd";
 import FormBaseProps from "../../../models/props/FormBaseProps";
 
 import "dayjs/locale/ru";
+import dayjs from "dayjs";
 import locale from "antd/es/date-picker/locale/ru_RU";
 
 
@@ -32,6 +33,7 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
       <Form.Item
         label="Тип предъявленного документа"
         name="type_document"
+        initialValue={2} //
         rules={[
           {
             required: true,
@@ -40,7 +42,6 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
         ]}
       >
         <Select
-          // labelInValue
           options={selectTypeDocument}
           placeholder="Выберите тип документа"
         />
@@ -55,6 +56,7 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
             name={["document", "series"]}
             noStyle
             style={{ width: "50%" }}
+            initialValue={1111} //
             rules={[
               {
                 required: true,
@@ -72,6 +74,7 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
             name={["document", "id"]}
             noStyle
             style={{ width: "50%" }}
+            initialValue={111111} //
             rules={[
               {
                 required: true,
@@ -91,6 +94,7 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
       <Form.Item
         label="Дата выдачи документа"
         name="date_of_issue"
+        initialValue={dayjs("09.11.2000", dateFormat)} //
         rules={[
           {
             required: true,
@@ -109,6 +113,7 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
       <Form.Item
         label="Кем выдан предъявленный документ"
         name="issued_by"
+        initialValue="МВД по г. Москве" //
         rules={[
           {
             required: true,

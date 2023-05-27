@@ -1,19 +1,20 @@
+import '../../style/css/components/MainComponents/header.css';
 import { Link } from "react-router-dom";
 import { Row, Image, MenuProps, Menu, Col } from "antd";
-import { FormOutlined, HomeOutlined, LoginOutlined } from "@ant-design/icons";
+import { FileAddOutlined, FolderAddOutlined } from "@ant-design/icons";
 
 
 const itemsBase: MenuProps['items'] = [
   {
-    // label: <Link to="/"> Главная </Link>,
-    key: "home",
-    icon: <HomeOutlined />,
+    label: <Link to="/issue_passport"> Выдача/замена паспорта </Link>,
+    key: "issue_passport",
+    icon: <FileAddOutlined />,
   },
-  // {
-  //   label: <Link to="/enroll"> Записаться </Link>,
-  //   key: "enroll",
-  //   icon: <FormOutlined />,
-  // },
+  {
+    label: <Link to="/lost_passport"> Утеря паспорта </Link>,
+    key: "lost_passport",
+    icon: <FolderAddOutlined />,
+  },
 ]
 
 
@@ -30,8 +31,12 @@ const Header = () => {
           preview={false}
         /> */}
       </Col>
-      <Col className="navigation">
-        <Menu mode="horizontal" items={itemsBase} />
+      <Col className="navigation title--border" span={24}>
+        <Menu
+          style={{ justifyContent: "flex-end" }}
+          mode="horizontal"
+          items={itemsBase}
+        />
       </Col>
     </Row>
   )

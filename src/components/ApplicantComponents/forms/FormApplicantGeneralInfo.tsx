@@ -2,6 +2,7 @@ import { Button, DatePicker, Form, Input, Select, Space } from "antd";
 import FormBaseProps from "../../../models/props/FormBaseProps";
 
 import "dayjs/locale/ru";
+import dayjs from "dayjs";
 import locale from "antd/es/date-picker/locale/ru_RU";
 
 
@@ -26,6 +27,7 @@ const FormApplicantGeneralInfo = (props: FormBaseProps) => {
             name={["full_name", "last_name"]}
             noStyle
             style={{ width: "33%" }}
+            initialValue="Иванов" //
             rules={[
               {
                 required: true,
@@ -43,6 +45,7 @@ const FormApplicantGeneralInfo = (props: FormBaseProps) => {
             name={["full_name", "first_name"]}
             noStyle
             style={{ width: "33%" }}
+            initialValue="Иван" //
             rules={[
               {
                 required: true,
@@ -60,6 +63,7 @@ const FormApplicantGeneralInfo = (props: FormBaseProps) => {
             name={["full_name", "middle_name"]}
             noStyle
             style={{ width: "33%" }}
+            initialValue="Иванович" //
             rules={[
               {
                 pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
@@ -75,6 +79,7 @@ const FormApplicantGeneralInfo = (props: FormBaseProps) => {
       <Form.Item
         label="Пол заявителя"
         name="sex"
+        initialValue="Мужской"
         rules={[
           {
             required: true,
@@ -92,6 +97,7 @@ const FormApplicantGeneralInfo = (props: FormBaseProps) => {
       <Form.Item
         label="Место рождения"
         name="place_of_birth"
+        initialValue="г. Москва"
         rules={[
           {
             required: true,
@@ -105,6 +111,7 @@ const FormApplicantGeneralInfo = (props: FormBaseProps) => {
       <Form.Item
         label="Дата рождения"
         name="date_of_birth"
+        initialValue={dayjs("10.10.1980", dateFormat)} //
         rules={[
           {
             required: true,
@@ -123,6 +130,7 @@ const FormApplicantGeneralInfo = (props: FormBaseProps) => {
       <Form.Item
         label="Место проживания/пребывания"
         name="place_of_residence"
+        initialValue="г. Москва, Сумской проезд д.25, кв.200" //
         rules={[
           {
             required: true,
@@ -136,6 +144,7 @@ const FormApplicantGeneralInfo = (props: FormBaseProps) => {
       <Form.Item
         label="Номер телефона заявителя"
         name="telephone"
+        initialValue="+7 (988) 555-55-55" //
         rules={[
           {
             required: true,
@@ -171,7 +180,7 @@ const FormApplicantGeneralInfo = (props: FormBaseProps) => {
             onClick={() => props.form.resetFields()}
             style={{ width: "50%" }}
           >
-            Назад
+            Очистить
           </Button>
           <Button
             type="primary"

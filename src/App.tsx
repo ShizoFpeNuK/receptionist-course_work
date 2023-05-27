@@ -1,10 +1,12 @@
 import "./style/css/App.css";
 import { useForm } from "antd/es/form/Form";
+import { Route, Routes } from "react-router-dom";
 import Header from "./components/MainComponents/Header";
-import ApplicantComponent from "./components/ApplicantComponents/ApplicantComponent";
-import CardFormTemporaryCertificate from "./components/TemporaryСertificateComponents/cards/CardFormTemporaryСertificate";
-import CardFormLostPassportApplication from "./components/LostPassportApplicationComponents/cards/CardFormLostPassportApplication";
+import NotFound from "./pages/NotFound";
+import Applicant from "./pages/Applicant";
 import CardFormNewPassport from "./components/NewPassportComponents/cards/CardFormNewPassport";
+import LostPassportApplicant from "./pages/LostPassport";
+import CardFormTemporaryCertificate from "./components/TemporaryСertificateComponents/cards/CardFormTemporaryСertificate";
 
 
 const App = () => {
@@ -18,17 +20,24 @@ const App = () => {
 
   return (
     <div className="App">
-      <header className="header" style={{ height: "150px" }}>
-        {/* <Header /> */}
-      </header>
-      <main className="main">
-        {/* <ApplicantComponent /> */}
-        {/* <CardFormTemporaryCertificate form={form} onFinish={onFinish} /> */}
-        {/* <CardFormLostPassportApplication form={form} onFinish={onFinish} /> */}
-        <CardFormNewPassport form={form} onFinish={onFinish} />
-      </main>
-      <footer className="footer" style={{ height: "150px" }}>
-      </footer>
+      <div className="wrapper">
+        <header className="header">
+          <Header />
+        </header>
+        <main className="main">
+          <Routes>
+            <Route path="/issue_passport" element={< Applicant />} />
+            <Route path="/lost_passport" element={<LostPassportApplicant />} />
+            {/* <Route path="/auth" element={<Auth />} /> */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          {/* <CardFormTemporaryCertificate form={form} onFinish={onFinish} /> */}
+          {/* <CardFormLostPassportApplication form={form} onFinish={onFinish} /> */}
+          {/* <CardFormNewPassport form={form} onFinish={onFinish} /> */}
+        </main>
+        <footer className="footer" style={{ height: "150px" }}>
+        </footer>
+      </div>
     </div>
   );
 }
