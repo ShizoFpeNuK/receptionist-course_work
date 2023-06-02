@@ -1,5 +1,9 @@
-.header_row {
-  margin: 40px 0;
+.navigation {
+  margin: 20px 0 40px 0;
+}
+
+:where(.css-dev-only-do-not-override-15rg2km).ant-image .logo {
+  height: 45px;
 }
 
 :where(.css-dev-only-do-not-override-15rg2km).ant-menu-horizontal {

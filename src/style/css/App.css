@@ -4,10 +4,18 @@
   font-weight: 400;
 }
 
+
+.header {
+  margin: 0 3%;
+}
+
+
 .wrapper {
   margin: 0 10%;
 }
 
+
+/*----------------------------*/
 
 .title--border {
   padding: 10px;

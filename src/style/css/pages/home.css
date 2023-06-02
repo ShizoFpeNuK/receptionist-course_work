@@ -1,0 +1,27 @@
+.home_departament {
+  margin-bottom: 20px;
+}
+
+.title {
+  margin-bottom: 20px;
+}
+
+.inner {
+  text-align: left;
+  padding-left: 20px;
+}
+
+.number_list {
+  padding-left: 20px;
+  line-height: 1.5;
+}
+
+.home_procedure_number_list {
+  margin: 20px 0;
+  padding-left: 40px;
+}
+
+.home_filling_rules_list {
+  margin: 15px 0;
+  padding-left: 40px;
+}
