@@ -1,10 +1,15 @@
 import '../../style/css/components/MainComponents/header.css';
 import { Link } from "react-router-dom";
 import { Row, Image, MenuProps, Menu, Col } from "antd";
-import { FileAddOutlined, FolderAddOutlined } from "@ant-design/icons";
+import { FileAddOutlined, FolderAddOutlined, HomeOutlined } from "@ant-design/icons";
 
 
 const itemsBase: MenuProps['items'] = [
+  {
+    label: <Link to="/"> Главная </Link>,
+    key: "home",
+    icon: <HomeOutlined />,
+  },
   {
     label: <Link to="/issue_passport"> Выдача/замена паспорта </Link>,
     key: "issue_passport",
@@ -21,21 +26,24 @@ const itemsBase: MenuProps['items'] = [
 const Header = () => {
   return (
     <Row
-      justify={'center'}
+      className="navigation title--border"
       wrap={false}
-      className="header_row"
     >
-      <Col className="header_logo">
-        {/* <Image
-          src={require('../../options/images/logo/logo.png')}
+      <Col
+        style={{ textAlign: 'left' }}
+        span={2}
+      >
+        <Image
+          className="logo"
+          src={require("../../images/logo/emblem_MVD.png")}
           preview={false}
-        /> */}
+        />
       </Col>
-      <Col className="navigation title--border" span={24}>
+      <Col span={22}>
         <Menu
-          style={{ justifyContent: "flex-end" }}
           mode="horizontal"
           items={itemsBase}
+          style={{ justifyContent: "flex-end" }}
         />
       </Col>
     </Row>
