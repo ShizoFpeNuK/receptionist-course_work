@@ -1,16 +1,16 @@
 import { Card } from "antd";
 import { ReactNode } from "react";
 import { CardBodyForm, CardForm } from "../../../style/typescript/cardForm";
-import CardFormApplicantProps from "../../../models/props/CardFormApplicantProps";
+import CardFormBaseProps from "../../../models/props/CardFormApplicantProps";
 import FormTemporaryCertificate from "../forms/FormTemporaryСertificate";
 
 
-interface CardFormTemporaryCertificateProps extends CardFormApplicantProps {
+interface CardFormTemporaryCertificate extends CardFormBaseProps {
   buttons?: ReactNode,
 }
 
 
-const CardFormTemporaryCertificate = (props: CardFormTemporaryCertificateProps) => {
+const CardFormTemporaryCertificate = (props: CardFormTemporaryCertificate) => {
   return (
     <Card
       className={props.className}
@@ -23,7 +23,7 @@ const CardFormTemporaryCertificate = (props: CardFormTemporaryCertificateProps) 
         form={props.form}
         onFinish={props.onFinish}
         onFinishFailed={props.onFinishFailed}
-      // buttons={props.buttons}
+        buttons={props.buttons}
       />
       {props.children}
     </Card>

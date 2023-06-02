@@ -1,12 +1,13 @@
 import '../../..//style/css/components/ApplicantComponents/cardConfirmationApplication.css';
-import { Button, Card, Space } from "antd";
 import { observer } from "mobx-react";
 import { IApplicant } from "../../../models/types/applicant.model";
+import { Button, Card, Space } from "antd";
 import { CardBodyForm, CardForm } from "../../../style/typescript/cardForm";
 import ButtonStep from '../../Buttons/ButtonStep';
 
 
 interface CardConfirmationApplicationProps {
+  textButton?: string,
   applicant: IApplicant,
   onClickCancel: () => void,
   onClickCreate: () => void,
@@ -16,7 +17,6 @@ interface CardConfirmationApplicationProps {
 const CardConfirmationApplication = observer((props: CardConfirmationApplicationProps) => {
   return (
     <Card
-      // title="Карточка-подтверждение"
       style={CardForm}
       headStyle={{ fontSize: "20px", fontWeight: 600 }}
       bodyStyle={CardBodyForm}
@@ -149,22 +149,45 @@ const CardConfirmationApplication = observer((props: CardConfirmationApplication
         </div>
       </div>
 
+      <div className="card_confirmation_temporary_certificate">
+        <h2 className="card_confirmation_temporary_certificate_header"> Сведения о временном удостоверении </h2>
+        {props.applicant.temporary_certificate
+          ? <>
+            <div className="card_confirmation_temporary_certificate_inner">
+              <h3 className="card_confirmation_temporary_certificate_title"> Причина выдачи </h3>
+              <p className="card_confirmation_temporary_certificate_reason">
+                {props.applicant.reason}
+              </p>
+            </div>
+            <div className="card_confirmation_temporary_certificate_inner">
+              <h3 className="card_confirmation_temporary_certificate_title"> Действителен до </h3>
+              <p className="card_confirmation_temporary_certificate_valid_until">
+                {new Date(props.applicant.valid_until!.toString()).toLocaleDateString()}
+              </p>
+            </div>
+          </>
+          : <div className="card_confirmation_temporary_certificate_inner">
+            Не требуется
+          </div>
+        }
+      </div>
+
       <Space.Compact style={{ width: "100%", marginTop: "30px" }}>
-          <ButtonStep
-            onClick={props.onClickCancel}
-            style={{ width: "50%" }}
-          >
-            Назад
-          </ButtonStep>
-          <Button
-            type="primary"
-            onClick={props.onClickCreate}
-            style={{ width: "50%" }}
-          >
-            Создать
-          </Button>
-        </Space.Compact>
-    </Card>
+        <ButtonStep
+          onClick={props.onClickCancel}
+          style={{ width: "50%" }}
+        >
+          Назад
+        </ButtonStep>
+        <Button
+          type="primary"
+          onClick={props.onClickCreate}
+          style={{ width: "50%" }}
+        >
+          {props.textButton ?? "Отправить"}
+        </Button>
+      </Space.Compact>
+    </Card >
   )
 });
 
