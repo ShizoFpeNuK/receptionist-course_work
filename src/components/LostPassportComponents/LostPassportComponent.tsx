@@ -1,11 +1,10 @@
 import { useForm } from "antd/es/form/Form";
+import { useState } from "react";
 import { ILostPassport } from "../../models/types/lostPassport";
 import dayjs from "dayjs";
 import LostPassportStore from "../../store/LostPassportStore";
 import CardFormLostPassport from "./cards/CardFormLostPassport";
 import CardConfirmationLostPassport from "./cards/CardConfirmationLostPassport";
-import { useState } from "react";
-import ButtonStep from "../Buttons/ButtonStep";
 
 
 interface ValuesForm extends ILostPassport {
@@ -15,7 +14,8 @@ interface ValuesForm extends ILostPassport {
 }
 
 interface LostPassportComponentProps {
-  lostPassportStore: LostPassportStore
+  lostPassportStore: LostPassportStore,
+  textButton?: string,
 }
 
 
@@ -36,11 +36,11 @@ const LostPassportComponent = ({ lostPassportStore, ...props }: LostPassportComp
     }
 
     lostPassportStore.setLostPassportInfo(correctValues);
-    //ИЛИ service
+    
     setIsOpenFormLostPassport(false);
     setIsOpenConfirmation(true);
   }
-  
+
 
   const cancelConfirmation = () => {
     setIsOpenConfirmation(false);
@@ -66,6 +66,7 @@ const LostPassportComponent = ({ lostPassportStore, ...props }: LostPassportComp
           lostPassport={lostPassportStore.lostPassportInfo!}
           onClickCreate={onClickConfirm}
           onClickCancel={cancelConfirmation}
+          textButton={props.textButton}
         />
       }
     </div>

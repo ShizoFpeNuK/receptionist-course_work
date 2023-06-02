@@ -10,13 +10,13 @@ interface CardConfirmationLostPassportProps {
   lostPassport: ILostPassport,
   onClickCancel: () => void,
   onClickCreate: () => void,
+  textButton?: string,
 }
 
 
 const CardConfirmationLostPassport = observer((props: CardConfirmationLostPassportProps) => {
   return (
     <Card
-      // title="Карточка-подтверждение"
       style={CardForm}
       headStyle={{ fontSize: "20px", fontWeight: 600 }}
       bodyStyle={CardBodyForm}
@@ -81,7 +81,7 @@ const CardConfirmationLostPassport = observer((props: CardConfirmationLostPasspo
           onClick={props.onClickCreate}
           style={{ width: "50%" }}
         >
-          Создать
+          {props.textButton ?? "Отправить"}
         </Button>
       </Space.Compact>
     </Card>

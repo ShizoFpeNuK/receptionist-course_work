@@ -2,7 +2,7 @@ import { FormInstance } from "antd";
 import { CSSProperties, ReactNode } from "react";
 
 
-export default interface CardFormApplicantProps {
+export default interface CardFormBaseProps {
   title?: string,
   style?: CSSProperties,
   className?: string;

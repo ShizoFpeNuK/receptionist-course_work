@@ -1,11 +1,11 @@
 import { Card } from "antd";
 import { ReactNode } from "react";
 import { CardBodyForm, CardForm } from "../../../style/typescript/cardForm";
+import CardFormBaseProps from "../../../models/props/CardFormApplicantProps";
 import FormApplicantRelative from "../forms/FormApplicantRelative";
-import CardFormApplicantProps from "../../../models/props/CardFormApplicantProps";
 
 
-interface CardFormApplicantRelativeProps extends CardFormApplicantProps {
+interface CardFormApplicantRelativeProps extends CardFormBaseProps {
   buttons?: ReactNode,
 }
 

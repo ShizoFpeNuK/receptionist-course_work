@@ -1,10 +1,10 @@
 import { Card } from "antd";
 import { CardBodyForm, CardForm } from "../../../style/typescript/cardForm";
-import CardFormApplicantProps from "../../../models/props/CardFormApplicantProps";
+import CardFormBaseProps from "../../../models/props/CardFormApplicantProps";
 import FormApplicantGeneralInfo from "../forms/FormApplicantGeneralInfo";
 
 
-interface CardApplicantGeneralInfoProps extends CardFormApplicantProps {
+interface CardApplicantGeneralInfoProps extends CardFormBaseProps {
 
 }
 

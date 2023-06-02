@@ -24,12 +24,20 @@ const LostPassportApplicant = observer(() => {
 
   return (
     <div className="applicant">
-      <h1 className="applicant_header title--border" style={{ marginBottom: "40px" }}>
+      <h1
+        className="applicant_header title--border"
+        style={{ marginBottom: "40px" }}
+      >
         Заявления об утере паспорта и замене паспорта
       </h1>
-      <ApplicantComponent applicantStore={applicantStore} />
+      <ApplicantComponent
+        applicantStore={applicantStore}
+        textButton="Продолжить"
+      />
       {applicantStore.isApplicantSend &&
-        <LostPassportComponent lostPassportStore={lostPassportStore} />
+        <LostPassportComponent
+          lostPassportStore={lostPassportStore}
+        />
       }
     </div>
   )

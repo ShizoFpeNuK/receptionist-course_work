@@ -2,9 +2,6 @@ import { ReactNode } from "react";
 import { Button, DatePicker, Form, Input, Select, Space } from "antd";
 import FormBaseProps from "../../../models/props/FormBaseProps";
 
-import "dayjs/locale/ru";
-import locale from "antd/es/date-picker/locale/ru_RU";
-
 
 const dateFormat = "DD.MM.YYYY";
 interface FormNewPassportProps extends FormBaseProps {
@@ -79,7 +76,6 @@ const FormNewPassport = (props: FormNewPassportProps) => {
           format={dateFormat}
           style={{ width: "100%" }}
           placeholder="Выберите дату"
-          locale={locale}
         />
       </Form.Item>
 

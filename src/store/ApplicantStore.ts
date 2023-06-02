@@ -1,11 +1,13 @@
 import { makeAutoObservable } from "mobx";
-import { IApplicantDocument, IApplicantGeneralInfo, IApplicantRelative } from "../models/types/applicant.model";
+import { ITemporaryCertificate } from "../models/types/temporaryCertificate.model";
+import { IApplicant, IApplicantDocument, IApplicantGeneralInfo, IApplicantRelative } from "../models/types/applicant.model";
 
 
 class ApplicantStore {
-  applicantGeneralInfo: IApplicantGeneralInfo | undefined = undefined;
-  applicantDocument: IApplicantDocument | undefined = undefined;
-  applicantRelative: IApplicantRelative | undefined = undefined;
+  applicantGeneralInfo: IApplicantGeneralInfo | null = null;
+  applicantDocument: IApplicantDocument | null = null;
+  applicantRelative: IApplicantRelative | null = null;
+  temporaryCertificate: ITemporaryCertificate | null = null;
   isApplicantSend: boolean = false;
 
   constructor() {
@@ -13,50 +15,64 @@ class ApplicantStore {
   }
 
 
-  setApplicantGeneralInfo(applicantGeneralInfo: IApplicantGeneralInfo | undefined) {
+  setApplicantGeneralInfo(applicantGeneralInfo: IApplicantGeneralInfo | null) {
     this.applicantGeneralInfo = applicantGeneralInfo;
   }
 
-  setApplicantRelative(applicantRelative: IApplicantRelative | undefined) {
+  setApplicantRelative(applicantRelative: IApplicantRelative | null) {
     this.applicantRelative = applicantRelative;
   }
-  
-  setApplicantDocument(applicantDocument: IApplicantDocument | undefined) {
+
+  setApplicantDocument(applicantDocument: IApplicantDocument | null) {
     this.applicantDocument = applicantDocument;
+  }
+
+  setTemporaryCertificate(temporaryCertificate: ITemporaryCertificate | null) {
+    this.temporaryCertificate = temporaryCertificate;
   }
 
   setIsApplicantSend(boolean: boolean) {
     this.isApplicantSend = boolean;
   }
 
-  
+
   deleteApplicantGeneralInfo() {
-    this.setApplicantGeneralInfo(undefined);
+    this.setApplicantGeneralInfo(null);
   }
 
   deleteApplicantRelative() {
-    this.setApplicantRelative(undefined);
+    this.setApplicantRelative(null);
   }
 
   deleteApplicantDocument() {
-    this.setApplicantDocument(undefined);
+    this.setApplicantDocument(null);
+  }
+
+  deleteTemporaryCertificate() {
+    this.setTemporaryCertificate(null);
   }
 
   deleteIsApplicantSend() {
     this.setIsApplicantSend(false);
   }
-
+  
 
   clearStore() {
     this.deleteApplicantGeneralInfo();
     this.deleteApplicantDocument();
     this.deleteApplicantRelative();
+    this.deleteTemporaryCertificate();
     this.deleteIsApplicantSend();
   }
 
-  
-  getApplicant() {
-    return Object.assign(this.applicantGeneralInfo!, this.applicantDocument!, this.applicantRelative!);
+
+  getApplicant(): IApplicant {
+    return Object.assign(
+      this.applicantGeneralInfo!,
+      this.applicantDocument!,
+      this.applicantRelative!,
+      this.temporaryCertificate!
+    );
   }
 }
 

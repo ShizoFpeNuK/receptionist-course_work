@@ -1,10 +1,7 @@
 import { ReactNode } from "react";
 import { Button, DatePicker, Form, Input, Select, Space } from "antd";
-import FormBaseProps from "../../../models/props/FormBaseProps";
-
-import "dayjs/locale/ru";
 import dayjs from "dayjs";
-import locale from "antd/es/date-picker/locale/ru_RU";
+import FormBaseProps from "../../../models/props/FormBaseProps";
 
 
 const dateFormat = "DD.MM.YYYY";
@@ -86,7 +83,6 @@ const FormApplicantRelative = (props: FormApplicantRelativeProps) => {
           format={dateFormat}
           style={{ width: "100%" }}
           placeholder="Выберите дату"
-          locale={locale}
         />
       </Form.Item>
 
@@ -113,7 +109,6 @@ const FormApplicantRelative = (props: FormApplicantRelativeProps) => {
           format={dateFormat}
           style={{ width: "100%" }}
           placeholder="Выберите дату"
-          locale={locale}
         />
       </Form.Item>
 
@@ -124,14 +119,14 @@ const FormApplicantRelative = (props: FormApplicantRelativeProps) => {
             type="primary"
             danger
             onClick={() => props.form.resetFields()}
-            style={{ width: "33.333%" }}
+            style={props.buttons ? { width: "33.333%" } : {width: "50%"}}
           >
             Очистить
           </Button>
           <Button
             type="primary"
             onClick={props.form.submit}
-            style={{ width: "33.333%" }}
+            style={props.buttons ? { width: "33.333%" } : {width: "50%"}}
           >
             Продолжить
           </Button>

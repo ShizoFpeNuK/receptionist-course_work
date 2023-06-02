@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import ApplicantComponent from "../components/ApplicantComponents/ApplicantComponent";
 import ApplicantStore from "../store/ApplicantStore";
+import ApplicantComponent from "../components/ApplicantComponents/ApplicantComponent";
 
 
 const applicant = new ApplicantStore();
@@ -16,7 +16,10 @@ const Applicant = () => {
 
   return (
     <div className="applicant">
-      <h1 className="applicant_header title--border" style={{ marginBottom: "40px" }}>
+      <h1
+        className="applicant_header title--border"
+        style={{ marginBottom: "40px" }}
+      >
         Заявление о выдаче/замене паспорта
       </h1>
       <ApplicantComponent applicantStore={applicant} />

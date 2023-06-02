@@ -1,9 +1,6 @@
 import { Button, DatePicker, Form, Input, Select, Space } from "antd";
-import FormBaseProps from "../../../models/props/FormBaseProps";
-
-import "dayjs/locale/ru";
 import dayjs from "dayjs";
-import locale from "antd/es/date-picker/locale/ru_RU";
+import FormBaseProps from "../../../models/props/FormBaseProps";
 
 
 const dateFormat = "DD.MM.YYYY";
@@ -88,7 +85,6 @@ const FormApplicantGeneralInfo = (props: FormBaseProps) => {
         ]}
       >
         <Select
-          // labelInValue
           options={selectSex}
           placeholder="Выберите пол"
         />
@@ -123,7 +119,7 @@ const FormApplicantGeneralInfo = (props: FormBaseProps) => {
           format={dateFormat}
           style={{ width: "100%" }}
           placeholder="Выберите дату"
-          locale={locale}
+          // locale={locale}
         />
       </Form.Item>
 
