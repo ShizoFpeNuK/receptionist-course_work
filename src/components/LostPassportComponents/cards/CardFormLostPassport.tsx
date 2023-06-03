@@ -28,7 +28,7 @@ const CardFormLostPassport = (props: CardFormLostPassportProps) => {
       {props.children}
     </Card>
   )
-}
+};
 
 
 export default CardFormLostPassport;

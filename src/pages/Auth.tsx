@@ -1,9 +1,8 @@
-// import '../style/css/auth/auth.css';
-import { observer } from "mobx-react";
+import '../style/css/pages/auth.css';
 import CardFormAuth from "../components/AuthComponents/cards/CardFormAuth";
 
 
-const Auth = observer(() => {
+const Auth = () => {
   return (
     <div className="auth_page">
       <h1 className="auth_header title--border"> Аутентификация </h1>
@@ -12,7 +11,7 @@ const Auth = observer(() => {
       </div>
     </div>
   )
-})
+};
 
 
 export default Auth;

@@ -1,22 +1,17 @@
-.card_confirmation_applicant_header,
-.card_confirmation_document_header,
-.card_confirmation_relative_header,
-.card_confirmation_temporary_certificate_header {
+.card_confirmation_header {
   margin-bottom: 10px;
   padding-bottom: 20px;
   text-align: center;
   border-bottom: 1px solid rgba(5, 5, 5, 0.06);
 }
 
-.card_confirmation_applicant_inner,
-.card_confirmation_document_inner,
-.card_confirmation_relative_inner,
-.card_confirmation_temporary_certificate_inner {
+.card_confirmation_inner {
   margin-bottom: 10px;
   padding-bottom: 5px;
   border-bottom: 1px solid rgba(5, 5, 5, 0.06);
 }
 
+.card_confirmation_passport_applicant_header,
 .card_confirmation_document_header,
 .card_confirmation_relative_header,
 .card_confirmation_temporary_certificate_header {

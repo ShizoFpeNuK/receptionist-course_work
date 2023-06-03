@@ -2,15 +2,16 @@ import { Card } from "antd";
 import { ReactNode } from "react";
 import { CardBodyForm, CardForm } from "../../../style/typescript/cardForm";
 import CardFormBaseProps from "../../../models/props/CardFormApplicantProps";
-import FormApplicantDocument from "../forms/FormApplicantDocument";
+import FormApplicantMarriage from "../forms/FormApplicantMarriage";
 
 
-interface CardFormApplicantDocumentProps extends CardFormBaseProps {
+interface CardFormApplicantMarriageProps extends CardFormBaseProps {
+  codeFamilyStatus: number | undefined,
   buttons?: ReactNode,
 }
 
 
-const CardFormApplicantDocument = (props: CardFormApplicantDocumentProps) => {
+const CardFormApplicantMarriage = (props: CardFormApplicantMarriageProps) => {
   return (
     <Card
       className={props.className}
@@ -19,10 +20,11 @@ const CardFormApplicantDocument = (props: CardFormApplicantDocumentProps) => {
       headStyle={{ fontSize: "20px", fontWeight: 600 }}
       bodyStyle={CardBodyForm}
     >
-      <FormApplicantDocument
+      <FormApplicantMarriage
         form={props.form}
         onFinish={props.onFinish}
         onFinishFailed={props.onFinishFailed}
+        codeFamilyStatus={props.codeFamilyStatus}
         buttons={props.buttons}
       />
       {props.children}
@@ -31,4 +33,4 @@ const CardFormApplicantDocument = (props: CardFormApplicantDocumentProps) => {
 };
 
 
-export default CardFormApplicantDocument;
+export default CardFormApplicantMarriage;

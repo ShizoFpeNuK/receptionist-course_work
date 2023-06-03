@@ -1,12 +1,12 @@
 import { observer } from "mobx-react";
 import { useEffect, useState } from "react";
-import ApplicantStore from "../store/ApplicantStore";
+import ApplicantionStore from "../store/ApplicantStore";
 import LostPassportStore from "../store/LostPassportStore";
 import ApplicantComponent from "../components/ApplicantComponents/ApplicantComponent";
 import LostPassportComponent from "../components/LostPassportComponents/LostPassportComponent";
 
 
-const applicantStore = new ApplicantStore();
+const applicantStore = new ApplicantionStore();
 const lostPassportStore = new LostPassportStore();
 
 
@@ -34,7 +34,7 @@ const LostPassportApplicant = observer(() => {
         applicantStore={applicantStore}
         textButton="Продолжить"
       />
-      {applicantStore.isApplicantSend &&
+      {applicantStore.isApplicantionSend &&
         <LostPassportComponent
           lostPassportStore={lostPassportStore}
         />

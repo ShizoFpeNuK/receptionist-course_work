@@ -4,7 +4,7 @@ import { CardForm } from "../../../style/typescript/cardForm";
 import { useNavigate } from "react-router-dom";
 import { ILogin, IUser } from "../../../models/types/user.model";
 import FormAuth from "../forms/FormAuth";
-import loginStore from "../../../store/LoginStoreClass";
+import loginStore from "../../../store/LoginStore";
 import LoginServices from "../../../services/login.service";
 
 
@@ -19,7 +19,7 @@ const CardFormAuth = () => {
         loginStore.setIsLogin(true);
         loginStore.setUser(user);
         localStorage.setItem("token", user.access_token);
-        // navigate("/personal_account");
+        navigate("/");
         form.resetFields();
       })
       .catch(() => console.log("Не залогинились"));
@@ -39,7 +39,7 @@ const CardFormAuth = () => {
       />
     </Card>
   )
-}
+};
 
 
 export default CardFormAuth;

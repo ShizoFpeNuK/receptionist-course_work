@@ -1,16 +1,60 @@
+import { observer } from "mobx-react";
+import { dateFormat } from "../../../options/datePicker";
+import { OptionSelect } from "../../../options/select";
+import { IClassifierOKIN } from "../../../models/types/classifiers.model";
+import { useEffect, useState } from "react";
 import { Button, DatePicker, Form, Input, Select, Space } from "antd";
 import dayjs from "dayjs";
 import FormBaseProps from "../../../models/props/FormBaseProps";
+import classifiersOKIN from "../../../store/ClassifiersStore";
 
 
-const dateFormat = "DD.MM.YYYY";
-const selectSex = [
-  { label: "Мужской", value: 1 },
-  { label: "Женский", value: 2 }
-]
+const FormApplicantApplicant = observer((props: FormBaseProps) => {
+  const [selectSex, setSelectSex] = useState<OptionSelect[]>([]);
+  const [selectNationality, setSelectNationality] = useState<OptionSelect[]>([]);
+  const [selectFamilyStatus, setSelectFamilyStatus] = useState<OptionSelect[]>([]);
 
 
-const FormApplicantGeneralInfo = (props: FormBaseProps) => {
+  useEffect(() => {
+    const buffer: OptionSelect[] = [];
+
+    classifiersOKIN.classifierFamilyStatus.forEach((el: IClassifierOKIN) => {
+      buffer.push({
+        label: el.name,
+        value: el.id
+      })
+    })
+
+    setSelectFamilyStatus(buffer);
+  }, [classifiersOKIN.classifierFamilyStatus])
+
+  useEffect(() => {
+    const buffer: OptionSelect[] = [];
+
+    classifiersOKIN.classifierNationality.forEach((el: IClassifierOKIN) => {
+      buffer.push({
+        label: el.name,
+        value: el.id
+      })
+    })
+
+    setSelectNationality(buffer);
+  }, [classifiersOKIN.classifierNationality])
+
+  useEffect(() => {
+    const buffer: OptionSelect[] = [];
+
+    classifiersOKIN.classifierSex.forEach((el: IClassifierOKIN) => {
+      buffer.push({
+        label: el.name,
+        value: el.id
+      })
+    });
+
+    setSelectSex(buffer);
+  }, [classifiersOKIN.classifierSex])
+
+
   return (
     <Form
       layout="vertical"
@@ -75,8 +119,8 @@ const FormApplicantGeneralInfo = (props: FormBaseProps) => {
 
       <Form.Item
         label="Пол заявителя"
-        name="sex"
-        initialValue="Мужской"
+        name="code_sex"
+        initialValue={1}
         rules={[
           {
             required: true,
@@ -119,7 +163,6 @@ const FormApplicantGeneralInfo = (props: FormBaseProps) => {
           format={dateFormat}
           style={{ width: "100%" }}
           placeholder="Выберите дату"
-          // locale={locale}
         />
       </Form.Item>
 
@@ -156,6 +199,23 @@ const FormApplicantGeneralInfo = (props: FormBaseProps) => {
       </Form.Item>
 
       <Form.Item
+        label="Гражданство заявителя"
+        name="code_nationality"
+        initialValue={1}
+        rules={[
+          {
+            required: true,
+            message: "Это поле является обязательным!",
+          },
+        ]}
+      >
+        <Select
+          options={selectNationality}
+          placeholder="Выберите гражданство"
+        />
+      </Form.Item>
+
+      <Form.Item
         label="Электронная почта"
         name="email"
         rules={[
@@ -166,6 +226,56 @@ const FormApplicantGeneralInfo = (props: FormBaseProps) => {
         ]}
       >
         <Input placeholder="Введите электронную почту" />
+      </Form.Item>
+
+      <Form.Item label="Родственники">
+        <Space.Compact direction="horizontal" style={{ width: "100%" }}>
+          <Form.Item
+            name={["relatives", "full_name_father"]}
+            noStyle
+            style={{ width: "33%" }}
+            initialValue="Иванов Иван Петрович" //
+            rules={[
+              {
+                pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
+                message: "Фамилия начинается с заглавной буквы"
+              }
+            ]}
+          >
+            <Input placeholder="Введите ФИО отца" />
+          </Form.Item>
+          <Form.Item
+            name={["relatives", "full_name_mother"]}
+            noStyle
+            style={{ width: "33%" }}
+            initialValue="Иванова Елена Васильевна" //
+            rules={[
+              {
+                pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
+                message: "Имя начинается с заглавной буквы"
+              }
+            ]}
+          >
+            <Input placeholder="Введите ФИО матери" />
+          </Form.Item>
+        </Space.Compact>
+      </Form.Item>
+
+      <Form.Item
+        label="Семейное положение"
+        name="code_family_status"
+        initialValue={1} //
+        rules={[
+          {
+            required: true,
+            message: "Это поле является обязательным!",
+          },
+        ]}
+      >
+        <Select
+          options={selectFamilyStatus}
+          placeholder="Выберите статус семьи"
+        />
       </Form.Item>
 
       <Form.Item style={{ marginBottom: 0, marginTop: "30px", textAlign: "center" }}>
@@ -189,7 +299,7 @@ const FormApplicantGeneralInfo = (props: FormBaseProps) => {
       </Form.Item>
     </Form>
   )
-}
+});
 
 
-export default FormApplicantGeneralInfo;
+export default FormApplicantApplicant;

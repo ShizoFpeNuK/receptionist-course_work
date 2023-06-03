@@ -25,8 +25,6 @@ const LostPassportComponent = ({ lostPassportStore, ...props }: LostPassportComp
   const [isOpenFormLostPassport, setIsOpenFormLostPassport] = useState<boolean>(true);
 
 
-
-
   const onFinish = (values: ValuesForm) => {
     const correctValues: ILostPassport = {
       ...values,
@@ -34,7 +32,6 @@ const LostPassportComponent = ({ lostPassportStore, ...props }: LostPassportComp
       "date_of_kidnapping": values["date_of_kidnapping"].format("YYYY-MM-DD"),
       "date_of_application": values["date_of_application"].format("YYYY-MM-DD"),
     }
-
     lostPassportStore.setLostPassportInfo(correctValues);
     
     setIsOpenFormLostPassport(false);
@@ -71,7 +68,7 @@ const LostPassportComponent = ({ lostPassportStore, ...props }: LostPassportComp
       }
     </div>
   )
-}
+};
 
 
 export default LostPassportComponent;

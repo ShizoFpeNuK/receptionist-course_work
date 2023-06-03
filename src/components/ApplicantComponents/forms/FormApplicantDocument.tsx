@@ -1,14 +1,16 @@
-import { ReactNode } from "react";
+import { dateFormat } from "../../../options/datePicker";
+import { OptionSelect } from "../../../options/select";
+import { IClassifierOKIN } from "../../../models/types/classifiers.model";
+import { ReactNode, useEffect, useState } from "react";
 import { Button, DatePicker, Form, Input, Select, Space } from "antd";
 import dayjs from "dayjs";
 import FormBaseProps from "../../../models/props/FormBaseProps";
+import classifiersOKIN from "../../../store/ClassifiersStore";
 
 
-const dateFormat = "DD.MM.YYYY";
-const selectTypeDocument = [
-  { label: "Паспорт гражданина РФ", value: 2 },
-  { label: "Свидетельство о рождении", value: 1 },
-  { label: "Удостоверение личности военнослужащего РФ", value: 3 },
+const selectTypeDocument: OptionSelect[] = [
+  { label: "Паспорт гражданина РФ", value: "Паспорт гражданина РФ" },
+  { label: "Свидетельство о рождении", value: "Свидетельство о рождении" },
 ]
 
 interface FormApplicantDocumentProps extends FormBaseProps {
@@ -17,6 +19,23 @@ interface FormApplicantDocumentProps extends FormBaseProps {
 
 
 const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
+  const [selectSex, setSelectSex] = useState<OptionSelect[]>([]);
+
+
+  useEffect(() => {
+    const buffer: OptionSelect[] = [];
+
+    classifiersOKIN.classifierSex.forEach((el: IClassifierOKIN) => {
+      buffer.push({
+        label: el.name,
+        value: el.id
+      })
+    })
+
+    setSelectSex(buffer);
+  }, [classifiersOKIN.classifierSex])
+
+
   return (
     <Form
       layout="vertical"
@@ -27,7 +46,7 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
       <Form.Item
         label="Тип предъявленного документа"
         name="type_document"
-        initialValue={2} //
+        initialValue={"Паспорт гражданина РФ"} //
         rules={[
           {
             required: true,
@@ -85,6 +104,110 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
         </Space.Compact>
       </Form.Item>
 
+      <Form.Item label="ФИО по документу" required={true}>
+        <Space.Compact direction="horizontal" style={{ width: "100%" }}>
+          <Form.Item
+            name={["full_name", "last_name"]}
+            noStyle
+            style={{ width: "33%" }}
+            initialValue="Иванов" //
+            rules={[
+              {
+                required: true,
+                message: "Поле Фамилия является обязательным!"
+              },
+              {
+                pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
+                message: "Фамилия начинается с заглавной буквы"
+              }
+            ]}
+          >
+            <Input placeholder="Введите фамилию" />
+          </Form.Item>
+          <Form.Item
+            name={["full_name", "first_name"]}
+            noStyle
+            style={{ width: "33%" }}
+            initialValue="Иван" //
+            rules={[
+              {
+                required: true,
+                message: "Поле Имя является обязательным!"
+              },
+              {
+                pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
+                message: "Имя начинается с заглавной буквы"
+              }
+            ]}
+          >
+            <Input placeholder="Введите имя" />
+          </Form.Item>
+          <Form.Item
+            name={["full_name", "middle_name"]}
+            noStyle
+            style={{ width: "33%" }}
+            initialValue="Иванович" //
+            rules={[
+              {
+                pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
+                message: "Отчество начинается с заглавной буквы!"
+              }
+            ]}
+          >
+            <Input placeholder="Введите отчество" />
+          </Form.Item>
+        </Space.Compact>
+      </Form.Item>
+
+      <Form.Item
+        label="Пол заявителя"
+        name="code_sex"
+        initialValue={1}
+        rules={[
+          {
+            required: true,
+            message: "Это поле является обязательным!",
+          },
+        ]}
+      >
+        <Select
+          options={selectSex}
+          placeholder="Выберите пол"
+        />
+      </Form.Item>
+
+      <Form.Item
+        label="Место рождения"
+        name="place_of_birth"
+        initialValue="г. Москва"
+        rules={[
+          {
+            required: true,
+            message: "Это поле является обязательным!",
+          },
+        ]}
+      >
+        <Input placeholder="Введите место рождения" />
+      </Form.Item>
+
+      <Form.Item
+        label="Дата рождения"
+        name="date_of_birth"
+        initialValue={dayjs("10.10.1980", dateFormat)} //
+        rules={[
+          {
+            required: true,
+            message: "Это поле является обязательным!",
+          },
+        ]}
+      >
+        <DatePicker
+          format={dateFormat}
+          style={{ width: "100%" }}
+          placeholder="Выберите дату"
+        />
+      </Form.Item>
+
       <Form.Item
         label="Дата выдачи документа"
         name="date_of_issue"
@@ -139,7 +262,7 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
       </Form.Item>
     </Form>
   )
-}
+};
 
 
 export default FormApplicantDocument;

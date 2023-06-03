@@ -1,15 +1,15 @@
 import { Card } from "antd";
 import { CardBodyForm, CardForm } from "../../../style/typescript/cardForm";
 import CardFormBaseProps from "../../../models/props/CardFormApplicantProps";
-import FormApplicantGeneralInfo from "../forms/FormApplicantGeneralInfo";
+import FormApplicantApplicant from "../forms/FormApplicantApplicant";
 
 
-interface CardApplicantGeneralInfoProps extends CardFormBaseProps {
+interface CardApplicantApplicantProps extends CardFormBaseProps {
 
 }
 
 
-const CardFormApplicantGeneralInfo = (props: CardApplicantGeneralInfoProps) => {
+const CardFormApplicantApplicant = (props: CardApplicantApplicantProps) => {
   return (
     <Card
       className={props.className}
@@ -18,7 +18,7 @@ const CardFormApplicantGeneralInfo = (props: CardApplicantGeneralInfoProps) => {
       headStyle={{ fontSize: "20px", fontWeight: 600 }}
       bodyStyle={CardBodyForm}
     >
-      <FormApplicantGeneralInfo
+      <FormApplicantApplicant
         form={props.form}
         onFinish={props.onFinish}
         onFinishFailed={props.onFinishFailed}
@@ -26,7 +26,7 @@ const CardFormApplicantGeneralInfo = (props: CardApplicantGeneralInfoProps) => {
       {props.children}
     </Card>
   )
-}
+};
 
 
-export default CardFormApplicantGeneralInfo;
+export default CardFormApplicantApplicant;

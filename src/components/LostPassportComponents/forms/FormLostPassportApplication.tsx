@@ -1,10 +1,10 @@
 import { ReactNode } from "react";
+import { dateFormat } from "../../../options/datePicker";
 import { Button, DatePicker, Form, Input, Select, Space } from "antd";
 import dayjs from "dayjs";
 import FormBaseProps from "../../../models/props/FormBaseProps";
 
 
-const dateFormat = "DD.MM.YYYY";
 const selectResponse = [
   { label: "По телефону", value: "По телефону" },
   { label: "По почте", value: "По почте" },
@@ -161,7 +161,7 @@ const FormLostPassportApplication = (props: FormLostPassportApplicationProps) =>
       </Form.Item>
     </Form>
   )
-}
+};
 
 
 export default FormLostPassportApplication;

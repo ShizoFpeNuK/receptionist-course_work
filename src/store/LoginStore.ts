@@ -2,7 +2,7 @@ import { IUser } from "../models/types/user.model";
 import { makeAutoObservable } from "mobx";
 
 
-class LoginStoreClass {
+class LoginStore {
   isLogin: boolean = false;
   user: IUser | null = null;
 
@@ -21,5 +21,5 @@ class LoginStoreClass {
 };
 
 
-const loginStore = new LoginStoreClass();
+const loginStore = new LoginStore();
 export default loginStore;

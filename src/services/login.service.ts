@@ -1,9 +1,9 @@
+import axiosToDataBase from "../configs/axios.config";
 import { IUser } from "../models/types/user.model";
-import { axiosToDataBase } from "../configs/axios.config";
 
 
 export default class LoginServices {
-  static pathDefault: string = "/login";
+  private static pathDefault: string = "/login";
 
 
   static async login(username: string, password: string): Promise<IUser> {

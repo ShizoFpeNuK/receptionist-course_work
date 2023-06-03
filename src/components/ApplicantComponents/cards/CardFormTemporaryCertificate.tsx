@@ -28,7 +28,7 @@ const CardFormTemporaryCertificate = (props: CardFormTemporaryCertificate) => {
       {props.children}
     </Card>
   )
-}
+};
 
 
 export default CardFormTemporaryCertificate;

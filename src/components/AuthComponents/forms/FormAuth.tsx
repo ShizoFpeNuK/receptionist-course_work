@@ -15,6 +15,7 @@ const FormAuth = (props: FormBaseProps) => {
       <Form.Item
         label="Логин"
         name="username"
+        initialValue="11"
         rules={[
           {
             required: true,
@@ -27,6 +28,7 @@ const FormAuth = (props: FormBaseProps) => {
       <Form.Item
         label="Пароль"
         name="password"
+        initialValue="11"
         rules={[
           {
             required: true,
@@ -46,7 +48,7 @@ const FormAuth = (props: FormBaseProps) => {
       </Form.Item>
     </Form>
   )
-}
+};
 
 
 export default FormAuth;

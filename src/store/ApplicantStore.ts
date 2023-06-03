@@ -1,80 +1,107 @@
 import { makeAutoObservable } from "mobx";
 import { ITemporaryCertificate } from "../models/types/temporaryCertificate.model";
-import { IApplicant, IApplicantDocument, IApplicantGeneralInfo, IApplicantRelative } from "../models/types/applicant.model";
+import {
+  IApplicantion,
+  IApplicantionDocument,
+  IApplicantionApplicant,
+  IApplicantionPassportApplication,
+  IApplicantionMarriage,
+  IApplicantionCreate
+} from "../models/types/applicant.model";
 
 
-class ApplicantStore {
-  applicantGeneralInfo: IApplicantGeneralInfo | null = null;
-  applicantDocument: IApplicantDocument | null = null;
-  applicantRelative: IApplicantRelative | null = null;
+class ApplicantionStore {
+  applicantionApplicant: IApplicantionApplicant | null = null;
+  applicantionPassportApplication: IApplicantionPassportApplication | null = null;
+  applicantionDocument: IApplicantionDocument | null = null;
+  applicantionMarriage: IApplicantionMarriage | null = null;
   temporaryCertificate: ITemporaryCertificate | null = null;
-  isApplicantSend: boolean = false;
+  isApplicantionSend: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
   }
 
 
-  setApplicantGeneralInfo(applicantGeneralInfo: IApplicantGeneralInfo | null) {
-    this.applicantGeneralInfo = applicantGeneralInfo;
+  setApplicantionApplicant(applicantionApplicant: IApplicantionApplicant) {
+    this.applicantionApplicant = applicantionApplicant;
   }
 
-  setApplicantRelative(applicantRelative: IApplicantRelative | null) {
-    this.applicantRelative = applicantRelative;
+  setApplicationPassportApplication(applicantionPassportApplication: IApplicantionPassportApplication) {
+    this.applicantionPassportApplication = applicantionPassportApplication;
   }
 
-  setApplicantDocument(applicantDocument: IApplicantDocument | null) {
-    this.applicantDocument = applicantDocument;
+  setApplicantionMarriage(applicantionMarriage: IApplicantionMarriage | null) {
+    this.applicantionMarriage = applicantionMarriage;
   }
 
-  setTemporaryCertificate(temporaryCertificate: ITemporaryCertificate | null) {
+  setApplicantionDocument(applicantionDocument: IApplicantionDocument) {
+    this.applicantionDocument = applicantionDocument;
+  }
+
+  setTemporaryCertificate(temporaryCertificate: ITemporaryCertificate) {
     this.temporaryCertificate = temporaryCertificate;
   }
 
-  setIsApplicantSend(boolean: boolean) {
-    this.isApplicantSend = boolean;
+  setIsApplicantionSend(boolean: boolean) {
+    this.isApplicantionSend = boolean;
   }
 
 
-  deleteApplicantGeneralInfo() {
-    this.setApplicantGeneralInfo(null);
+  deleteApplicantionApplicant() {
+    this.applicantionApplicant = null;
   }
 
-  deleteApplicantRelative() {
-    this.setApplicantRelative(null);
+  deleteApplicationPassportApplication() {
+    this.applicantionPassportApplication = null;
   }
 
-  deleteApplicantDocument() {
-    this.setApplicantDocument(null);
+  deleteApplicantionMarriage() {
+    this.applicantionMarriage = null;
+  }
+
+  deleteApplicantionDocument() {
+    this.applicantionDocument = null;
   }
 
   deleteTemporaryCertificate() {
-    this.setTemporaryCertificate(null);
+    this.temporaryCertificate = null;
   }
 
-  deleteIsApplicantSend() {
-    this.setIsApplicantSend(false);
+  deleteIsApplicantionSend() {
+    this.isApplicantionSend = false;
   }
-  
+
 
   clearStore() {
-    this.deleteApplicantGeneralInfo();
-    this.deleteApplicantDocument();
-    this.deleteApplicantRelative();
+    this.deleteApplicantionApplicant();
+    this.deleteApplicationPassportApplication();
+    this.deleteApplicantionDocument();
+    this.deleteApplicantionMarriage();
     this.deleteTemporaryCertificate();
-    this.deleteIsApplicantSend();
+    this.deleteIsApplicantionSend();
   }
 
 
-  getApplicant(): IApplicant {
-    return Object.assign(
-      this.applicantGeneralInfo!,
-      this.applicantDocument!,
-      this.applicantRelative!,
+  getApplicantion(): IApplicantion {
+    return Object.assign([],
+      this.applicantionApplicant!,
+      this.applicantionPassportApplication!,
+      this.applicantionDocument!,
+      this.applicantionMarriage!,
       this.temporaryCertificate!
     );
   }
-}
+
+  getApplicationCreate(): IApplicantionCreate {
+    return {
+      applicant: this.applicantionApplicant!,
+      passport_application: this.applicantionPassportApplication!,
+      identity_document: this.applicantionDocument!,
+      marriage: this.applicantionMarriage
+    };
+  }
+};
 
 
-export default ApplicantStore;
+export default ApplicantionStore;

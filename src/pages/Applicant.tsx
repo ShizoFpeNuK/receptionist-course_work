@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import ApplicantStore from "../store/ApplicantStore";
+import ApplicantionStore from "../store/ApplicantStore";
 import ApplicantComponent from "../components/ApplicantComponents/ApplicantComponent";
 
 
-const applicant = new ApplicantStore();
+const applicant = new ApplicantionStore();
 
 
 const Applicant = () => {

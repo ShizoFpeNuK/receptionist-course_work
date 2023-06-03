@@ -1,10 +1,10 @@
+import { dateFormat } from "../../../options/datePicker";
 import { ReactNode, useState } from "react";
 import { ITemporaryCertificate } from "../../../models/types/temporaryCertificate.model";
 import { Button, DatePicker, Form, Input, Select, Space } from "antd";
 import FormBaseProps from "../../../models/props/FormBaseProps";
 
 
-const dateFormat = "DD.MM.YYYY";
 const selectBoolean = [
   { label: "Да", value: true },
   { label: "Нет", value: false }
@@ -117,7 +117,7 @@ const FormTemporaryCertificate = (props: FormTemporaryCertificateProps) => {
       </Form.Item>
     </Form>
   )
-}
+};
 
 
 export default FormTemporaryCertificate;

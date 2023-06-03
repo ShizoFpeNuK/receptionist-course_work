@@ -18,7 +18,7 @@ class LostPassportStore {
   deleteLostPassportInfo() {
     this.setLostPassportInfo(null);
   }
-}
+};
 
 
 
