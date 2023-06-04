@@ -1,5 +1,5 @@
+import { ILostPassport } from "../../models/types/lostPassport";
 import { makeAutoObservable } from "mobx";
-import { ILostPassport } from "../models/types/lostPassport";
 
 
 class LostPassportStore {

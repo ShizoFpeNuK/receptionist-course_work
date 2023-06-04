@@ -1,21 +1,18 @@
 import { useForm } from "antd/es/form/Form";
-import { useState } from "react";
-import { ITemporaryCertificate } from "../../models/types/temporaryCertificate.model";
+import { useEffect, useRef, useState } from "react";
 import {
   IApplicantionDocument,
   IApplicantionApplicant,
   IApplicantionPassportApplication,
   IApplicantionMarriage
-} from "../../models/types/applicant.model";
+} from "../../models/types/applicantion.model";
 import dayjs from "dayjs";
-import ButtonStep from "../../components/Buttons/ButtonStep";
-import ApplicantionStore from "../../store/ApplicantStore";
-import ApplicationsServices from "../../services/applications.service";
-import CardFormApplicantDocument from "../../components/ApplicantComponents/cards/CardFormApplicantDocument";
+import ButtonStep from "../others/Buttons/ButtonStep";
+import ApplicantionStore from "../../store/applications/ApplicantStore";
+import CardFormApplicantDocument from "./cards/CardFormApplicantDocument";
 import CardFormApplicantMarriage from "./cards/CardFormApplicantMarriage"
 import CardConfirmationApplication from "./cards/CardConfirmationApplication";
 import CardFormApplicantApplicant from "./cards/CardFormApplicantApplicant";
-import CardFormTemporaryCertificate from "./cards/CardFormTemporaryCertificate";
 import CardFormApplicantPassportApplicantion from "./cards/CardFormApplicantPassportApplicantion";
 
 
@@ -34,30 +31,23 @@ interface ValuesFormMarriage extends IApplicantionMarriage {
   date_of_birth_spouse: dayjs.Dayjs,
 }
 
-interface ValuesFormTemporaryCertificate extends ITemporaryCertificate {
-  valid_until: dayjs.Dayjs,
-}
-
-interface ApplicantComponentProps {
-  applicantStore: ApplicantionStore,
+interface ApplicantionComponentProps {
+  applicantionStore: ApplicantionStore,
   textButton?: string,
 }
 
 
-const ApplicantComponent = ({ applicantStore, ...props }: ApplicantComponentProps) => {
+const ApplicantionComponent = ({ applicantionStore, ...props }: ApplicantionComponentProps) => {
   const [formApplicant] = useForm();
   const [formPassportApplication] = useForm();
   const [formDocument] = useForm();
   const [formMarriage] = useForm();
-  const [formTemporaryCertificate] = useForm();
-  // const [sendSuccess, setSendSuccess] = useState<boolean>(false);
-  // const [sendError, setSendError] = useState<boolean>(false);
   const [isOpenFormApplicant, setIsOpenFormApplicant] = useState<boolean>(true);
   const [isOpenFormPassportApplication, setIsOpenFormPassportApplication] = useState<boolean>(false);
   const [isOpenFormDocument, setIsOpenFormDocument] = useState<boolean>(false);
   const [isOpenFormMarriage, setIsOpenFormMarriage] = useState<boolean>(false);
-  const [isOpenFormTemporaryCertificate, setIsOpenFormTemporaryCertificate] = useState<boolean>(false);
   const [isOpenConfirmation, setIsOpenConfirmation] = useState<boolean>(false);
+  const firstRender = useRef<boolean>(true);
 
 
   const onFinishApplicant = (values: ValuesFormGeneralInfo) => {
@@ -65,14 +55,14 @@ const ApplicantComponent = ({ applicantStore, ...props }: ApplicantComponentProp
       ...values,
       "date_of_birth": values["date_of_birth"].format("YYYY-MM-DD"),
     }
-    applicantStore.setApplicantionApplicant(correctValues);
+    applicantionStore.setApplicantionApplicant(correctValues);
 
     setIsOpenFormApplicant(false);
     setIsOpenFormPassportApplication(true);
   }
 
   const onFinishPassportApplication = (values: IApplicantionPassportApplication) => {
-    applicantStore.setApplicationPassportApplication(values);
+    applicantionStore.setApplicationPassportApplication(values);
 
     setIsOpenFormPassportApplication(false);
     setIsOpenFormDocument(true);
@@ -84,7 +74,7 @@ const ApplicantComponent = ({ applicantStore, ...props }: ApplicantComponentProp
       "date_of_issue": values["date_of_issue"].format("YYYY-MM-DD"),
       "date_of_birth": values["date_of_birth"].format("YYYY-MM-DD"),
     }
-    applicantStore.setApplicantionDocument(correctValues);
+    applicantionStore.setApplicantionDocument(correctValues);
 
     setIsOpenFormDocument(false);
     setIsOpenFormMarriage(true);
@@ -97,23 +87,12 @@ const ApplicantComponent = ({ applicantStore, ...props }: ApplicantComponentProp
         "date_of_conclusion": values["date_of_conclusion"]?.format("YYYY-MM-DD"),
         "date_of_birth_spouse": values["date_of_birth_spouse"]?.format("YYYY-MM-DD"),
       }
-      applicantStore.setApplicantionMarriage(correctValues);
+      applicantionStore.setApplicantionMarriage(correctValues);
     } else {
-      applicantStore.setApplicantionMarriage(null);
+      applicantionStore.setApplicantionMarriage(null);
     }
 
     setIsOpenFormMarriage(false);
-    setIsOpenFormTemporaryCertificate(true);
-  }
-
-  const onFinishTemporaryCertificate = (values: ValuesFormTemporaryCertificate) => {
-    const correctValues: ITemporaryCertificate = {
-      ...values,
-      "valid_until": values["valid_until"]?.format("YYYY-MM-DD"),
-    }
-    applicantStore.setTemporaryCertificate(correctValues);
-
-    setIsOpenFormTemporaryCertificate(false);
     setIsOpenConfirmation(true);
   }
 
@@ -133,39 +112,32 @@ const ApplicantComponent = ({ applicantStore, ...props }: ApplicantComponentProp
     setIsOpenFormDocument(true);
   }
 
-  const cancelTemporaryCertificate = () => {
-    setIsOpenFormTemporaryCertificate(false);
+  const cancelConfirmation = () => {
+    setIsOpenConfirmation(false);
     setIsOpenFormMarriage(true);
   }
 
-  const cancelConfirmation = () => {
+
+  const sendApplicantion = async () => {
+    applicantionStore.setIsApplicantionSend(true);
     setIsOpenConfirmation(false);
-    setIsOpenFormTemporaryCertificate(true);
   }
 
 
-  const onClickConfirm = async () => {
-    await ApplicationsServices.createPassportApplication(applicantStore.getApplicationCreate())
-      .then(() => {
-        console.log("Всё гуд!");
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-    // setSendSuccess(true);
-    // setSendSuccess(false);
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
 
-    setIsOpenConfirmation(false);
-    applicantStore.setIsApplicantionSend(true);
-    formApplicant.resetFields();
-    formDocument.resetFields();
-    formMarriage.resetFields();
-    formTemporaryCertificate.resetFields();
-  }
+    if (!applicantionStore.isApplicantionSend) {
+      setIsOpenConfirmation(true);
+    }
+  }, [applicantionStore.isApplicantionSend])
 
 
   return (
-    <div className="applicant_forms" style={{ margin: "0 20%" }}>
+    <div className="applicant_forms" style={{ padding: "0 20%" }}>
       {isOpenFormApplicant &&
         <CardFormApplicantApplicant
           form={formApplicant}
@@ -207,7 +179,7 @@ const ApplicantComponent = ({ applicantStore, ...props }: ApplicantComponentProp
         <CardFormApplicantMarriage
           form={formMarriage}
           title="Данные о браке"
-          codeFamilyStatus={applicantStore.applicantionApplicant?.code_family_status}
+          codeFamilyStatus={applicantionStore.applicantionApplicant?.code_family_status}
           onFinish={onFinishMarriage}
           buttons={
             <ButtonStep
@@ -219,24 +191,10 @@ const ApplicantComponent = ({ applicantStore, ...props }: ApplicantComponentProp
           }
         />
       }
-      {isOpenFormTemporaryCertificate &&
-        <CardFormTemporaryCertificate
-          form={formTemporaryCertificate}
-          title="Данные о временном удостоверении"
-          onFinish={onFinishTemporaryCertificate}
-          buttons={
-            <ButtonStep
-              onClick={cancelTemporaryCertificate}
-              style={{ width: "33.333%" }}
-            >
-              Назад
-            </ButtonStep>}
-        />
-      }
       {isOpenConfirmation &&
         <CardConfirmationApplication
-          applicant={applicantStore.getApplicantion()}
-          onClickCreate={onClickConfirm}
+          applicant={applicantionStore.getApplicantion()}
+          onClickCreate={sendApplicantion}
           onClickCancel={cancelConfirmation}
           textButton={props.textButton}
         />
@@ -246,4 +204,4 @@ const ApplicantComponent = ({ applicantStore, ...props }: ApplicantComponentProp
 };
 
 
-export default ApplicantComponent;
+export default ApplicantionComponent;

@@ -1,4 +1,4 @@
-import loginStore from "../store/LoginStore";
+import loginStore from "../store/auth/LoginStore";
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 
 

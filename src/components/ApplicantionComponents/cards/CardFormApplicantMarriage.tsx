@@ -1,16 +1,17 @@
 import { Card } from "antd";
 import { ReactNode } from "react";
 import { CardBodyForm, CardForm } from "../../../style/typescript/cardForm";
-import CardFormBaseProps from "../../../models/props/CardFormApplicantProps";
-import FormApplicantPassportApplicantion from "../forms/FormApplicantPassportApplication";
+import CardFormBaseProps from "../../../models/props/CardFormBaseProps";
+import FormApplicantMarriage from "../forms/FormApplicantMarriage";
 
 
-interface CardFormApplicantPassportApplicantionProps extends CardFormBaseProps {
+interface CardFormApplicantMarriageProps extends CardFormBaseProps {
+  codeFamilyStatus: number | undefined,
   buttons?: ReactNode,
 }
 
 
-const CardFormApplicantPassportApplicantion = (props: CardFormApplicantPassportApplicantionProps) => {
+const CardFormApplicantMarriage = (props: CardFormApplicantMarriageProps) => {
   return (
     <Card
       className={props.className}
@@ -19,10 +20,11 @@ const CardFormApplicantPassportApplicantion = (props: CardFormApplicantPassportA
       headStyle={{ fontSize: "20px", fontWeight: 600 }}
       bodyStyle={CardBodyForm}
     >
-      <FormApplicantPassportApplicantion
+      <FormApplicantMarriage
         form={props.form}
         onFinish={props.onFinish}
         onFinishFailed={props.onFinishFailed}
+        codeFamilyStatus={props.codeFamilyStatus}
         buttons={props.buttons}
       />
       {props.children}
@@ -31,4 +33,4 @@ const CardFormApplicantPassportApplicantion = (props: CardFormApplicantPassportA
 };
 
 
-export default CardFormApplicantPassportApplicantion;
+export default CardFormApplicantMarriage;

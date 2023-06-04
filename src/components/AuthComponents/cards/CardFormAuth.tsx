@@ -4,7 +4,7 @@ import { CardForm } from "../../../style/typescript/cardForm";
 import { useNavigate } from "react-router-dom";
 import { ILogin, IUser } from "../../../models/types/user.model";
 import FormAuth from "../forms/FormAuth";
-import loginStore from "../../../store/LoginStore";
+import loginStore from "../../../store/auth/LoginStore";
 import LoginServices from "../../../services/login.service";
 
 

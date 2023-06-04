@@ -1,5 +1,5 @@
 import { dateFormat } from "../../../options/datePicker";
-import { IApplicantionMarriage } from "../../../models/types/applicant.model";
+import { IApplicantionMarriage } from "../../../models/types/applicantion.model";
 import { ReactNode, useEffect, useState } from "react";
 import { Button, DatePicker, Form, Input, Space } from "antd";
 import FormBaseProps from "../../../models/props/FormBaseProps";
@@ -36,6 +36,7 @@ const FormApplicantMarriage = (props: FormApplicantMarriageProps) => {
 
   useEffect(() => {
     if (props.codeFamilyStatus === 1 || props.codeFamilyStatus === 4) {
+      props.form.resetFields();
       setDisabledFormItem(true);
     }
   }, [])

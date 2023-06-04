@@ -3,53 +3,42 @@ import { message } from "antd";
 import { observer } from "mobx-react";
 import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
+import { errorMessage, messageConfig } from "./configs/messageAntd.config";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
 import Header from "./components/MainComponents/Header";
 import NotFound from "./pages/NotFound";
-import Applicant from "./pages/Applicant";
-import loginStore from "./store/LoginStore";
-import classifiersOKIN from "./store/ClassifiersStore";
+import Applicant from "./pages/applications/Applicant";
+import loginStore from "./store/auth/LoginStore";
+import classifiersOKIN from "./store/other/ClassifiersStore";
 import ClassifiersServices from "./services/classifiers.service";
-import LostPassportApplicant from "./pages/LostPassport";
+import LostPassportApplicant from "./pages/applications/LostPassport";
 
 
-message.config({
-  duration: 2,
-  maxCount: 3
-})
+message.config(messageConfig);
 
 
 const App = observer(() => {
   const [messageApi, contextHolder] = message.useMessage();
 
-  // В отдельный компонент с передачей messageApi
-  const error = () => {
-    messageApi.open({
-      type: "error",
-      content: "Произошла непредвиденная ошибка!",
-    });
-  }
-
 
   const loadPage = async () => {
+    messageApi.destroy();
+
     Promise.all([
       ClassifiersServices.getClassifierSex(),
-      ClassifiersServices.getClassifierNationality(),
       ClassifiersServices.getClassifierFamilyStatus(),
     ]).then(([
       classifiersSex,
-      classifierNationality,
-      classifierFamilyStatus
+      classifierFamilyStatus,
     ]) => {
       classifiersOKIN.setClassifierSex(classifiersSex);
-      classifiersOKIN.setClassifierNationality(classifierNationality);
       classifiersOKIN.setClassifierFamilyStatus(classifierFamilyStatus);
       console.log("Классификаторы загружены!");
     }).catch(() => {
       setTimeout(() => {
         loginStore.setIsLogin(false)
-        error();
+        errorMessage(messageApi);
       }, 2000);
     });
   }
@@ -57,7 +46,6 @@ const App = observer(() => {
 
   useEffect(() => {
     if (loginStore.isLogin) {
-      messageApi.destroy();
       loadPage();
       console.log("Загружаем классификаторы...");
     }

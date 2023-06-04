@@ -1,10 +1,9 @@
-import { IClassifierOKIN } from "../models/types/classifiers.model";
+import { IClassifierOKIN } from "../../models/types/classifiers.model";
 import { makeAutoObservable } from "mobx";
 
 
 class ClassifiersStore {
   classifierSex: IClassifierOKIN[] = [];
-  classifierNationality: IClassifierOKIN[] = [];
   classifierFamilyStatus: IClassifierOKIN[] = [];
 
   constructor() {
@@ -15,9 +14,7 @@ class ClassifiersStore {
   setClassifierSex(classifiers: IClassifierOKIN[]) {
     this.classifierSex = classifiers;
   }
-  setClassifierNationality(classifiers: IClassifierOKIN[]) {
-    this.classifierNationality = classifiers;
-  }
+
   setClassifierFamilyStatus(classifiers: IClassifierOKIN[]) {
     this.classifierFamilyStatus = classifiers;
   }
@@ -26,9 +23,7 @@ class ClassifiersStore {
   deleteClassifierSex() {
     this.classifierSex = [];
   }
-  deleteClassifierNationality() {
-    this.classifierNationality = [];
-  }
+
   deleteClassifierFamilyStatus() {
     this.classifierFamilyStatus = [];
   }

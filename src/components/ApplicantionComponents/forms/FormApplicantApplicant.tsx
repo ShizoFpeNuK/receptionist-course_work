@@ -3,16 +3,26 @@ import { dateFormat } from "../../../options/datePicker";
 import { OptionSelect } from "../../../options/select";
 import { IClassifierOKIN } from "../../../models/types/classifiers.model";
 import { useEffect, useState } from "react";
+import { IApplicantionApplicant } from "../../../models/types/applicantion.model";
 import { Button, DatePicker, Form, Input, Select, Space } from "antd";
 import dayjs from "dayjs";
 import FormBaseProps from "../../../models/props/FormBaseProps";
-import classifiersOKIN from "../../../store/ClassifiersStore";
+import classifiersOKIN from "../../../store/other/ClassifiersStore";
 
 
 const FormApplicantApplicant = observer((props: FormBaseProps) => {
   const [selectSex, setSelectSex] = useState<OptionSelect[]>([]);
-  const [selectNationality, setSelectNationality] = useState<OptionSelect[]>([]);
   const [selectFamilyStatus, setSelectFamilyStatus] = useState<OptionSelect[]>([]);
+
+
+  const checkFields = () => {
+    const values: IApplicantionApplicant = props.form.getFieldsValue();
+
+    if ((values.relatives.full_name_father || values.relatives.full_name_mother) &&
+      (values.full_name.first_name || values.full_name.last_name)) {
+      props.form.submit();
+    }
+  }
 
 
   useEffect(() => {
@@ -27,19 +37,6 @@ const FormApplicantApplicant = observer((props: FormBaseProps) => {
 
     setSelectFamilyStatus(buffer);
   }, [classifiersOKIN.classifierFamilyStatus])
-
-  useEffect(() => {
-    const buffer: OptionSelect[] = [];
-
-    classifiersOKIN.classifierNationality.forEach((el: IClassifierOKIN) => {
-      buffer.push({
-        label: el.name,
-        value: el.id
-      })
-    })
-
-    setSelectNationality(buffer);
-  }, [classifiersOKIN.classifierNationality])
 
   useEffect(() => {
     const buffer: OptionSelect[] = [];
@@ -67,13 +64,8 @@ const FormApplicantApplicant = observer((props: FormBaseProps) => {
           <Form.Item
             name={["full_name", "last_name"]}
             noStyle
-            style={{ width: "33%" }}
             initialValue="Иванов" //
             rules={[
-              {
-                required: true,
-                message: "Поле Фамилия является обязательным!"
-              },
               {
                 pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
                 message: "Фамилия начинается с заглавной буквы"
@@ -85,13 +77,8 @@ const FormApplicantApplicant = observer((props: FormBaseProps) => {
           <Form.Item
             name={["full_name", "first_name"]}
             noStyle
-            style={{ width: "33%" }}
             initialValue="Иван" //
             rules={[
-              {
-                required: true,
-                message: "Поле Имя является обязательным!"
-              },
               {
                 pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
                 message: "Имя начинается с заглавной буквы"
@@ -103,7 +90,6 @@ const FormApplicantApplicant = observer((props: FormBaseProps) => {
           <Form.Item
             name={["full_name", "middle_name"]}
             noStyle
-            style={{ width: "33%" }}
             initialValue="Иванович" //
             rules={[
               {
@@ -199,20 +185,10 @@ const FormApplicantApplicant = observer((props: FormBaseProps) => {
       </Form.Item>
 
       <Form.Item
-        label="Гражданство заявителя"
-        name="code_nationality"
-        initialValue={1}
-        rules={[
-          {
-            required: true,
-            message: "Это поле является обязательным!",
-          },
-        ]}
+        label="Иностранное гражданство"
+        name="other_nationality"
       >
-        <Select
-          options={selectNationality}
-          placeholder="Выберите гражданство"
-        />
+        <Input placeholder="Выберите гражданство" />
       </Form.Item>
 
       <Form.Item
@@ -228,12 +204,11 @@ const FormApplicantApplicant = observer((props: FormBaseProps) => {
         <Input placeholder="Введите электронную почту" />
       </Form.Item>
 
-      <Form.Item label="Родственники">
+      <Form.Item label="Родственники" required={true}>
         <Space.Compact direction="horizontal" style={{ width: "100%" }}>
           <Form.Item
             name={["relatives", "full_name_father"]}
             noStyle
-            style={{ width: "33%" }}
             initialValue="Иванов Иван Петрович" //
             rules={[
               {
@@ -247,7 +222,6 @@ const FormApplicantApplicant = observer((props: FormBaseProps) => {
           <Form.Item
             name={["relatives", "full_name_mother"]}
             noStyle
-            style={{ width: "33%" }}
             initialValue="Иванова Елена Васильевна" //
             rules={[
               {
@@ -290,7 +264,7 @@ const FormApplicantApplicant = observer((props: FormBaseProps) => {
           </Button>
           <Button
             type="primary"
-            onClick={props.form.submit}
+            onClick={checkFields}
             style={{ width: "50%" }}
           >
             Продолжить

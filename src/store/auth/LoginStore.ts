@@ -1,4 +1,4 @@
-import { IUser } from "../models/types/user.model";
+import { IUser } from "../../models/types/user.model";
 import { makeAutoObservable } from "mobx";
 
 

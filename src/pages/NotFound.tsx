@@ -6,7 +6,12 @@ import { Image } from "antd";
 const NotFound = () => {
   return (
     <div className="notfound_page">
-      <h1 className="notfound_title title--border" style={{ marginBottom: "40px" }}> 404 </h1>
+      <h1
+        className="notfound_title title--border"
+        style={{ marginBottom: "40px" }}
+      >
+        404
+      </h1>
       <p className="notfound_text"> Такой страницы не существует! </p>
       <div className="notfound_image">
         <Image

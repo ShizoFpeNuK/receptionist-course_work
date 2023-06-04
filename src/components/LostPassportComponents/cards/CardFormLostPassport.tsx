@@ -2,7 +2,7 @@ import { Card } from "antd";
 import { ReactNode } from "react";
 import { CardBodyForm, CardForm } from "../../../style/typescript/cardForm";
 import FormLostPassport from "../forms/FormLostPassportApplication";
-import CardFormBaseProps from "../../../models/props/CardFormApplicantProps";
+import CardFormBaseProps from "../../../models/props/CardFormBaseProps";
 
 
 interface CardFormLostPassportProps extends CardFormBaseProps {

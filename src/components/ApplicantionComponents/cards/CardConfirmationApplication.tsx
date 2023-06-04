@@ -1,9 +1,11 @@
 import '../../..//style/css/components/ApplicantComponents/cardConfirmationApplication.css';
-import { observer } from "mobx-react";
-import { IApplicantion } from "../../../models/types/applicant.model";
+import { IApplicantion } from "../../../models/types/applicantion.model";
+import { IClassifierOKIN } from '../../../models/types/classifiers.model';
+import { useEffect, useState } from 'react';
 import { Button, Card, Space } from "antd";
 import { CardBodyForm, CardForm } from "../../../style/typescript/cardForm";
-import ButtonStep from '../../Buttons/ButtonStep';
+import ButtonStep from "../../others/Buttons/ButtonStep";
+import classifiersOKIN from "../../../store/other/ClassifiersStore";
 
 
 interface CardConfirmationApplicationProps {
@@ -14,7 +16,18 @@ interface CardConfirmationApplicationProps {
 }
 
 
-const CardConfirmationApplication = observer((props: CardConfirmationApplicationProps) => {
+const CardConfirmationApplication = (props: CardConfirmationApplicationProps) => {
+  const [familyStatus, setFamilyStatus] = useState<string>("");
+
+  useEffect(() => {
+    classifiersOKIN.classifierFamilyStatus.forEach((el: IClassifierOKIN) => {
+      if (props.applicant.code_family_status === el.id) {
+        setFamilyStatus(el.name);
+      }
+    })
+  }, [classifiersOKIN.classifierFamilyStatus])
+
+
   return (
     <Card
       style={CardForm}
@@ -129,16 +142,24 @@ const CardConfirmationApplication = observer((props: CardConfirmationApplication
         <div className="card_confirmation_relative_inner card_confirmation_inner">
           <h3 className="card_confirmation_relative_title"> Родственники </h3>
           <p className="card_confirmation_relative_father">
-            Отец: {props.applicant.relatives.full_name_father ?? "Отсутствует"}
+            Отец:&nbsp;
+            {props.applicant.relatives.full_name_father?.length
+              ? props.applicant.relatives.full_name_father
+              : "Отсутствует"
+            }
           </p>
           <p className="card_confirmation_relative_mother">
-            Матерь: {props.applicant.relatives.full_name_mother ?? "Отсутствует"}
+            Матерь:&nbsp;
+            {props.applicant.relatives.full_name_mother?.length
+              ? props.applicant.relatives.full_name_mother
+              : "Отсутствует"
+            }
           </p>
         </div>
         <div className="card_confirmation_relative_inner card_confirmation_inner">
           <h3 className="card_confirmation_relative_title"> Семейное положение </h3>
           <p className="card_confirmation_relative_family_status">
-            {props.applicant.code_family_status}
+            {familyStatus}
           </p>
         </div>
         <div className="card_confirmation_relative_inner card_confirmation_inner">
@@ -167,31 +188,6 @@ const CardConfirmationApplication = observer((props: CardConfirmationApplication
         </div>
       </div>
 
-      <div className="card_confirmation_temporary_certificate">
-        <h2 className="card_confirmation_temporary_certificate_header">
-          Сведения о временном удостоверении
-        </h2>
-        {props.applicant.temporary_certificate
-          ? <>
-            <div className="card_confirmation_temporary_certificate_inner card_confirmation_inner">
-              <h3 className="card_confirmation_temporary_certificate_title"> Причина выдачи </h3>
-              <p className="card_confirmation_temporary_certificate_reason">
-                {props.applicant.reason}
-              </p>
-            </div>
-            <div className="card_confirmation_temporary_certificate_inner card_confirmation_inner">
-              <h3 className="card_confirmation_temporary_certificate_title"> Действителен до </h3>
-              <p className="card_confirmation_temporary_certificate_valid_until">
-                {new Date(props.applicant.valid_until!.toString()).toLocaleDateString()}
-              </p>
-            </div>
-          </>
-          : <div className="card_confirmation_temporary_certificate_inner card_confirmation_inner">
-            Не требуется
-          </div>
-        }
-      </div>
-
       <Space.Compact style={{ width: "100%", marginTop: "30px" }}>
         <ButtonStep
           onClick={props.onClickCancel}
@@ -204,12 +200,12 @@ const CardConfirmationApplication = observer((props: CardConfirmationApplication
           onClick={props.onClickCreate}
           style={{ width: "50%" }}
         >
-          {props.textButton ?? "Отправить"}
+          {props.textButton ?? "Продолжить"}
         </Button>
       </Space.Compact>
     </Card >
   )
-});
+};
 
 
 export default CardConfirmationApplication;

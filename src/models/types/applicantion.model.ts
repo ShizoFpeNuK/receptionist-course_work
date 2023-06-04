@@ -1,4 +1,3 @@
-import { ITemporaryCertificate } from "./temporaryCertificate.model";
 import dayjs from "dayjs";
 
 
@@ -18,7 +17,7 @@ export interface IApplicantionApplicant {
   telephone: string,
   email: string | null,
   code_sex: number,
-  code_nationality: number,
+  nationality: number,
   code_family_status: number,
 }
 
@@ -28,7 +27,7 @@ export interface IApplicantionPassportApplication {
 
 export interface IApplicantionDocument {
   document: {
-    series: string | null,
+    series: string,
     id: number,
   },
   type_document: string,
@@ -58,4 +57,4 @@ export interface IApplicantionCreate {
 }
 
 export type IApplicantion = IApplicantionApplicant & IApplicantionPassportApplication &
-  IApplicantionDocument & IApplicantionMarriage & ITemporaryCertificate;
+  IApplicantionDocument & IApplicantionMarriage;

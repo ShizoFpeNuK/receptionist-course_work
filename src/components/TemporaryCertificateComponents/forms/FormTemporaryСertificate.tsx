@@ -1,14 +1,10 @@
+import { ReactNode } from "react";
 import { dateFormat } from "../../../options/datePicker";
-import { ReactNode, useState } from "react";
 import { ITemporaryCertificate } from "../../../models/types/temporaryCertificate.model";
-import { Button, DatePicker, Form, Input, Select, Space } from "antd";
+import { Button, DatePicker, Form, Input, Space } from "antd";
+import dayjs from "dayjs";
 import FormBaseProps from "../../../models/props/FormBaseProps";
 
-
-const selectBoolean = [
-  { label: "Да", value: true },
-  { label: "Нет", value: false }
-];
 
 interface FormTemporaryCertificateProps extends FormBaseProps {
   buttons?: ReactNode,
@@ -16,29 +12,12 @@ interface FormTemporaryCertificateProps extends FormBaseProps {
 
 
 const FormTemporaryCertificate = (props: FormTemporaryCertificateProps) => {
-  const [disabledFields, setDisabledFields] = useState<boolean>(true);
-
-
   const checkFields = () => {
     const values: ITemporaryCertificate = props.form.getFieldsValue();
 
-    if (values.temporary_certificate) {
-      if (values.valid_until && values.reason) {
-        props.form.submit();
-        return
-      }
-    } else {
+    if (values.valid_until && values.reason &&
+      values.document.id && values.document.series) {
       props.form.submit();
-      return
-    }
-  }
-
-
-  const changeSelectBoolean = (value: string) => {
-    if (value) {
-      setDisabledFields(false);
-    } else {
-      setDisabledFields(true);
     }
   }
 
@@ -50,45 +29,66 @@ const FormTemporaryCertificate = (props: FormTemporaryCertificateProps) => {
       onFinish={props.onFinish}
       onFinishFailed={props.onFinishFailed}
     >
-      <Form.Item
-        label="Требуется ли временное удостоверение"
-        name="temporary_certificate"
-        initialValue={false}
-        rules={[
-          {
-            required: true,
-            message: "Это поле является обязательным!",
-          },
-        ]}
-      >
-        <Select
-          options={selectBoolean}
-          onChange={changeSelectBoolean}
-          placeholder="Выберите Да или Нет"
-        />
+      <Form.Item label="Серия и номер паспорта" >
+        <Space.Compact direction="horizontal" style={{ width: "100%" }}>
+          <Form.Item
+            name={["document", "series"]}
+            noStyle
+            initialValue="БА"
+            rules={[
+              {
+                pattern: new RegExp(/^[А-Я]+$/),
+                message: `Серия может состоять из римских или 
+                арабских цифр, дефиса и заглавных русских букв!`
+              }
+            ]}
+          >
+            <Input
+              style={{ width: "30%" }}
+              placeholder="Введите серию"
+            />
+          </Form.Item>
+          <Form.Item
+            name={["document", "id"]}
+            noStyle
+            initialValue={111111}
+            rules={[
+              {
+                pattern: new RegExp(/^\d{6}$/),
+                message: "Номер состоит из 6 цифр!"
+              }
+            ]}
+          >
+            <Input
+              style={{ width: "70%" }}
+              placeholder="Введите номер"
+            />
+          </Form.Item>
+        </Space.Compact>
       </Form.Item>
+
 
       <Form.Item
         label="Причина выдачи временного удостоверения"
         name="reason"
+        initialValue="Добраться до дома"
         rules={[
           {
-            pattern: new RegExp(/^[а-яА-Я]+$/),
+            pattern: new RegExp(/^[а-яА-Я\s]+$/),
             message: "Только буквы русского алфавита!"
           }
         ]}
       >
         <Input
-          disabled={disabledFields}
           placeholder="Введите причину выдачи" />
       </Form.Item>
 
       <Form.Item
         label="Удостоверение действительно до"
         name="valid_until"
+        initialValue={dayjs("10.10.2023", dateFormat)}
       >
         <DatePicker
-          disabled={disabledFields}
           format={dateFormat}
           style={{ width: "100%" }}
           placeholder="Выберите дату"

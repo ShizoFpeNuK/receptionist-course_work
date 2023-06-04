@@ -2,7 +2,7 @@ import { useForm } from "antd/es/form/Form";
 import { useState } from "react";
 import { ILostPassport } from "../../models/types/lostPassport";
 import dayjs from "dayjs";
-import LostPassportStore from "../../store/LostPassportStore";
+import LostPassportStore from "../../store/applications/LostPassportStore";
 import CardFormLostPassport from "./cards/CardFormLostPassport";
 import CardConfirmationLostPassport from "./cards/CardConfirmationLostPassport";
 

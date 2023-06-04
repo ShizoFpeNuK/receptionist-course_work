@@ -1,16 +1,21 @@
 import { dateFormat } from "../../../options/datePicker";
 import { OptionSelect } from "../../../options/select";
 import { IClassifierOKIN } from "../../../models/types/classifiers.model";
+import { IApplicantionDocument } from "../../../models/types/applicantion.model";
 import { ReactNode, useEffect, useState } from "react";
 import { Button, DatePicker, Form, Input, Select, Space } from "antd";
 import dayjs from "dayjs";
 import FormBaseProps from "../../../models/props/FormBaseProps";
-import classifiersOKIN from "../../../store/ClassifiersStore";
+import classifiersOKIN from "../../../store/other/ClassifiersStore";
 
+
+const regExpPassport = new RegExp(/^\d{4}$/);
+const regExpСertificate = new RegExp(/^[IVX]+[\-]{1}[А-Я]{2}$/);
 
 const selectTypeDocument: OptionSelect[] = [
   { label: "Паспорт гражданина РФ", value: "Паспорт гражданина РФ" },
   { label: "Свидетельство о рождении", value: "Свидетельство о рождении" },
+  { label: "Национальный заграничный паспорт", value: "Национальный заграничный паспорт" },
 ]
 
 interface FormApplicantDocumentProps extends FormBaseProps {
@@ -20,6 +25,29 @@ interface FormApplicantDocumentProps extends FormBaseProps {
 
 const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
   const [selectSex, setSelectSex] = useState<OptionSelect[]>([]);
+
+
+  const checkFields = () => {
+    const values: IApplicantionDocument = props.form.getFieldsValue();
+
+    if (values.full_name.first_name || values.full_name.last_name) {
+      if (values.type_document === "Паспорт гражданина РФ" &&
+        regExpPassport.test(values.document.series)) {
+        props.form.submit();
+        return
+      }
+      if (values.type_document === "Свидетельство о рождении" &&
+        regExpСertificate.test(values.document.series)) {
+        props.form.submit();
+        return
+      }
+      if (values.type_document !== "Паспорт гражданина РФ" &&
+        values.type_document !== "Свидетельство о рождении") {
+        props.form.submit();
+        return
+      }
+    }
+  }
 
 
   useEffect(() => {
@@ -61,7 +89,7 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
       </Form.Item>
 
       <Form.Item
-        label="Серия и номер паспорта (доделать, не все поля обязательны)"
+        label="Серия и номер паспорта"
         required={true}
       >
         <Space.Compact direction="horizontal" style={{ width: "100%" }}>
@@ -76,17 +104,20 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
                 message: "Поле Серия является обязательным!",
               },
               {
-                pattern: new RegExp(/^\d{4}$/),
-                message: "Серия состоит из 4 цифр!"
+                pattern: new RegExp(/^[IXV\-А-Я\d]+$/),
+                message: `Серия может состоять из римских или 
+                арабских цифр, дефиса и заглавных русских букв!`
               }
             ]}
           >
-            <Input placeholder="Введите серию" />
+            <Input
+              style={{ width: "30%" }}
+              placeholder="Введите серию"
+            />
           </Form.Item>
           <Form.Item
             name={["document", "id"]}
             noStyle
-            style={{ width: "50%" }}
             initialValue={111111} //
             rules={[
               {
@@ -99,7 +130,10 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
               }
             ]}
           >
-            <Input placeholder="Введите номер" />
+            <Input
+              style={{ width: "70%" }}
+              placeholder="Введите номер"
+            />
           </Form.Item>
         </Space.Compact>
       </Form.Item>
@@ -109,13 +143,8 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
           <Form.Item
             name={["full_name", "last_name"]}
             noStyle
-            style={{ width: "33%" }}
             initialValue="Иванов" //
             rules={[
-              {
-                required: true,
-                message: "Поле Фамилия является обязательным!"
-              },
               {
                 pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
                 message: "Фамилия начинается с заглавной буквы"
@@ -127,13 +156,8 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
           <Form.Item
             name={["full_name", "first_name"]}
             noStyle
-            style={{ width: "33%" }}
             initialValue="Иван" //
             rules={[
-              {
-                required: true,
-                message: "Поле Имя является обязательным!"
-              },
               {
                 pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
                 message: "Имя начинается с заглавной буквы"
@@ -145,7 +169,6 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
           <Form.Item
             name={["full_name", "middle_name"]}
             noStyle
-            style={{ width: "33%" }}
             initialValue="Иванович" //
             rules={[
               {
@@ -253,7 +276,7 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
           </Button>
           <Button
             type="primary"
-            onClick={props.form.submit}
+            onClick={checkFields}
             style={props.buttons ? { width: "33.333%" } : { width: "50%" }}
           >
             Продолжить

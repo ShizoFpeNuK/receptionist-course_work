@@ -12,20 +12,8 @@ export default class ClassifiersServices {
     return classifiers.data;
   }
 
-  static async getClassifierNationality(): Promise<IClassifierOKIN[]> {
-    const classifiers = await axiosToDataBase.get(`${this.pathDefault}/nationality`);
-
-    return classifiers.data;
-  }
-
   static async getClassifierFamilyStatus(): Promise<IClassifierOKIN[]> {
     const classifiers = await axiosToDataBase.get(`${this.pathDefault}/family_status`);
-
-    return classifiers.data;
-  }
-
-  static async getClassifierGroundsForExtradition(): Promise<IClassifierOKIN[]> {
-    const classifiers = await axiosToDataBase.get(`${this.pathDefault}/grounds_for_extradition`);
 
     return classifiers.data;
   }

@@ -3,7 +3,7 @@ import { observer } from "mobx-react";
 import { ILostPassport } from "../../../models/types/lostPassport";
 import { Button, Card, Space } from "antd";
 import { CardBodyForm, CardForm } from "../../../style/typescript/cardForm";
-import ButtonStep from "../../Buttons/ButtonStep";
+import ButtonStep from "../../others/Buttons/ButtonStep";
 
 
 interface CardConfirmationLostPassportProps {
@@ -42,7 +42,9 @@ const CardConfirmationLostPassport = observer((props: CardConfirmationLostPasspo
           </p>
         </div>
         <div className="card_confirmation_lostpassport_inner">
-          <h3 className="card_confirmation_lostpassport_title"> Дата обращения по факту похищения </h3>
+          <h3 className="card_confirmation_lostpassport_title">
+            Дата обращения по факту похищения
+          </h3>
           <p className="card_confirmation_lostpassport_date_of_kidnapping">
             {new Date(props.lostPassport.date_of_kidnapping.toString()).toLocaleDateString()}
           </p>

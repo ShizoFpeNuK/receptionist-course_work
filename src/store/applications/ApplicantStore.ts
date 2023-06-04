@@ -1,5 +1,4 @@
 import { makeAutoObservable } from "mobx";
-import { ITemporaryCertificate } from "../models/types/temporaryCertificate.model";
 import {
   IApplicantion,
   IApplicantionDocument,
@@ -7,7 +6,7 @@ import {
   IApplicantionPassportApplication,
   IApplicantionMarriage,
   IApplicantionCreate
-} from "../models/types/applicant.model";
+} from "../../models/types/applicantion.model";
 
 
 class ApplicantionStore {
@@ -15,7 +14,6 @@ class ApplicantionStore {
   applicantionPassportApplication: IApplicantionPassportApplication | null = null;
   applicantionDocument: IApplicantionDocument | null = null;
   applicantionMarriage: IApplicantionMarriage | null = null;
-  temporaryCertificate: ITemporaryCertificate | null = null;
   isApplicantionSend: boolean = false;
 
   constructor() {
@@ -39,10 +37,6 @@ class ApplicantionStore {
     this.applicantionDocument = applicantionDocument;
   }
 
-  setTemporaryCertificate(temporaryCertificate: ITemporaryCertificate) {
-    this.temporaryCertificate = temporaryCertificate;
-  }
-
   setIsApplicantionSend(boolean: boolean) {
     this.isApplicantionSend = boolean;
   }
@@ -64,10 +58,6 @@ class ApplicantionStore {
     this.applicantionDocument = null;
   }
 
-  deleteTemporaryCertificate() {
-    this.temporaryCertificate = null;
-  }
-
   deleteIsApplicantionSend() {
     this.isApplicantionSend = false;
   }
@@ -78,7 +68,6 @@ class ApplicantionStore {
     this.deleteApplicationPassportApplication();
     this.deleteApplicantionDocument();
     this.deleteApplicantionMarriage();
-    this.deleteTemporaryCertificate();
     this.deleteIsApplicantionSend();
   }
 
@@ -89,7 +78,6 @@ class ApplicantionStore {
       this.applicantionPassportApplication!,
       this.applicantionDocument!,
       this.applicantionMarriage!,
-      this.temporaryCertificate!
     );
   }
 
@@ -98,7 +86,7 @@ class ApplicantionStore {
       applicant: this.applicantionApplicant!,
       passport_application: this.applicantionPassportApplication!,
       identity_document: this.applicantionDocument!,
-      marriage: this.applicantionMarriage
+      marriage: this.applicantionMarriage,
     };
   }
 };
