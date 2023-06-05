@@ -8,7 +8,7 @@ import Auth from "./pages/Auth";
 import Home from "./pages/Home";
 import Header from "./components/MainComponents/Header";
 import NotFound from "./pages/NotFound";
-import Applicant from "./pages/applications/Applicant";
+import Applicantion from "./pages/applications/Applicantion";
 import loginStore from "./store/auth/LoginStore";
 import classifiersOKIN from "./store/other/ClassifiersStore";
 import ClassifiersServices from "./services/classifiers.service";
@@ -64,7 +64,7 @@ const App = observer(() => {
             <main className="main">
               <Routes>
                 <Route index path="/" element={<Home />} />
-                <Route path="/issue_passport" element={<Applicant />} />
+                <Route path="/issue_passport" element={<Applicantion />} />
                 <Route path="/lost_passport" element={<LostPassportApplicant />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

@@ -2,16 +2,18 @@ import { dateFormat } from "../../../options/datePicker";
 import { IApplicantionMarriage } from "../../../models/types/applicantion.model";
 import { ReactNode, useEffect, useState } from "react";
 import { Button, DatePicker, Form, Input, Space } from "antd";
+import dayjs from "dayjs";
 import FormBaseProps from "../../../models/props/FormBaseProps";
 
 
-interface FormApplicantMarriageProps extends FormBaseProps {
+interface FormApplicantionMarriageProps extends FormBaseProps {
   codeFamilyStatus: number | undefined,
   buttons?: ReactNode,
+  mirrage?: IApplicantionMarriage | null,
 }
 
 
-const FormApplicantMarriage = (props: FormApplicantMarriageProps) => {
+const FormApplicantionMarriage = (props: FormApplicantionMarriageProps) => {
   const [disabledFormItem, setDisabledFormItem] = useState<boolean>(false);
 
 
@@ -21,7 +23,7 @@ const FormApplicantMarriage = (props: FormApplicantMarriageProps) => {
       return
     }
 
-    const values: IApplicantionMarriage = props.form.getFieldsValue()
+    const values: IApplicantionMarriage = props.form.getFieldsValue();
 
     if (
       values.full_name_spouse &&
@@ -52,6 +54,7 @@ const FormApplicantMarriage = (props: FormApplicantMarriageProps) => {
       <Form.Item
         label="Дата заключения/расторжения брака"
         name="date_of_conclusion"
+        initialValue={props.mirrage ? dayjs(props.mirrage.date_of_conclusion) : null}
       >
         <DatePicker
           format={dateFormat}
@@ -64,6 +67,7 @@ const FormApplicantMarriage = (props: FormApplicantMarriageProps) => {
       <Form.Item
         label="ФИО супруга/супруги"
         name="full_name_spouse"
+        initialValue={props.mirrage ? props.mirrage.full_name_spouse : null}
         rules={[
           {
             pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
@@ -80,6 +84,7 @@ const FormApplicantMarriage = (props: FormApplicantMarriageProps) => {
       <Form.Item
         label="Дата рождения супруга/супруги"
         name="date_of_birth_spouse"
+        initialValue={props.mirrage ? dayjs(props.mirrage.date_of_birth_spouse) : null}
       >
         <DatePicker
           format={dateFormat}
@@ -114,4 +119,4 @@ const FormApplicantMarriage = (props: FormApplicantMarriageProps) => {
 };
 
 
-export default FormApplicantMarriage;
+export default FormApplicantionMarriage;

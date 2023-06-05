@@ -1,22 +1,24 @@
 import { useForm } from "antd/es/form/Form";
-import { useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import {
-  IApplicantionDocument,
-  IApplicantionApplicant,
-  IApplicantionPassportApplication,
-  IApplicantionMarriage
+  IApplicantionDocument, IApplicantionApplicant,
+  IApplicantionPassportApplication, IApplicantionMarriage
 } from "../../models/types/applicantion.model";
 import dayjs from "dayjs";
 import ButtonStep from "../others/Buttons/ButtonStep";
 import ApplicantionStore from "../../store/applications/ApplicantStore";
-import CardFormApplicantDocument from "./cards/CardFormApplicantDocument";
-import CardFormApplicantMarriage from "./cards/CardFormApplicantMarriage"
 import CardConfirmationApplication from "./cards/CardConfirmationApplication";
-import CardFormApplicantApplicant from "./cards/CardFormApplicantApplicant";
-import CardFormApplicantPassportApplicantion from "./cards/CardFormApplicantPassportApplicantion";
+import CardFormApplicantionDocument from "./cards/CardFormApplicantionDocument";
+import CardFormApplicantionMarriage from "./cards/CardFormApplicantionMarriage"
+import CardFormApplicantionApplicant from "./cards/CardFormApplicantionApplicant";
+import CardFormApplicantionPassportApplicantion from "./cards/CardFormApplicantionPassportApplicantion";
 
 
 interface ValuesFormGeneralInfo extends IApplicantionApplicant {
+  date_of_birth: dayjs.Dayjs,
+}
+
+interface ValuesFormPassportApplication extends IApplicantionPassportApplication {
   date_of_birth: dayjs.Dayjs,
 }
 
@@ -34,6 +36,8 @@ interface ValuesFormMarriage extends IApplicantionMarriage {
 interface ApplicantionComponentProps {
   applicantionStore: ApplicantionStore,
   textButton?: string,
+  buttonCancel?: ReactNode,
+  isDocument: boolean,
 }
 
 
@@ -55,28 +59,40 @@ const ApplicantionComponent = ({ applicantionStore, ...props }: ApplicantionComp
       ...values,
       "date_of_birth": values["date_of_birth"].format("YYYY-MM-DD"),
     }
+
     applicantionStore.setApplicantionApplicant(correctValues);
 
     setIsOpenFormApplicant(false);
     setIsOpenFormPassportApplication(true);
   }
 
-  const onFinishPassportApplication = (values: IApplicantionPassportApplication) => {
-    applicantionStore.setApplicationPassportApplication(values);
+  const onFinishPassportApplication = (values: ValuesFormPassportApplication) => {
+    const correctValues: IApplicantionPassportApplication = {
+      ...values,
+      "date_of_birth": values["date_of_birth"]?.format("YYYY-MM-DD"),
+    }
+    applicantionStore.setApplicationPassportApplication(correctValues);
 
     setIsOpenFormPassportApplication(false);
-    setIsOpenFormDocument(true);
+    if (props.isDocument) {
+      setIsOpenFormDocument(true);
+    } else {
+      setIsOpenFormMarriage(true);
+    }
   }
 
   const onFinishDocument = (values: ValuesFormDocument) => {
     const correctValues: IApplicantionDocument = {
       ...values,
       "date_of_issue": values["date_of_issue"].format("YYYY-MM-DD"),
-      "date_of_birth": values["date_of_birth"].format("YYYY-MM-DD"),
     }
     applicantionStore.setApplicantionDocument(correctValues);
 
-    setIsOpenFormDocument(false);
+    if (props.isDocument) {
+      setIsOpenFormDocument(false);
+    } else {
+      setIsOpenFormPassportApplication(true);
+    }
     setIsOpenFormMarriage(true);
   }
 
@@ -109,7 +125,11 @@ const ApplicantionComponent = ({ applicantionStore, ...props }: ApplicantionComp
 
   const cancelMarriage = () => {
     setIsOpenFormMarriage(false);
-    setIsOpenFormDocument(true);
+    if (props.isDocument) {
+      setIsOpenFormDocument(true);
+    } else {
+      setIsOpenFormPassportApplication(true);
+    }
   }
 
   const cancelConfirmation = () => {
@@ -119,7 +139,7 @@ const ApplicantionComponent = ({ applicantionStore, ...props }: ApplicantionComp
 
 
   const sendApplicantion = async () => {
-    applicantionStore.setIsApplicantionSend(true);
+    applicantionStore.setIsApplicantionReady(true);
     setIsOpenConfirmation(false);
   }
 
@@ -130,26 +150,29 @@ const ApplicantionComponent = ({ applicantionStore, ...props }: ApplicantionComp
       return;
     }
 
-    if (!applicantionStore.isApplicantionSend) {
+    if (!applicantionStore.isApplicantionReady) {
       setIsOpenConfirmation(true);
     }
-  }, [applicantionStore.isApplicantionSend])
+  }, [applicantionStore.isApplicantionReady])
 
 
   return (
     <div className="applicant_forms" style={{ padding: "0 20%" }}>
       {isOpenFormApplicant &&
-        <CardFormApplicantApplicant
+        <CardFormApplicantionApplicant
           form={formApplicant}
           title="Данные о заявителе"
           onFinish={onFinishApplicant}
+          applicant={applicantionStore.applicantionApplicant}
+          buttons={props.buttonCancel}
         />
       }
       {isOpenFormPassportApplication &&
-        <CardFormApplicantPassportApplicantion
+        <CardFormApplicantionPassportApplicantion
           form={formPassportApplication}
           title="Заявление о выдачи/замене паспорта"
           onFinish={onFinishPassportApplication}
+          passportApplication={applicantionStore.applicantionPassportApplication}
           buttons={
             <ButtonStep
               onClick={cancelPassportApplication}
@@ -160,11 +183,12 @@ const ApplicantionComponent = ({ applicantionStore, ...props }: ApplicantionComp
           }
         />
       }
-      {isOpenFormDocument &&
-        <CardFormApplicantDocument
+      {isOpenFormDocument && props.isDocument &&
+        <CardFormApplicantionDocument
           form={formDocument}
           title="Данные о предъявленном документе"
           onFinish={onFinishDocument}
+          document={applicantionStore.applicantionDocument}
           buttons={
             <ButtonStep
               onClick={cancelDocument}
@@ -176,11 +200,12 @@ const ApplicantionComponent = ({ applicantionStore, ...props }: ApplicantionComp
         />
       }
       {isOpenFormMarriage &&
-        <CardFormApplicantMarriage
+        <CardFormApplicantionMarriage
           form={formMarriage}
           title="Данные о браке"
           codeFamilyStatus={applicantionStore.applicantionApplicant?.code_family_status}
           onFinish={onFinishMarriage}
+          mirrage={applicantionStore.applicantionMarriage}
           buttons={
             <ButtonStep
               onClick={cancelMarriage}
@@ -193,8 +218,11 @@ const ApplicantionComponent = ({ applicantionStore, ...props }: ApplicantionComp
       }
       {isOpenConfirmation &&
         <CardConfirmationApplication
-          applicant={applicantionStore.getApplicantion()}
-          onClickCreate={sendApplicantion}
+          marriage={applicantionStore.applicantionMarriage!}
+          document={applicantionStore.applicantionDocument!}
+          applicant={applicantionStore.applicantionApplicant!}
+          passportApplication={applicantionStore.applicantionPassportApplication!}
+          onClickContinue={sendApplicantion}
           onClickCancel={cancelConfirmation}
           textButton={props.textButton}
         />

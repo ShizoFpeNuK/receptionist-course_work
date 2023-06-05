@@ -2,15 +2,21 @@ import { observer } from "mobx-react";
 import { dateFormat } from "../../../options/datePicker";
 import { OptionSelect } from "../../../options/select";
 import { IClassifierOKIN } from "../../../models/types/classifiers.model";
-import { useEffect, useState } from "react";
 import { IApplicantionApplicant } from "../../../models/types/applicantion.model";
+import { ReactNode, useEffect, useState } from "react";
 import { Button, DatePicker, Form, Input, Select, Space } from "antd";
 import dayjs from "dayjs";
 import FormBaseProps from "../../../models/props/FormBaseProps";
 import classifiersOKIN from "../../../store/other/ClassifiersStore";
 
 
-const FormApplicantApplicant = observer((props: FormBaseProps) => {
+interface FormApplicantionApplicant extends FormBaseProps {
+  buttons?: ReactNode,
+  applicant?: IApplicantionApplicant | null,
+}
+
+
+const FormApplicantionApplicant = observer((props: FormApplicantionApplicant) => {
   const [selectSex, setSelectSex] = useState<OptionSelect[]>([]);
   const [selectFamilyStatus, setSelectFamilyStatus] = useState<OptionSelect[]>([]);
 
@@ -64,7 +70,7 @@ const FormApplicantApplicant = observer((props: FormBaseProps) => {
           <Form.Item
             name={["full_name", "last_name"]}
             noStyle
-            initialValue="Иванов" //
+            initialValue={props.applicant ? props.applicant.full_name.last_name : null}
             rules={[
               {
                 pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
@@ -77,7 +83,7 @@ const FormApplicantApplicant = observer((props: FormBaseProps) => {
           <Form.Item
             name={["full_name", "first_name"]}
             noStyle
-            initialValue="Иван" //
+            initialValue={props.applicant ? props.applicant.full_name.first_name : null}
             rules={[
               {
                 pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
@@ -90,7 +96,7 @@ const FormApplicantApplicant = observer((props: FormBaseProps) => {
           <Form.Item
             name={["full_name", "middle_name"]}
             noStyle
-            initialValue="Иванович" //
+            initialValue={props.applicant ? props.applicant.full_name.middle_name : null}
             rules={[
               {
                 pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
@@ -106,7 +112,7 @@ const FormApplicantApplicant = observer((props: FormBaseProps) => {
       <Form.Item
         label="Пол заявителя"
         name="code_sex"
-        initialValue={1}
+        initialValue={props.applicant ? props.applicant.code_sex : null}
         rules={[
           {
             required: true,
@@ -123,7 +129,7 @@ const FormApplicantApplicant = observer((props: FormBaseProps) => {
       <Form.Item
         label="Место рождения"
         name="place_of_birth"
-        initialValue="г. Москва"
+        initialValue={props.applicant ? props.applicant.place_of_birth : null}
         rules={[
           {
             required: true,
@@ -137,7 +143,7 @@ const FormApplicantApplicant = observer((props: FormBaseProps) => {
       <Form.Item
         label="Дата рождения"
         name="date_of_birth"
-        initialValue={dayjs("10.10.1980", dateFormat)} //
+        initialValue={props.applicant ? dayjs(props.applicant.date_of_birth) : null} //
         rules={[
           {
             required: true,
@@ -155,7 +161,7 @@ const FormApplicantApplicant = observer((props: FormBaseProps) => {
       <Form.Item
         label="Место проживания/пребывания"
         name="place_of_residence"
-        initialValue="г. Москва, Сумской проезд д.25, кв.200" //
+        initialValue={props.applicant ? props.applicant.place_of_residence : null} //
         rules={[
           {
             required: true,
@@ -169,7 +175,7 @@ const FormApplicantApplicant = observer((props: FormBaseProps) => {
       <Form.Item
         label="Номер телефона заявителя"
         name="telephone"
-        initialValue="+7 (988) 555-55-55" //
+        initialValue={props.applicant ? props.applicant.telephone : null} //
         rules={[
           {
             required: true,
@@ -187,6 +193,7 @@ const FormApplicantApplicant = observer((props: FormBaseProps) => {
       <Form.Item
         label="Иностранное гражданство"
         name="other_nationality"
+        initialValue={props.applicant ? props.applicant.other_nationality : null}
       >
         <Input placeholder="Выберите гражданство" />
       </Form.Item>
@@ -194,6 +201,7 @@ const FormApplicantApplicant = observer((props: FormBaseProps) => {
       <Form.Item
         label="Электронная почта"
         name="email"
+        initialValue={props.applicant ? props.applicant.email : null}
         rules={[
           {
             pattern: new RegExp(/^[a-zA-Z\d]+\@[a-z]+\.[a-z]+$/),
@@ -209,7 +217,7 @@ const FormApplicantApplicant = observer((props: FormBaseProps) => {
           <Form.Item
             name={["relatives", "full_name_father"]}
             noStyle
-            initialValue="Иванов Иван Петрович" //
+            initialValue={props.applicant ? props.applicant.relatives.full_name_father : null} //
             rules={[
               {
                 pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
@@ -222,7 +230,7 @@ const FormApplicantApplicant = observer((props: FormBaseProps) => {
           <Form.Item
             name={["relatives", "full_name_mother"]}
             noStyle
-            initialValue="Иванова Елена Васильевна" //
+            initialValue={props.applicant ? props.applicant.relatives.full_name_mother : null} //
             rules={[
               {
                 pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
@@ -238,7 +246,7 @@ const FormApplicantApplicant = observer((props: FormBaseProps) => {
       <Form.Item
         label="Семейное положение"
         name="code_family_status"
-        initialValue={1} //
+        initialValue={props.applicant ? props.applicant.code_family_status : null} //
         rules={[
           {
             required: true,
@@ -254,18 +262,19 @@ const FormApplicantApplicant = observer((props: FormBaseProps) => {
 
       <Form.Item style={{ marginBottom: 0, marginTop: "30px", textAlign: "center" }}>
         <Space.Compact style={{ width: "100%" }}>
+          {props.buttons}
           <Button
             type="primary"
             danger
             onClick={() => props.form.resetFields()}
-            style={{ width: "50%" }}
+            style={props.buttons ? { width: "33.333%" } : { width: "50%" }}
           >
             Очистить
           </Button>
           <Button
             type="primary"
             onClick={checkFields}
-            style={{ width: "50%" }}
+            style={props.buttons ? { width: "33.333%" } : { width: "50%" }}
           >
             Продолжить
           </Button>
@@ -276,4 +285,4 @@ const FormApplicantApplicant = observer((props: FormBaseProps) => {
 });
 
 
-export default FormApplicantApplicant;
+export default FormApplicantionApplicant;

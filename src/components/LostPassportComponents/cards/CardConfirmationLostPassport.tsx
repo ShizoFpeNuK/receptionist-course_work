@@ -1,6 +1,6 @@
 import '../../..//style/css/components/ApplicantComponents/cardConfirmationLostPassport.css';
 import { observer } from "mobx-react";
-import { ILostPassport } from "../../../models/types/lostPassport";
+import { ILostPassport } from "../../../models/types/lostPassport.model";
 import { Button, Card, Space } from "antd";
 import { CardBodyForm, CardForm } from "../../../style/typescript/cardForm";
 import ButtonStep from "../../others/Buttons/ButtonStep";
@@ -46,7 +46,7 @@ const CardConfirmationLostPassport = observer((props: CardConfirmationLostPasspo
             Дата обращения по факту похищения
           </h3>
           <p className="card_confirmation_lostpassport_date_of_kidnapping">
-            {new Date(props.lostPassport.date_of_kidnapping.toString()).toLocaleDateString()}
+            {/* {new Date(props.lostPassport.date_of_kidnapping.toString()).toLocaleDateString()} */}
           </p>
         </div>
         <div className="card_confirmation_lostpassport_inner">
@@ -66,7 +66,7 @@ const CardConfirmationLostPassport = observer((props: CardConfirmationLostPasspo
         <div className="card_confirmation_lostpassport_inner">
           <h3 className="card_confirmation_lostpassport_title"> Электронная почта </h3>
           <p className="card_confirmation_lostpassport_date_of_application">
-            {new Date(props.lostPassport.date_of_application.toString()).toLocaleDateString()}
+            {/* {new Date(props.lostPassport.date_of_application.toString()).toLocaleDateString()} */}
           </p>
         </div>
       </div>
@@ -83,7 +83,7 @@ const CardConfirmationLostPassport = observer((props: CardConfirmationLostPasspo
           onClick={props.onClickCreate}
           style={{ width: "50%" }}
         >
-          {props.textButton ?? "Отправить"}
+          {props.textButton ?? "Продолжить"}
         </Button>
       </Space.Compact>
     </Card>

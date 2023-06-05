@@ -1,4 +1,4 @@
-import { observer } from "mobx-react";
+import { ReactNode } from "react";
 import CardNotification from "../others/Cards/CardNotification";
 import TemporaryCertificateStore from "../../store/applications/TemporaryCertificateStore";
 import TemporaryCertificateComponent from "../TemporaryCertificateComponents/TemporaryCertificateComponent";
@@ -9,12 +9,14 @@ interface TemporaryCertificateWithNotificationProps {
   cancelTemporaryCertificate?: () => void,
   sendTemporaryCertificate: () => void,
   continueTemporaryCertificate?: () => void,
+  buttonCancel?: ReactNode,
+  isOpenNotification: boolean,
 }
 
 
-const TemporaryCertificateWithNotification = observer((props: TemporaryCertificateWithNotificationProps) => {
+const TemporaryCertificateWithNotification = (props: TemporaryCertificateWithNotificationProps) => {
   const cancelPassportApplication = () => {
-    props.temporaryCertificateStore.setIsApplicantionSend(false);
+    props.temporaryCertificateStore.setIsApplicantionReady(false);
   }
 
 
@@ -22,8 +24,9 @@ const TemporaryCertificateWithNotification = observer((props: TemporaryCertifica
     <>
       <TemporaryCertificateComponent
         temporaryCertificateStore={props.temporaryCertificateStore}
+        buttonCancel={props.buttonCancel}
       />
-      {props.temporaryCertificateStore.isApplicantionSend &&
+      {props.isOpenNotification &&
         <CardNotification
           onCancel={props.cancelTemporaryCertificate ?? cancelPassportApplication}
           onSend={props.sendTemporaryCertificate}
@@ -31,6 +34,7 @@ const TemporaryCertificateWithNotification = observer((props: TemporaryCertifica
           bodyText={
             <div style={{ padding: "0 20%" }}>
               <p> Временное удостоверение личности заполнено. </p>
+              <p> При продолжении заполнения заявления к нему уже нельзя будет вернуться. </p>
               <p style={{ marginTop: "20px" }}> <b>Отправить заявление?</b> </p>
             </div>
           }
@@ -38,7 +42,7 @@ const TemporaryCertificateWithNotification = observer((props: TemporaryCertifica
       }
     </>
   )
-});
+};
 
 
 export default TemporaryCertificateWithNotification;

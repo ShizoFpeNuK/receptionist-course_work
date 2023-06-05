@@ -1,6 +1,6 @@
 import { useForm } from "antd/es/form/Form";
 import { ITemporaryCertificate } from "../../models/types/temporaryCertificate.model";
-import { useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import dayjs from "dayjs";
 import TemporaryCertificateStore from "../../store/applications/TemporaryCertificateStore";
 import CardFormTemporaryCertificate from "./cards/CardFormTemporaryCertificate";
@@ -14,6 +14,7 @@ interface ValuesFormTemporaryCertificate extends ITemporaryCertificate {
 interface TemporaryCertificateComponentProps {
   temporaryCertificateStore: TemporaryCertificateStore,
   textButton?: string,
+  buttonCancel?: ReactNode,
 }
 
 
@@ -44,9 +45,8 @@ const TemporaryCertificateComponent = (
 
 
   const sendApplicantion = async () => {
+    temporaryCertificateStore.setIsApplicantionReady(true);
     setIsOpenConfirmation(false);
-    temporaryCertificateStore.setIsApplicantionSend(true);
-    formTemporaryCertificate.resetFields();
   }
 
 
@@ -56,10 +56,10 @@ const TemporaryCertificateComponent = (
       return;
     }
 
-    if (!temporaryCertificateStore.isApplicantionSend) {
+    if (!temporaryCertificateStore.isApplicantionReady) {
       setIsOpenConfirmation(true);
     }
-  }, [temporaryCertificateStore.isApplicantionSend])
+  }, [temporaryCertificateStore.isApplicantionReady])
 
 
   return (
@@ -69,6 +69,8 @@ const TemporaryCertificateComponent = (
           form={formTemporaryCertificate}
           title="Данные о временном удостоверении"
           onFinish={onFinishTemporaryCertificate}
+          buttons={props.buttonCancel}
+          temporaryCertificate={temporaryCertificateStore.temporaryCertificate}
         />
       }
       {isOpenConfirmation &&

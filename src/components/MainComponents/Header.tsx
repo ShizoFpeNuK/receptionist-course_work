@@ -30,7 +30,7 @@ const Header = () => {
       wrap={false}
     >
       <Col
-        style={{ textAlign: 'left' }}
+        style={{ textAlign: "left" }}
         span={2}
       >
         <Image

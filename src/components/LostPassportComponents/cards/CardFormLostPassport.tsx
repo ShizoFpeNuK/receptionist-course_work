@@ -1,5 +1,6 @@
 import { Card } from "antd";
 import { ReactNode } from "react";
+import { ILostPassport } from "../../../models/types/lostPassport.model";
 import { CardBodyForm, CardForm } from "../../../style/typescript/cardForm";
 import FormLostPassport from "../forms/FormLostPassportApplication";
 import CardFormBaseProps from "../../../models/props/CardFormBaseProps";
@@ -7,6 +8,7 @@ import CardFormBaseProps from "../../../models/props/CardFormBaseProps";
 
 interface CardFormLostPassportProps extends CardFormBaseProps {
   buttons?: ReactNode,
+  lostPassport?: ILostPassport | null,
 }
 
 
@@ -24,6 +26,7 @@ const CardFormLostPassport = (props: CardFormLostPassportProps) => {
         onFinish={props.onFinish}
         onFinishFailed={props.onFinishFailed}
         buttons={props.buttons}
+        lostPassport={props.lostPassport}
       />
       {props.children}
     </Card>

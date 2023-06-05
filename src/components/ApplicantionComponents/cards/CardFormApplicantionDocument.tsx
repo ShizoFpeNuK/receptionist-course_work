@@ -1,15 +1,18 @@
 import { Card } from "antd";
+import { ReactNode } from "react";
+import { IApplicantionDocument } from "../../../models/types/applicantion.model";
 import { CardBodyForm, CardForm } from "../../../style/typescript/cardForm";
 import CardFormBaseProps from "../../../models/props/CardFormBaseProps";
-import FormApplicantApplicant from "../forms/FormApplicantApplicant";
+import FormApplicantionDocument from "../forms/FormApplicantionDocument";
 
 
-interface CardApplicantApplicantProps extends CardFormBaseProps {
-
+interface CardFormApplicantionDocumentProps extends CardFormBaseProps {
+  buttons?: ReactNode,
+  document?: IApplicantionDocument | null,
 }
 
 
-const CardFormApplicantApplicant = (props: CardApplicantApplicantProps) => {
+const CardFormApplicantionDocument = (props: CardFormApplicantionDocumentProps) => {
   return (
     <Card
       className={props.className}
@@ -18,10 +21,12 @@ const CardFormApplicantApplicant = (props: CardApplicantApplicantProps) => {
       headStyle={{ fontSize: "20px", fontWeight: 600 }}
       bodyStyle={CardBodyForm}
     >
-      <FormApplicantApplicant
+      <FormApplicantionDocument
         form={props.form}
         onFinish={props.onFinish}
         onFinishFailed={props.onFinishFailed}
+        buttons={props.buttons}
+        document={props.document}
       />
       {props.children}
     </Card>
@@ -29,4 +34,4 @@ const CardFormApplicantApplicant = (props: CardApplicantApplicantProps) => {
 };
 
 
-export default CardFormApplicantApplicant;
+export default CardFormApplicantionDocument;

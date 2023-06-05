@@ -14,7 +14,7 @@ class ApplicantionStore {
   applicantionPassportApplication: IApplicantionPassportApplication | null = null;
   applicantionDocument: IApplicantionDocument | null = null;
   applicantionMarriage: IApplicantionMarriage | null = null;
-  isApplicantionSend: boolean = false;
+  isApplicantionReady: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -37,8 +37,8 @@ class ApplicantionStore {
     this.applicantionDocument = applicantionDocument;
   }
 
-  setIsApplicantionSend(boolean: boolean) {
-    this.isApplicantionSend = boolean;
+  setIsApplicantionReady(boolean: boolean) {
+    this.isApplicantionReady = boolean;
   }
 
 
@@ -58,8 +58,8 @@ class ApplicantionStore {
     this.applicantionDocument = null;
   }
 
-  deleteIsApplicantionSend() {
-    this.isApplicantionSend = false;
+  deleteIsApplicantionReady() {
+    this.isApplicantionReady = false;
   }
 
 
@@ -68,7 +68,7 @@ class ApplicantionStore {
     this.deleteApplicationPassportApplication();
     this.deleteApplicantionDocument();
     this.deleteApplicantionMarriage();
-    this.deleteIsApplicantionSend();
+    this.deleteIsApplicantionReady();
   }
 
 

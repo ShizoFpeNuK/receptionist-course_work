@@ -7,14 +7,25 @@ import CardBaseProps from "../../../models/props/CardBase";
 
 interface CardNotificationProps extends CardBaseProps {
   onCancel: () => void,
-  onSend: () => void,
+  onSend?: () => void,
   onContinue?: () => void,
-  buttonContinue?: boolean,
   bodyText: ReactNode | string,
 }
 
 
 const CardNotification = (props: CardNotificationProps) => {
+  let countButtons: number = 3;
+
+  
+  if (props.onContinue && props.onSend) {
+    countButtons = 3;
+  } else if (props.onContinue || props.onSend) {
+    countButtons = 2;
+  } else {
+    countButtons = 1;
+  }
+
+
   return (
     <div style={{ padding: "0 20%" }}>
       <Card
@@ -25,22 +36,24 @@ const CardNotification = (props: CardNotificationProps) => {
         <Space.Compact style={{ width: "100%", marginTop: "30px" }}>
           <ButtonStep
             onClick={props.onCancel}
-            style={props.buttonContinue ? { width: "33.333%" } : { width: "50%" }}
+            style={{ width: `calc(100%/${countButtons})` }}
           >
             Назад
           </ButtonStep>
-          <Button
-            type="primary"
-            onClick={props.onSend}
-            style={props.buttonContinue ? { width: "33.333%" } : { width: "50%" }}
-          >
-            Отправить
-          </Button>
-          {props.buttonContinue &&
+          {props.onSend &&
+            <Button
+              type="primary"
+              onClick={props.onSend}
+              style={{ width: `calc(100%/${countButtons})` }}
+            >
+              Отправить
+            </Button>
+          }
+          {props.onContinue &&
             <Button
               type="primary"
               onClick={props.onContinue}
-              style={{ width: "33.333%" }}
+              style={{ width: `calc(100%/${countButtons})` }}
             >
               Продолжить
             </Button>

@@ -1,4 +1,4 @@
-import { observer } from "mobx-react";
+import { ReactNode } from "react";
 import CardNotification from "../others/Cards/CardNotification";
 import ApplicantionStore from "../../store/applications/ApplicantStore";
 import ApplicantionComponent from "../ApplicantionComponents/ApplicantionComponent";
@@ -9,30 +9,35 @@ interface ApplicationWithNotificationProps {
   cancelPassportApplication?: () => void,
   sendPassportApplication: () => void,
   continuePassportApplication?: () => void,
+  isOpenNotification: boolean,
+  buttonCancel?: ReactNode,
+  isDocument: boolean,
 }
 
 
-const ApplicationWithNotification = observer((props: ApplicationWithNotificationProps) => {
+const ApplicationWithNotification = (props: ApplicationWithNotificationProps) => {
   const cancelPassportApplication = () => {
-    props.applicantionStore.setIsApplicantionSend(false);
+    props.applicantionStore.setIsApplicantionReady(false);
   }
 
 
   return (
     <>
-      <ApplicantionComponent applicantionStore={props.applicantionStore} />
-      {props.applicantionStore.isApplicantionSend &&
+      <ApplicantionComponent
+        isDocument={props.isDocument}
+        applicantionStore={props.applicantionStore}
+        buttonCancel={props.buttonCancel}
+      />
+      {props.isOpenNotification &&
         <CardNotification
           onCancel={props.cancelPassportApplication ?? cancelPassportApplication}
           onSend={props.sendPassportApplication}
           onContinue={props.continuePassportApplication}
-          buttonContinue={true}
           bodyText={
             <div style={{ padding: "0 20%" }}>
-              <p> Заявление о выдаче/замене паспорта заполнено. </p>
+              <p> Заявление выдачи/замены паспорта заполнено. </p>
               <p> Однако к нему не прикреплёно временное удостоверение. </p>
-              <p> При продолжении заполнения заявления к нему нельзя будет вернуться,
-                даже если были допущены ошибки. Убедитесь, что всё правильно заполнено! </p>
+              <p> При продолжении заполнения заявления к нему можно будет вернуться. </p>
               <p style={{ marginTop: "20px" }}> <b>Отправить заявление или продолжить заполнение?</b> </p>
             </div>
           }
@@ -40,7 +45,7 @@ const ApplicationWithNotification = observer((props: ApplicationWithNotification
       }
     </>
   )
-});
+};
 
 
 export default ApplicationWithNotification;

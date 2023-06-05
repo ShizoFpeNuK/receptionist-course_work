@@ -4,7 +4,7 @@ import { ITemporaryCertificate } from "../../models/types/temporaryCertificate.m
 
 class TemporaryCertificateStore {
   temporaryCertificate: ITemporaryCertificate | null = null;
-  isApplicantionSend: boolean = false;
+  isApplicantionReady: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -15,8 +15,8 @@ class TemporaryCertificateStore {
     this.temporaryCertificate = temporaryCertificate;
   }
 
-  setIsApplicantionSend(boolean: boolean) {
-    this.isApplicantionSend = boolean;
+  setIsApplicantionReady(boolean: boolean) {
+    this.isApplicantionReady = boolean;
   }
 
 
@@ -24,14 +24,14 @@ class TemporaryCertificateStore {
     this.temporaryCertificate = null;
   }
 
-  deleteIsApplicantionSend() {
-    this.isApplicantionSend = false;
+  deleteIsApplicantionReady() {
+    this.isApplicantionReady = false;
   }
 
 
   clearStore() {
     this.deleteTemporaryCertificate();
-    this.deleteIsApplicantionSend();
+    this.deleteIsApplicantionReady();
   }
 };
 

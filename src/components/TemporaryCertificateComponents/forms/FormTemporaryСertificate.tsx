@@ -8,6 +8,7 @@ import FormBaseProps from "../../../models/props/FormBaseProps";
 
 interface FormTemporaryCertificateProps extends FormBaseProps {
   buttons?: ReactNode,
+  temporaryCertificate?: ITemporaryCertificate | null,
 }
 
 
@@ -34,7 +35,11 @@ const FormTemporaryCertificate = (props: FormTemporaryCertificateProps) => {
           <Form.Item
             name={["document", "series"]}
             noStyle
-            initialValue="БА"
+            initialValue={
+              props.temporaryCertificate
+                ? props.temporaryCertificate.document.series
+                : null
+            }
             rules={[
               {
                 pattern: new RegExp(/^[А-Я]+$/),
@@ -51,7 +56,11 @@ const FormTemporaryCertificate = (props: FormTemporaryCertificateProps) => {
           <Form.Item
             name={["document", "id"]}
             noStyle
-            initialValue={111111}
+            initialValue={
+              props.temporaryCertificate
+                ? props.temporaryCertificate.document.id
+                : null
+            }
             rules={[
               {
                 pattern: new RegExp(/^\d{6}$/),
@@ -71,7 +80,7 @@ const FormTemporaryCertificate = (props: FormTemporaryCertificateProps) => {
       <Form.Item
         label="Причина выдачи временного удостоверения"
         name="reason"
-        initialValue="Добраться до дома"
+        initialValue={props.temporaryCertificate ? props.temporaryCertificate.reason : null}
         rules={[
           {
             pattern: new RegExp(/^[а-яА-Я\s]+$/),
@@ -86,7 +95,7 @@ const FormTemporaryCertificate = (props: FormTemporaryCertificateProps) => {
       <Form.Item
         label="Удостоверение действительно до"
         name="valid_until"
-        initialValue={dayjs("10.10.2023", dateFormat)}
+        initialValue={props.temporaryCertificate ? dayjs(props.temporaryCertificate.valid_until) : null}
       >
         <DatePicker
           format={dateFormat}
@@ -115,7 +124,7 @@ const FormTemporaryCertificate = (props: FormTemporaryCertificateProps) => {
           </Button>
         </Space.Compact>
       </Form.Item>
-    </Form>
+    </Form >
   )
 };
 

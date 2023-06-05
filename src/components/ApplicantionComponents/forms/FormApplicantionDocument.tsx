@@ -1,12 +1,10 @@
+import { ReactNode } from "react";
 import { dateFormat } from "../../../options/datePicker";
 import { OptionSelect } from "../../../options/select";
-import { IClassifierOKIN } from "../../../models/types/classifiers.model";
 import { IApplicantionDocument } from "../../../models/types/applicantion.model";
-import { ReactNode, useEffect, useState } from "react";
 import { Button, DatePicker, Form, Input, Select, Space } from "antd";
 import dayjs from "dayjs";
 import FormBaseProps from "../../../models/props/FormBaseProps";
-import classifiersOKIN from "../../../store/other/ClassifiersStore";
 
 
 const regExpPassport = new RegExp(/^\d{4}$/);
@@ -18,50 +16,34 @@ const selectTypeDocument: OptionSelect[] = [
   { label: "Национальный заграничный паспорт", value: "Национальный заграничный паспорт" },
 ]
 
-interface FormApplicantDocumentProps extends FormBaseProps {
+interface FormApplicantionDocumentProps extends FormBaseProps {
   buttons?: ReactNode,
+  document?: IApplicantionDocument | null,
 }
 
 
-const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
-  const [selectSex, setSelectSex] = useState<OptionSelect[]>([]);
-
-
+const FormApplicantionDocument = (props: FormApplicantionDocumentProps) => {
   const checkFields = () => {
     const values: IApplicantionDocument = props.form.getFieldsValue();
 
-    if (values.full_name.first_name || values.full_name.last_name) {
-      if (values.type_document === "Паспорт гражданина РФ" &&
-        regExpPassport.test(values.document.series)) {
-        props.form.submit();
-        return
-      }
-      if (values.type_document === "Свидетельство о рождении" &&
-        regExpСertificate.test(values.document.series)) {
-        props.form.submit();
-        return
-      }
-      if (values.type_document !== "Паспорт гражданина РФ" &&
-        values.type_document !== "Свидетельство о рождении") {
-        props.form.submit();
-        return
-      }
+    // if (values.full_name.first_name || values.full_name.last_name) {
+    if (values.type_document === "Паспорт гражданина РФ" &&
+      regExpPassport.test(values.document.series)) {
+      props.form.submit();
+      return;
     }
+    if (values.type_document === "Свидетельство о рождении" &&
+      regExpСertificate.test(values.document.series)) {
+      props.form.submit();
+      return;
+    }
+    if (values.type_document !== "Паспорт гражданина РФ" &&
+      values.type_document !== "Свидетельство о рождении") {
+      props.form.submit();
+      return;
+    }
+    // }
   }
-
-
-  useEffect(() => {
-    const buffer: OptionSelect[] = [];
-
-    classifiersOKIN.classifierSex.forEach((el: IClassifierOKIN) => {
-      buffer.push({
-        label: el.name,
-        value: el.id
-      })
-    })
-
-    setSelectSex(buffer);
-  }, [classifiersOKIN.classifierSex])
 
 
   return (
@@ -74,7 +56,7 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
       <Form.Item
         label="Тип предъявленного документа"
         name="type_document"
-        initialValue={"Паспорт гражданина РФ"} //
+        initialValue={props.document ? props.document.type_document : null}
         rules={[
           {
             required: true,
@@ -97,7 +79,7 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
             name={["document", "series"]}
             noStyle
             style={{ width: "50%" }}
-            initialValue={1111} //
+            initialValue={props.document ? props.document.document.series : null}
             rules={[
               {
                 required: true,
@@ -118,7 +100,7 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
           <Form.Item
             name={["document", "id"]}
             noStyle
-            initialValue={111111} //
+            initialValue={props.document ? props.document.document.id : null}
             rules={[
               {
                 required: true,
@@ -138,103 +120,10 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
         </Space.Compact>
       </Form.Item>
 
-      <Form.Item label="ФИО по документу" required={true}>
-        <Space.Compact direction="horizontal" style={{ width: "100%" }}>
-          <Form.Item
-            name={["full_name", "last_name"]}
-            noStyle
-            initialValue="Иванов" //
-            rules={[
-              {
-                pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
-                message: "Фамилия начинается с заглавной буквы"
-              }
-            ]}
-          >
-            <Input placeholder="Введите фамилию" />
-          </Form.Item>
-          <Form.Item
-            name={["full_name", "first_name"]}
-            noStyle
-            initialValue="Иван" //
-            rules={[
-              {
-                pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
-                message: "Имя начинается с заглавной буквы"
-              }
-            ]}
-          >
-            <Input placeholder="Введите имя" />
-          </Form.Item>
-          <Form.Item
-            name={["full_name", "middle_name"]}
-            noStyle
-            initialValue="Иванович" //
-            rules={[
-              {
-                pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
-                message: "Отчество начинается с заглавной буквы!"
-              }
-            ]}
-          >
-            <Input placeholder="Введите отчество" />
-          </Form.Item>
-        </Space.Compact>
-      </Form.Item>
-
-      <Form.Item
-        label="Пол заявителя"
-        name="code_sex"
-        initialValue={1}
-        rules={[
-          {
-            required: true,
-            message: "Это поле является обязательным!",
-          },
-        ]}
-      >
-        <Select
-          options={selectSex}
-          placeholder="Выберите пол"
-        />
-      </Form.Item>
-
-      <Form.Item
-        label="Место рождения"
-        name="place_of_birth"
-        initialValue="г. Москва"
-        rules={[
-          {
-            required: true,
-            message: "Это поле является обязательным!",
-          },
-        ]}
-      >
-        <Input placeholder="Введите место рождения" />
-      </Form.Item>
-
-      <Form.Item
-        label="Дата рождения"
-        name="date_of_birth"
-        initialValue={dayjs("10.10.1980", dateFormat)} //
-        rules={[
-          {
-            required: true,
-            message: "Это поле является обязательным!",
-          },
-        ]}
-      >
-        <DatePicker
-          format={dateFormat}
-          style={{ width: "100%" }}
-          placeholder="Выберите дату"
-        />
-      </Form.Item>
-
       <Form.Item
         label="Дата выдачи документа"
         name="date_of_issue"
-        initialValue={dayjs("09.11.2000", dateFormat)} //
+        initialValue={props.document ? dayjs(props.document.date_of_issue) : null}
         rules={[
           {
             required: true,
@@ -252,7 +141,7 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
       <Form.Item
         label="Кем выдан предъявленный документ"
         name="issued_by"
-        initialValue="МВД по г. Москве" //
+        initialValue={props.document ? props.document.issued_by : null}
         rules={[
           {
             required: true,
@@ -288,4 +177,4 @@ const FormApplicantDocument = (props: FormApplicantDocumentProps) => {
 };
 
 
-export default FormApplicantDocument;
+export default FormApplicantionDocument;
