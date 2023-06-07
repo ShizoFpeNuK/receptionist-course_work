@@ -37,7 +37,6 @@ interface ValuesFormPassportApplication extends IApplicantionPassportApplication
 
 interface ValuesFormDocument extends IApplicantionDocument {
   date_of_issue: dayjs.Dayjs,
-  date_of_birth: dayjs.Dayjs,
 }
 
 

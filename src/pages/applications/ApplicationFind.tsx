@@ -1,15 +1,15 @@
 import { observer } from "mobx-react";
-import { OptionSelect } from "../options/select";
-import { errorMessage } from "../configs/messageAntd.config";
+import { OptionSelect } from "../../options/select";
+import { errorMessage } from "../../configs/messageAntd.config";
 import { MessageInstance } from "antd/es/message/interface";
 import { useEffect, useState } from "react";
-import { messageConfig, successMessage } from "../configs/messageAntd.config";
+import { messageConfig, successMessage } from "../../configs/messageAntd.config";
 import { Pagination, Select, Space, message } from "antd";
-import { IPassportApplicationFullInfo, IPassportApplicationInfo } from "../models/types/applications.model";
-import ModalPassportAppInfo from "../components/others/Modals/ModalPassportAppInfo";
-import CardPassportApplication from "../components/others/Cards/CardPassportApplication";
-import PassportApplicationStore from "../store/applications/PassportApplication";
-import PassportApplicationServices from "../services/passportApplication.service";
+import { IPassportApplicationFullInfo, IPassportApplicationInfo } from "../../models/types/applications.model";
+import ModalPassportAppInfo from "../../components/others/Modals/ModalPassportAppInfo";
+import CardPassportApplication from "../../components/others/Cards/CardPassportApplication";
+import PassportApplicationStore from "../../store/applications/PassportApplication";
+import PassportApplicationServices from "../../services/passportApplication.service";
 
 
 const pageSize: number = 10;
@@ -27,7 +27,7 @@ const requestApplications = async (statusApplication: string, messageApi: Messag
     .then((applications: IPassportApplicationInfo[]) => {
       passportApplications.setApplications(applications);
     })
-    .catch((err) => {
+    .catch(() => {
       errorMessage(messageApi);
     })
 }
@@ -40,7 +40,7 @@ const ApplicationFind = observer(() => {
 
 
   const changeStatus = async (status: string) => {
-    requestApplications(status, messageApi)
+    await requestApplications(status, messageApi)
       .then(() => {
         successMessage(messageApi);
         if (status === statusDefault) {
@@ -64,22 +64,22 @@ const ApplicationFind = observer(() => {
 
   const clickOk = async (applicationId: number) => {
     await PassportApplicationServices.updatePassportApplication(applicationId, "Одобрено")
-      .then(() => {
+      .then(async () => {
         successMessage(messageApi, "Успешно обновлена информация!");
-        requestApplications(statusDefault, messageApi)
+        await requestApplications(statusDefault, messageApi)
       })
-      .catch((err) => {
+      .catch(() => {
         errorMessage(messageApi, "Не удалось обновить информацию!");
       })
   }
 
   const clickReject = async (applicationId: number) => {
     await PassportApplicationServices.updatePassportApplication(applicationId, "Отклонено")
-      .then(() => {
+      .then(async () => {
         successMessage(messageApi, "Успешно обновлена информация!");
-        requestApplications(statusDefault, messageApi);
+        await requestApplications(statusDefault, messageApi);
       })
-      .catch((err) => {
+      .catch(() => {
         errorMessage(messageApi, "Не удалось обновить информацию!");
       })
   }
@@ -87,6 +87,10 @@ const ApplicationFind = observer(() => {
 
   useEffect(() => {
     requestApplications(statusDefault, messageApi);
+
+    return () => {
+      passportApplications.clearStore();
+    }
   }, [])
 
 
@@ -115,7 +119,7 @@ const ApplicationFind = observer(() => {
             direction="horizontal"
             align="start"
             size={[20, 20]}
-            style={{ width: "100%" }}
+            style={{ width: "100%", justifyContent: "center" }}
           >
             {passportApplications.applications.filter((application, index: number) => {
               return index + 1 <= page * pageSize && index >= (page - 1) * pageSize;
@@ -126,6 +130,7 @@ const ApplicationFind = observer(() => {
                 onReject={() => clickReject(application.register_id)}
                 onlySeeInfo={removeButtons}
                 passportApplication={application}
+                disabledOk={application.is_identity_document}
                 key={application.register_id}
               />
             )}

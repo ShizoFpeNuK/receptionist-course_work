@@ -5,7 +5,7 @@ import CardFormAuth from "../components/AuthComponents/cards/CardFormAuth";
 const Auth = () => {
   return (
     <div className="auth_page">
-      <h1 className="auth_header title--border"> Аутентификация </h1>
+      <h1 className="auth_header title--border"> Авторизация </h1>
       <div className="auth_form">
         <CardFormAuth />
       </div>

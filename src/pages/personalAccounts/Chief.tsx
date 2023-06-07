@@ -11,7 +11,7 @@ import NotFound from "../NotFound";
 import loginStore from "../../store/auth/LoginStore";
 import Applicantion from "../applications/Applicantion";
 import LostPassport from "../applications/LostPassport";
-import ApplicationFind from "../ApplicationFind";
+import ApplicationFind from "../applications/ApplicationFind";
 
 
 const items: MenuProps["items"] = [

@@ -133,35 +133,40 @@ const ModalPassportAppInfo = (
           <h2 className="modal_details_document_header modal_details_header">
             Сведения о предъявленном удостоверении личности
           </h2>
-          <div className="modal_details_document_inner modal_details_inner">
-            <h3 className="modal_details_document_title"> Тип предъявленного документа </h3>
-            <p className="modal_details_document_type_document">
-              {application.identity_document.type_document}
-            </p>
-          </div>
-          <div className="modal_details_document_inner modal_details_inner">
-            <h3 className="modal_details_document_title"> Серия и номер паспорта </h3>
-            <Space direction="horizontal" style={{ width: "100%" }}>
-              <p className="modal_details_document_series">
-                {application.identity_document.document_series}
-              </p>
-              <p className="modal_details_document_id">
-                {application.identity_document.document_id}
-              </p>
-            </Space>
-          </div>
-          <div className="modal_details_document_inner modal_details_inner">
-            <h3 className="modal_details_document_title"> Дата выдачи документа </h3>
-            <p className="modal_details_document_date_of_issue">
-              {new Date(application.identity_document.date_of_issue.toString()).toLocaleDateString()}
-            </p>
-          </div>
-          <div className="modal_details_document_inner modal_details_inner">
-            <h3 className="modal_details_document_title"> Кем выдан документ </h3>
-            <p className="modal_details_document_issued_by">
-              {application.identity_document.issued_by}
-            </p>
-          </div>
+          {application.identity_document
+            ? <>
+              <div className="modal_details_document_inner modal_details_inner">
+                <h3 className="modal_details_document_title"> Тип предъявленного документа </h3>
+                <p className="modal_details_document_type_document">
+                  {application.identity_document.type_document}
+                </p>
+              </div>
+              <div className="modal_details_document_inner modal_details_inner">
+                <h3 className="modal_details_document_title"> Серия и номер паспорта </h3>
+                <Space direction="horizontal" style={{ width: "100%" }}>
+                  <p className="modal_details_document_series">
+                    {application.identity_document.document_series}
+                  </p>
+                  <p className="modal_details_document_id">
+                    {application.identity_document.document_id}
+                  </p>
+                </Space>
+              </div>
+              <div className="modal_details_document_inner modal_details_inner">
+                <h3 className="modal_details_document_title"> Дата выдачи документа </h3>
+                <p className="modal_details_document_date_of_issue">
+                  {new Date(application.identity_document.date_of_issue.toString()).toLocaleDateString()}
+                </p>
+              </div>
+              <div className="modal_details_document_inner modal_details_inner">
+                <h3 className="modal_details_document_title"> Кем выдан документ </h3>
+                <p className="modal_details_document_issued_by">
+                  {application.identity_document.issued_by}
+                </p>
+              </div>
+            </>
+            : <p style={{ textAlign: "center" }}> Отсутствуют </p>
+          }
         </div>
 
         <div className="modal_details_marriage modal_details_container">

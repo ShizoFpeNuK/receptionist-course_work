@@ -2,6 +2,7 @@ export interface IPassportApplicationInfo {
   register_id: number,
   accepted_decision: string,
   test_result: string | null,
+  is_identity_document: boolean,
 }
 
 export interface IPassportApplicationFullInfo {
@@ -34,7 +35,7 @@ export interface IPassportApplicationFullInfo {
     date_of_issue: string,
     type_document: string,
     issued_by: string
-  },
+  } | null,
   marriage: {
     date_of_conclusion: string,
     full_name_spouse: string,

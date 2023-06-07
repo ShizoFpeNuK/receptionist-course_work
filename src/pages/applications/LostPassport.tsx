@@ -133,7 +133,7 @@ const LostPassport = observer(() => {
         className="applicant_header title--border"
         style={{ marginBottom: "40px" }}
       >
-        Заявление утери паспорта
+        Заявление об утери (похищения) паспорта
       </h1>
       {isOpenLostPassport &&
         <LostPassportWithNotification

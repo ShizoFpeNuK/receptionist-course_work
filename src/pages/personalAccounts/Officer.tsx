@@ -7,6 +7,7 @@ import NotFound from "../NotFound";
 import loginStore from "../../store/auth/LoginStore";
 import Applicantion from "../applications/Applicantion";
 import LostPassport from "../applications/LostPassport";
+import CompletePassportApplication from "../applications/CompletePassportApplication";
 
 
 const items: MenuProps["items"] = [
@@ -30,6 +31,11 @@ const items: MenuProps["items"] = [
     key: "lost_passport",
     icon: <FolderAddOutlined />,
   },
+  {
+    label: <Link to="/complete_lost_passport"> Дополнить заявление об утери </Link>,
+    key: "complete_lost_passport",
+    icon: <FileAddOutlined />,
+  },
 ]
 
 
@@ -45,6 +51,7 @@ const Officer = () => {
             <Route index path="/" element={<Home />} />
             <Route path="/issue_passport" element={<Applicantion />} />
             <Route path="/lost_passport" element={<LostPassport />} />
+            <Route path="/complete_lost_passport" element={<CompletePassportApplication />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
