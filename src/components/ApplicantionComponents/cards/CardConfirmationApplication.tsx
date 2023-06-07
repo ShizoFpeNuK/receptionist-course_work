@@ -2,7 +2,7 @@ import '../../../style/css/components/ApplicantComponents/cardConfirmationApplic
 import {
   IApplicantionApplicant, IApplicantionDocument,
   IApplicantionMarriage, IApplicantionPassportApplication
-} from "../../../models/types/applicantion.model";
+} from "../../../models/types/passportApplicantion.model";
 import { IClassifierOKIN } from '../../../models/types/classifiers.model';
 import { useEffect, useState } from 'react';
 import { Button, Card, Space } from "antd";
@@ -15,7 +15,7 @@ interface CardConfirmationApplicationProps {
   textButton?: string,
   applicant: IApplicantionApplicant,
   marriage: IApplicantionMarriage | null,
-  document: IApplicantionDocument,
+  document: IApplicantionDocument | null,
   passportApplication: IApplicantionPassportApplication,
   onClickCancel: () => void,
   onClickContinue: () => void,
@@ -84,10 +84,10 @@ const CardConfirmationApplication = (props: CardConfirmationApplicationProps) =>
           </p>
         </div>
         <div className="card_confirmation_applicant_inner card_confirmation_inner">
-          <h3 className="card_confirmation_applicant_title"> Номер телефона </h3>
+          <h3 className="card_confirmation_applicant_title"> Иное гражданство </h3>
           {props.applicant.other_nationality
             ? <p className="card_confirmation_applicant_other_nationality">
-              {props.applicant.email}
+              {props.applicant.other_nationality}
             </p>
             : <p className="card_confirmation_applicant_other_nationality"> Отсутствует </p>
           }
@@ -128,50 +128,113 @@ const CardConfirmationApplication = (props: CardConfirmationApplicationProps) =>
 
       <div className="card_confirmation_passport_applicant">
         <h2 className="card_confirmation_passport_applicant_header card_confirmation_header">
-          Заявление о замене/выдаче паспорта
+          Сведения о заявлении замены/выдачи паспорта
         </h2>
         <div className="card_confirmation_passport_applicant_inner card_confirmation_inner">
           <h3 className="card_confirmation_passport_applicant_title"> Причина выдачи/замены </h3>
-          <p className="card_confirmation_passport_applicant_fullname">
+          <p className="card_confirmation_passport_applicant_grounds_for_extradition">
             {props.passportApplication.grounds_for_extradition}
           </p>
         </div>
+        {props.passportApplication.requisites &&
+          <>
+            {props.passportApplication.full_name.first_name &&
+              <div className="card_confirmation_passport_applicant_inner card_confirmation_inner">
+                <h3 className="card_confirmation_passport_applicant_title"> Старая фамилия </h3>
+                <p className="card_confirmation_passport_applicant_firstname">
+                  {props.passportApplication.full_name.first_name}
+                </p>
+              </div>
+            }
+            {props.passportApplication.full_name.last_name &&
+              <div className="card_confirmation_passport_applicant_inner card_confirmation_inner">
+                <h3 className="card_confirmation_passport_applicant_title"> Старое имя </h3>
+                <p className="card_confirmation_passport_applicant_lastname">
+                  {props.passportApplication.full_name.last_name}
+                </p>
+              </div>
+            }
+            {props.passportApplication.full_name.middle_name &&
+              <div className="card_confirmation_passport_applicant_inner card_confirmation_inner">
+                <h3 className="card_confirmation_passport_applicant_title"> Старое отчество </h3>
+                <p className="card_confirmation_passport_applicant_middlename">
+                  {props.passportApplication.full_name.middle_name}
+                </p>
+              </div>
+            }
+            {props.passportApplication.code_sex &&
+              <div className="card_confirmation_passport_applicant_inner card_confirmation_inner">
+                <h3 className="card_confirmation_passport_applicant_title"> Старый пол </h3>
+                <p className="card_confirmation_passport_applicant_middlename">
+                  {props.applicant.code_sex === 1
+                    ? <p className="card_confirmation_applicant_sex"> Мужской </p>
+                    : <p className="card_confirmation_applicant_sex"> Женский </p>
+                  }
+                </p>
+              </div>
+            }
+            {props.passportApplication.place_of_birth &&
+              <div className="card_confirmation_passport_applicant_inner card_confirmation_inner">
+                <h3 className="card_confirmation_passport_applicant_title"> Старое место рождения </h3>
+                <p className="card_confirmation_passport_applicant_place_of_birth">
+                  {props.passportApplication.place_of_birth}
+                </p>
+              </div>
+            }
+            {props.passportApplication.date_of_birth &&
+              <div className="card_confirmation_passport_applicant_inner card_confirmation_inner">
+                <h3 className="card_confirmation_passport_applicant_title"> Старая дата рождения </h3>
+                <p className="card_confirmation_passport_applicant_date_of_birth">
+                  {new Date(props.passportApplication.date_of_birth.toString()).toLocaleDateString()}
+                </p>
+              </div>
+            }
+            <div className="card_confirmation_passport_applicant_inner card_confirmation_inner">
+              <h3 className="card_confirmation_passport_applicant_title"> Реквизиты </h3>
+              <p className="card_confirmation_passport_applicant_requisites">
+                {props.passportApplication.requisites}
+              </p>
+            </div>
+          </>
+        }
       </div>
 
-      <div className="card_confirmation_document">
-        <h2 className="card_confirmation_document_header card_confirmation_header">
-          Сведения о предъявленном удостоверении личности
-        </h2>
-        <div className="card_confirmation_document_inner card_confirmation_inner">
-          <h3 className="card_confirmation_document_title"> Тип предъявленного документа </h3>
-          <p className="card_confirmation_document_type_document">
-            {props.document.type_document}
-          </p>
-        </div>
-        <div className="card_confirmation_document_inner card_confirmation_inner">
-          <h3 className="card_confirmation_document_title"> Серия и номер паспорта </h3>
-          <Space direction="horizontal" style={{ width: "100%" }}>
-            <p className="card_confirmation_document_series">
-              {props.document.document.series}
+      {props.document &&
+        <div className="card_confirmation_document">
+          <h2 className="card_confirmation_document_header card_confirmation_header">
+            Сведения о предъявленном удостоверении личности
+          </h2>
+          <div className="card_confirmation_document_inner card_confirmation_inner">
+            <h3 className="card_confirmation_document_title"> Тип предъявленного документа </h3>
+            <p className="card_confirmation_document_type_document">
+              {props.document.type_document}
             </p>
-            <p className="card_confirmation_document_id">
-              {props.document.document.id}
+          </div>
+          <div className="card_confirmation_document_inner card_confirmation_inner">
+            <h3 className="card_confirmation_document_title"> Серия и номер паспорта </h3>
+            <Space direction="horizontal" style={{ width: "100%" }}>
+              <p className="card_confirmation_document_series">
+                {props.document.document.series}
+              </p>
+              <p className="card_confirmation_document_id">
+                {props.document.document.id}
+              </p>
+            </Space>
+          </div>
+          <div className="card_confirmation_document_inner card_confirmation_inner">
+            <h3 className="card_confirmation_document_title"> Дата выдачи документа </h3>
+            <p className="card_confirmation_document_date_of_issue">
+              {new Date(props.document.date_of_issue.toString()).toLocaleDateString()}
             </p>
-          </Space>
+          </div>
+          <div className="card_confirmation_document_inner card_confirmation_inner">
+            <h3 className="card_confirmation_document_title"> Кем выдан документ </h3>
+            <p className="card_confirmation_document_issued_by">
+              {props.document.issued_by}
+            </p>
+          </div>
         </div>
-        <div className="card_confirmation_document_inner card_confirmation_inner">
-          <h3 className="card_confirmation_document_title"> Дата выдачи документа </h3>
-          <p className="card_confirmation_document_date_of_issue">
-            {new Date(props.document.date_of_issue.toString()).toLocaleDateString()}
-          </p>
-        </div>
-        <div className="card_confirmation_document_inner card_confirmation_inner">
-          <h3 className="card_confirmation_document_title"> Кем выдан документ </h3>
-          <p className="card_confirmation_document_issued_by">
-            {props.document.issued_by}
-          </p>
-        </div>
-      </div>
+      }
 
       <div className="card_confirmation_marriage">
         <h2 className="card_confirmation_marriage_header card_confirmation_header">

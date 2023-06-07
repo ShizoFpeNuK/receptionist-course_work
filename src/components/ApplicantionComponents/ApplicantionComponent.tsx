@@ -3,16 +3,29 @@ import { ReactNode, useEffect, useRef, useState } from "react";
 import {
   IApplicantionDocument, IApplicantionApplicant,
   IApplicantionPassportApplication, IApplicantionMarriage
-} from "../../models/types/applicantion.model";
+} from "../../models/types/passportApplicantion.model";
 import dayjs from "dayjs";
 import ButtonStep from "../others/Buttons/ButtonStep";
-import ApplicantionStore from "../../store/applications/ApplicantStore";
+import ApplicantionStore from "../../store/applications/ApplicantionStore";
 import CardConfirmationApplication from "./cards/CardConfirmationApplication";
 import CardFormApplicantionDocument from "./cards/CardFormApplicantionDocument";
 import CardFormApplicantionMarriage from "./cards/CardFormApplicantionMarriage"
 import CardFormApplicantionApplicant from "./cards/CardFormApplicantionApplicant";
 import CardFormApplicantionPassportApplicantion from "./cards/CardFormApplicantionPassportApplicantion";
 
+
+const passportApplicationValues = {
+  grounds_for_extradition: "Утеря паспорта",
+  full_name: {
+    first_name: null,
+    last_name: null,
+    middle_name: null
+  },
+  place_of_birth: null,
+  date_of_birth: null,
+  code_sex: null,
+  requisites: null
+}
 
 interface ValuesFormGeneralInfo extends IApplicantionApplicant {
   date_of_birth: dayjs.Dayjs,
@@ -37,7 +50,7 @@ interface ApplicantionComponentProps {
   applicantionStore: ApplicantionStore,
   textButton?: string,
   buttonCancel?: ReactNode,
-  isDocument: boolean,
+  isLostPassport?: boolean,
 }
 
 
@@ -59,11 +72,16 @@ const ApplicantionComponent = ({ applicantionStore, ...props }: ApplicantionComp
       ...values,
       "date_of_birth": values["date_of_birth"].format("YYYY-MM-DD"),
     }
-
     applicantionStore.setApplicantionApplicant(correctValues);
 
     setIsOpenFormApplicant(false);
-    setIsOpenFormPassportApplication(true);
+    if (props.isLostPassport) {
+      applicantionStore.setApplicationPassportApplication(passportApplicationValues);
+      applicantionStore.setApplicantionDocument(null);
+      setIsOpenFormMarriage(true);
+    } else {
+      setIsOpenFormPassportApplication(true);
+    }
   }
 
   const onFinishPassportApplication = (values: ValuesFormPassportApplication) => {
@@ -74,11 +92,7 @@ const ApplicantionComponent = ({ applicantionStore, ...props }: ApplicantionComp
     applicantionStore.setApplicationPassportApplication(correctValues);
 
     setIsOpenFormPassportApplication(false);
-    if (props.isDocument) {
-      setIsOpenFormDocument(true);
-    } else {
-      setIsOpenFormMarriage(true);
-    }
+    setIsOpenFormDocument(true);
   }
 
   const onFinishDocument = (values: ValuesFormDocument) => {
@@ -88,11 +102,7 @@ const ApplicantionComponent = ({ applicantionStore, ...props }: ApplicantionComp
     }
     applicantionStore.setApplicantionDocument(correctValues);
 
-    if (props.isDocument) {
-      setIsOpenFormDocument(false);
-    } else {
-      setIsOpenFormPassportApplication(true);
-    }
+    setIsOpenFormDocument(false);
     setIsOpenFormMarriage(true);
   }
 
@@ -125,10 +135,10 @@ const ApplicantionComponent = ({ applicantionStore, ...props }: ApplicantionComp
 
   const cancelMarriage = () => {
     setIsOpenFormMarriage(false);
-    if (props.isDocument) {
-      setIsOpenFormDocument(true);
+    if (props.isLostPassport) {
+      setIsOpenFormApplicant(true);
     } else {
-      setIsOpenFormPassportApplication(true);
+      setIsOpenFormDocument(true);
     }
   }
 
@@ -183,7 +193,7 @@ const ApplicantionComponent = ({ applicantionStore, ...props }: ApplicantionComp
           }
         />
       }
-      {isOpenFormDocument && props.isDocument &&
+      {isOpenFormDocument &&
         <CardFormApplicantionDocument
           form={formDocument}
           title="Данные о предъявленном документе"

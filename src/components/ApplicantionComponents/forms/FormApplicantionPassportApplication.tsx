@@ -2,7 +2,7 @@ import { dateFormat } from "../../../options/datePicker";
 import { OptionSelect } from "../../../options/select";
 import { IClassifierOKIN } from "../../../models/types/classifiers.model";
 import { ReactNode, useEffect, useState } from "react";
-import { IApplicantionPassportApplication } from "../../../models/types/applicantion.model";
+import { IApplicantionPassportApplication } from "../../../models/types/passportApplicantion.model";
 import { Button, DatePicker, Form, Input, Select, Space } from "antd";
 import dayjs from "dayjs";
 import FormBaseProps from "../../../models/props/FormBaseProps";
@@ -51,6 +51,26 @@ const FormApplicantionPassportApplicantion = (props: FormApplicantionPassportApp
 
   const checkFields = () => {
     const values: IApplicantionPassportApplication = props.form.getFieldsValue();
+
+    if (!values.full_name.last_name?.length) {
+      props.form.setFieldValue(["full_name", "last_name"], null);
+    }
+    if (!values.full_name.first_name?.length) {
+      props.form.setFieldValue(["full_name", "first_name"], null);
+    }
+    if (!values.full_name.middle_name?.length) {
+      props.form.setFieldValue(["full_name", "middle_name"], null);
+    }
+    if (!values.place_of_birth?.length) {
+      props.form.setFieldValue("place_of_birth", null);
+    }
+    if (!values.code_sex) {
+      props.form.setFieldValue("code_sex", null);
+    }
+    if (!values.requisites?.length) {
+      props.form.setFieldValue("requisites", null);
+    }
+
     const isEmpty = checkEmpty(values);
 
     if (!isEmpty) {
@@ -79,6 +99,27 @@ const FormApplicantionPassportApplicantion = (props: FormApplicantionPassportApp
   }, [classifiersOKIN.classifierSex])
 
 
+  useEffect(() => {
+    let key: keyof IApplicantionPassportApplication;
+
+    if (props.passportApplication) {
+      for (key in props.passportApplication) {
+        if (key === "full_name") {
+          props.form.setFieldValue(["full_name", "last_name"], props.passportApplication.full_name.last_name);
+          props.form.setFieldValue(["full_name", "first_name"], props.passportApplication.full_name.first_name);
+          props.form.setFieldValue(["full_name", "middle_name"], props.passportApplication.full_name.middle_name);
+        } else if (key === "date_of_birth") {
+          if (props.passportApplication.date_of_birth) {
+            props.form.setFieldValue("date_of_birth", dayjs(props.passportApplication.date_of_birth));
+          }
+        } else {
+          props.form.setFieldValue(key, props.passportApplication[key])
+        }
+      }
+    }
+  }, [])
+
+
   return (
     <Form
       layout="vertical"
@@ -89,11 +130,6 @@ const FormApplicantionPassportApplicantion = (props: FormApplicantionPassportApp
       <Form.Item
         label="Причина выдачи/замены паспорта"
         name="grounds_for_extradition"
-        initialValue={
-          props.passportApplication
-            ? props.passportApplication.grounds_for_extradition
-            : null
-        }
         rules={[
           {
             required: true,
@@ -109,11 +145,6 @@ const FormApplicantionPassportApplicantion = (props: FormApplicantionPassportApp
           <Form.Item
             name={["full_name", "last_name"]}
             noStyle
-            initialValue={
-              props.passportApplication
-                ? props.passportApplication.full_name.last_name
-                : null
-            }
             rules={[
               {
                 pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
@@ -128,11 +159,6 @@ const FormApplicantionPassportApplicantion = (props: FormApplicantionPassportApp
           <Form.Item
             name={["full_name", "first_name"]}
             noStyle
-            initialValue={
-              props.passportApplication
-                ? props.passportApplication.full_name.first_name
-                : null
-            }
             rules={[
               {
                 pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
@@ -147,11 +173,6 @@ const FormApplicantionPassportApplicantion = (props: FormApplicantionPassportApp
           <Form.Item
             name={["full_name", "middle_name"]}
             noStyle
-            initialValue={
-              props.passportApplication
-                ? props.passportApplication.full_name.middle_name
-                : null
-            }
             rules={[
               {
                 pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
@@ -169,11 +190,6 @@ const FormApplicantionPassportApplicantion = (props: FormApplicantionPassportApp
       <Form.Item
         label="Старый пол заявителя"
         name="code_sex"
-        initialValue={
-          props.passportApplication
-            ? props.passportApplication.code_sex
-            : null
-        }
       >
         <Select
           options={selectSex}
@@ -185,11 +201,6 @@ const FormApplicantionPassportApplicantion = (props: FormApplicantionPassportApp
       <Form.Item
         label="Старое место рождения"
         name="place_of_birth"
-        initialValue={
-          props.passportApplication
-            ? props.passportApplication.place_of_birth
-            : null
-        }
       >
         <Input
           placeholder="Введите место рождения"
@@ -199,11 +210,6 @@ const FormApplicantionPassportApplicantion = (props: FormApplicantionPassportApp
       <Form.Item
         label="Старая дата рождения"
         name="date_of_birth"
-        initialValue={
-          props.passportApplication?.date_of_birth
-            ? dayjs(props.passportApplication.date_of_birth)
-            : null
-        }
       >
         <DatePicker
           format={dateFormat}
@@ -215,11 +221,6 @@ const FormApplicantionPassportApplicantion = (props: FormApplicantionPassportApp
       <Form.Item
         label="Реквизиты"
         name="requisites"
-        initialValue={
-          props.passportApplication
-            ? props.passportApplication.requisites
-            : null
-        }
         rules={[
           {
             pattern: new RegExp(/^[а-яА-Я\s\-№\d\/]+$/),

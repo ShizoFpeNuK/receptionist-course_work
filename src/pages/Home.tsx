@@ -1,5 +1,7 @@
 import '../style/css/pages/home.css';
+import { Space } from "antd";
 import { observer } from "mobx-react";
+import divisionMVD from "../store/other/DivisionMVDStore";
 
 
 const Home = observer(() => {
@@ -9,10 +11,21 @@ const Home = observer(() => {
         <h3 className="home_departament_title title title--border">
           Подразделение
         </h3>
-        <div className="home_departament_inner inner">
-          <p> Код подразделения </p>
-          <p> Наименование подразделения </p>
-        </div>
+        <Space
+          className="home_departament_inner inner"
+          wrap={true}
+          size={20}
+          style={{ width: "100%" }}
+        >
+          <div className="home_departament_code">
+            <p> <b>Код подразделения</b> </p>
+            <span> {divisionMVD.division?.division_code ?? "Отсутствует"} </span>
+          </div>
+          <div className="home_departament_name">
+            <p> <b>Наименование подразделения</b> </p>
+            <span> {divisionMVD.division?.name_division ?? "Отсутствует"} </span>
+          </div>
+        </Space>
       </div>
 
       <div className="home_filling_rules">

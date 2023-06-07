@@ -27,6 +27,12 @@ class ClassifiersStore {
   deleteClassifierFamilyStatus() {
     this.classifierFamilyStatus = [];
   }
+
+
+  clearStore() {
+    this.deleteClassifierSex();
+    this.deleteClassifierFamilyStatus();
+  }
 };
 
 

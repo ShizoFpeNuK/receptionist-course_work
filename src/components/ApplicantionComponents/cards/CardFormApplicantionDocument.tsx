@@ -1,6 +1,6 @@
 import { Card } from "antd";
 import { ReactNode } from "react";
-import { IApplicantionDocument } from "../../../models/types/applicantion.model";
+import { IApplicantionDocument } from "../../../models/types/passportApplicantion.model";
 import { CardBodyForm, CardForm } from "../../../style/typescript/cardForm";
 import CardFormBaseProps from "../../../models/props/CardFormBaseProps";
 import FormApplicantionDocument from "../forms/FormApplicantionDocument";

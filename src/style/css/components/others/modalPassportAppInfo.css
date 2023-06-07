@@ -1,0 +1,27 @@
+.modal_details_container {
+  margin-top: 20px;
+}
+
+.modal_details_container:first-child {
+  margin-top: 0;
+}
+
+.modal_details_header {
+  margin-bottom: 20px;
+  text-align: center;
+  border-top: 1px solid rgba(5, 5, 5, 0.06);
+  border-bottom: 1px solid rgba(5, 5, 5, 0.06);
+}
+
+.modal_details_inner {
+  margin-bottom: 20px;
+}
+
+.modal_details_inner:last-child {
+  margin-bottom: 0;
+}
+
+
+:where(.css-dev-only-do-not-override-15rg2km).modal_details .ant-modal-content {
+  margin: 10% 0;
+}

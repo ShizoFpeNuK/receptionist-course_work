@@ -1,7 +1,10 @@
 .App {
+  display: flex;
+  flex-direction: column;
   text-align: center;
   font-size: 16px;
   font-weight: 400;
+  min-height: 100vh;
 }
 
 
@@ -12,6 +15,11 @@
 
 .wrapper {
   margin: 0 10%;
+  flex: 1 0 auto;
+}
+
+.footer {
+  flex: 0 0 auto;
 }
 
 

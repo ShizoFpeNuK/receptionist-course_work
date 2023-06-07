@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { dateFormat } from "../../../options/datePicker";
 import { ILostPassport } from "../../../models/types/lostPassport.model";
 import { Button, DatePicker, Form, Input, Space } from "antd";
@@ -13,6 +13,52 @@ interface FormLostPassportApplicationProps extends FormBaseProps {
 
 
 const FormLostPassportApplication = (props: FormLostPassportApplicationProps) => {
+  const checkFields = () => {
+    const values: ILostPassport = props.form.getFieldsValue();
+
+    if (!values.document.series) {
+      props.form.setFieldValue(["document", "id"], null);
+    }
+    if (!values.document.id) {
+      props.form.setFieldValue(["document", "series"], null);
+    }
+    if (!values.issued_by?.length) {
+      props.form.setFieldValue("issued_by", null);
+    }
+    if (!values.name_of_organization_on_FOA?.length) {
+      props.form.setFieldValue("name_of_organization_on_FOA", null);
+    }
+
+    props.form.submit();
+  }
+
+
+  useEffect(() => {
+    let key: keyof ILostPassport;
+
+    if (props.lostPassport) {
+      for (key in props.lostPassport) {
+        if (key === "document") {
+          props.form.setFieldValue(["document", "series"], props.lostPassport.document.series);
+          props.form.setFieldValue(["document", "id"], props.lostPassport.document.id);
+        } else if (key === "date_of_issue") {
+          if (props.lostPassport.date_of_issue) {
+            props.form.setFieldValue("date_of_issue", dayjs(props.lostPassport.date_of_issue));
+          }
+        } else if (key === "date_of_loss") {
+          props.form.setFieldValue("date_of_loss", dayjs(props.lostPassport.date_of_loss));
+        } else if (key === "date_of_kidnapping") {
+          if (props.lostPassport.date_of_kidnapping) {
+            props.form.setFieldValue("date_of_kidnapping", dayjs(props.lostPassport.date_of_kidnapping));
+          }
+        } else {
+          props.form.setFieldValue(key, props.lostPassport[key]);
+        }
+      }
+    }
+  }, [])
+
+
   return (
     <Form
       layout="vertical"
@@ -26,7 +72,6 @@ const FormLostPassportApplication = (props: FormLostPassportApplicationProps) =>
             name={["document", "series"]}
             noStyle
             style={{ width: "50%" }}
-            initialValue={props.lostPassport ? props.lostPassport.document.series : null}
             rules={[
               {
                 pattern: new RegExp(/^[IXV\-А-Я\d]+$/),
@@ -43,7 +88,6 @@ const FormLostPassportApplication = (props: FormLostPassportApplicationProps) =>
           <Form.Item
             name={["document", "id"]}
             noStyle
-            initialValue={props.lostPassport ? props.lostPassport.document.id : null}
             rules={[
               {
                 pattern: new RegExp(/^\d{6}$/),
@@ -62,7 +106,6 @@ const FormLostPassportApplication = (props: FormLostPassportApplicationProps) =>
       <Form.Item
         label="Дата выдачи паспорта"
         name="date_of_issue"
-        initialValue={props.lostPassport?.date_of_issue ? dayjs(props.lostPassport.date_of_issue) : null}
       >
         <DatePicker
           format={dateFormat}
@@ -74,7 +117,6 @@ const FormLostPassportApplication = (props: FormLostPassportApplicationProps) =>
       <Form.Item
         label="Кем был выдан паспорт"
         name="issued_by"
-        initialValue={props.lostPassport ? props.lostPassport.issued_by : null}
       >
         <Input placeholder="Введите кем выдан документ" />
       </Form.Item>
@@ -82,7 +124,6 @@ const FormLostPassportApplication = (props: FormLostPassportApplicationProps) =>
       <Form.Item
         label="Дата утери паспорта"
         name="date_of_loss"
-        initialValue={props.lostPassport?.date_of_loss ? dayjs(props.lostPassport.date_of_loss) : null}
         rules={[
           {
             required: true,
@@ -100,7 +141,6 @@ const FormLostPassportApplication = (props: FormLostPassportApplicationProps) =>
       <Form.Item
         label="Место утери паспорта"
         name="place_of_loss"
-        initialValue={props.lostPassport ? props.lostPassport.place_of_loss : null}
         rules={[
           {
             required: true,
@@ -114,7 +154,6 @@ const FormLostPassportApplication = (props: FormLostPassportApplicationProps) =>
       <Form.Item
         label="Обстоятельства утери паспорта"
         name="circumstances_of_loss"
-        initialValue={props.lostPassport ? props.lostPassport.circumstances_of_loss : null}
         rules={[
           {
             required: true,
@@ -128,7 +167,6 @@ const FormLostPassportApplication = (props: FormLostPassportApplicationProps) =>
       <Form.Item
         label="Дата обращения по факту похищения"
         name="date_of_kidnapping"
-        initialValue={props.lostPassport?.date_of_kidnapping ? dayjs(props.lostPassport.date_of_kidnapping) : null}
       >
         <DatePicker
           format={dateFormat}
@@ -140,7 +178,6 @@ const FormLostPassportApplication = (props: FormLostPassportApplicationProps) =>
       <Form.Item
         label="Метод ответа"
         name="response_method"
-        initialValue={props.lostPassport ? props.lostPassport.response_method : null}
         rules={[
           {
             required: true,
@@ -154,7 +191,6 @@ const FormLostPassportApplication = (props: FormLostPassportApplicationProps) =>
       <Form.Item
         label="Наименование организации по факту похищения"
         name="name_of_organization_on_FOA"
-        initialValue={props.lostPassport ? props.lostPassport.name_of_organization_on_FOA : null}
       >
         <Input placeholder="Введите наименование организации" />
       </Form.Item>
@@ -172,7 +208,7 @@ const FormLostPassportApplication = (props: FormLostPassportApplicationProps) =>
           </Button>
           <Button
             type="primary"
-            onClick={props.form.submit}
+            onClick={checkFields}
             style={props.buttons ? { width: "33.333%" } : { width: "50%" }}
           >
             Продолжить

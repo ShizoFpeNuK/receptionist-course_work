@@ -3,8 +3,8 @@ import dayjs from "dayjs";
 
 export interface IApplicantionApplicant {
   full_name: {
-    first_name: string,
-    last_name: string,
+    first_name: string | null,
+    last_name: string | null,
     middle_name: string | null
   },
   relatives: {
@@ -53,7 +53,7 @@ export interface IApplicantionMarriage {
 export interface IApplicantionCreate {
   applicant: IApplicantionApplicant,
   passport_application: IApplicantionPassportApplication,
-  identity_document: IApplicantionDocument,
+  identity_document: IApplicantionDocument | null,
   marriage: IApplicantionMarriage | null,
 }
 

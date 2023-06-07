@@ -6,7 +6,7 @@ import {
   IApplicantionPassportApplication,
   IApplicantionMarriage,
   IApplicantionCreate
-} from "../../models/types/applicantion.model";
+} from "../../models/types/passportApplicantion.model";
 
 
 class ApplicantionStore {
@@ -33,7 +33,7 @@ class ApplicantionStore {
     this.applicantionMarriage = applicantionMarriage;
   }
 
-  setApplicantionDocument(applicantionDocument: IApplicantionDocument) {
+  setApplicantionDocument(applicantionDocument: IApplicantionDocument | null) {
     this.applicantionDocument = applicantionDocument;
   }
 

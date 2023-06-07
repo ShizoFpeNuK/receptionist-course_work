@@ -2,7 +2,7 @@ import { observer } from "mobx-react";
 import { dateFormat } from "../../../options/datePicker";
 import { OptionSelect } from "../../../options/select";
 import { IClassifierOKIN } from "../../../models/types/classifiers.model";
-import { IApplicantionApplicant } from "../../../models/types/applicantion.model";
+import { IApplicantionApplicant } from "../../../models/types/passportApplicantion.model";
 import { ReactNode, useEffect, useState } from "react";
 import { Button, DatePicker, Form, Input, Select, Space } from "antd";
 import dayjs from "dayjs";
@@ -26,6 +26,29 @@ const FormApplicantionApplicant = observer((props: FormApplicantionApplicant) =>
 
     if ((values.relatives.full_name_father || values.relatives.full_name_mother) &&
       (values.full_name.first_name || values.full_name.last_name)) {
+      if (!values.full_name.last_name?.length) {
+        props.form.setFieldValue(["full_name", "last_name"], null);
+      }
+      if (!values.full_name.first_name?.length) {
+        props.form.setFieldValue(["full_name", "first_name"], null);
+      }
+      if (!values.full_name.middle_name?.length) {
+        props.form.setFieldValue(["full_name", "middle_name"], null);
+      }
+
+      if (!values.relatives.full_name_father?.length) {
+        props.form.setFieldValue(["relatives", "full_name_father"], null);
+      }
+      if (!values.relatives.full_name_mother?.length) {
+        props.form.setFieldValue(["relatives", "full_name_mother"], null);
+      }
+      if (!values.email?.length) {
+        props.form.setFieldValue("email", null);
+      }
+      if (!values.other_nationality?.length) {
+        props.form.setFieldValue("other_nationality", null);
+      }
+
       props.form.submit();
     }
   }
@@ -57,6 +80,24 @@ const FormApplicantionApplicant = observer((props: FormApplicantionApplicant) =>
     setSelectSex(buffer);
   }, [classifiersOKIN.classifierSex])
 
+  useEffect(() => {
+    let key: keyof IApplicantionApplicant;
+
+    if (props.applicant) {
+      for (key in props.applicant) {
+        if (key === "full_name") {
+          props.form.setFieldValue(["full_name", "last_name"], props.applicant.full_name.last_name);
+          props.form.setFieldValue(["full_name", "first_name"], props.applicant.full_name.first_name);
+          props.form.setFieldValue(["full_name", "middle_name"], props.applicant.full_name.middle_name);
+        } else if (key === "date_of_birth") {
+          props.form.setFieldValue("date_of_birth", dayjs(props.applicant.date_of_birth));
+        } else {
+          props.form.setFieldValue(key, props.applicant[key]);
+        }
+      }
+    }
+  }, [])
+
 
   return (
     <Form
@@ -70,7 +111,6 @@ const FormApplicantionApplicant = observer((props: FormApplicantionApplicant) =>
           <Form.Item
             name={["full_name", "last_name"]}
             noStyle
-            initialValue={props.applicant ? props.applicant.full_name.last_name : null}
             rules={[
               {
                 pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
@@ -83,7 +123,6 @@ const FormApplicantionApplicant = observer((props: FormApplicantionApplicant) =>
           <Form.Item
             name={["full_name", "first_name"]}
             noStyle
-            initialValue={props.applicant ? props.applicant.full_name.first_name : null}
             rules={[
               {
                 pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
@@ -96,7 +135,6 @@ const FormApplicantionApplicant = observer((props: FormApplicantionApplicant) =>
           <Form.Item
             name={["full_name", "middle_name"]}
             noStyle
-            initialValue={props.applicant ? props.applicant.full_name.middle_name : null}
             rules={[
               {
                 pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
@@ -112,7 +150,6 @@ const FormApplicantionApplicant = observer((props: FormApplicantionApplicant) =>
       <Form.Item
         label="Пол заявителя"
         name="code_sex"
-        initialValue={props.applicant ? props.applicant.code_sex : null}
         rules={[
           {
             required: true,
@@ -129,7 +166,6 @@ const FormApplicantionApplicant = observer((props: FormApplicantionApplicant) =>
       <Form.Item
         label="Место рождения"
         name="place_of_birth"
-        initialValue={props.applicant ? props.applicant.place_of_birth : null}
         rules={[
           {
             required: true,
@@ -143,7 +179,6 @@ const FormApplicantionApplicant = observer((props: FormApplicantionApplicant) =>
       <Form.Item
         label="Дата рождения"
         name="date_of_birth"
-        initialValue={props.applicant ? dayjs(props.applicant.date_of_birth) : null} //
         rules={[
           {
             required: true,
@@ -161,7 +196,6 @@ const FormApplicantionApplicant = observer((props: FormApplicantionApplicant) =>
       <Form.Item
         label="Место проживания/пребывания"
         name="place_of_residence"
-        initialValue={props.applicant ? props.applicant.place_of_residence : null} //
         rules={[
           {
             required: true,
@@ -175,7 +209,6 @@ const FormApplicantionApplicant = observer((props: FormApplicantionApplicant) =>
       <Form.Item
         label="Номер телефона заявителя"
         name="telephone"
-        initialValue={props.applicant ? props.applicant.telephone : null} //
         rules={[
           {
             required: true,
@@ -193,7 +226,6 @@ const FormApplicantionApplicant = observer((props: FormApplicantionApplicant) =>
       <Form.Item
         label="Иностранное гражданство"
         name="other_nationality"
-        initialValue={props.applicant ? props.applicant.other_nationality : null}
       >
         <Input placeholder="Выберите гражданство" />
       </Form.Item>
@@ -217,7 +249,6 @@ const FormApplicantionApplicant = observer((props: FormApplicantionApplicant) =>
           <Form.Item
             name={["relatives", "full_name_father"]}
             noStyle
-            initialValue={props.applicant ? props.applicant.relatives.full_name_father : null} //
             rules={[
               {
                 pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
@@ -230,7 +261,6 @@ const FormApplicantionApplicant = observer((props: FormApplicantionApplicant) =>
           <Form.Item
             name={["relatives", "full_name_mother"]}
             noStyle
-            initialValue={props.applicant ? props.applicant.relatives.full_name_mother : null} //
             rules={[
               {
                 pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
@@ -246,7 +276,6 @@ const FormApplicantionApplicant = observer((props: FormApplicantionApplicant) =>
       <Form.Item
         label="Семейное положение"
         name="code_family_status"
-        initialValue={props.applicant ? props.applicant.code_family_status : null} //
         rules={[
           {
             required: true,

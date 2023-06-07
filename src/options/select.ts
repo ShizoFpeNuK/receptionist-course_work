@@ -1,4 +1,6 @@
+import { ReactNode } from "react"
+
 export type OptionSelect = {
-  label: string,
-  value: number | string
+  label: ReactNode | string,
+  value: string | number,
 }

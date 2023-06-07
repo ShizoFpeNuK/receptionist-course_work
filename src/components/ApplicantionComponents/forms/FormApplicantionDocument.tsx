@@ -1,7 +1,7 @@
-import { ReactNode } from "react";
 import { dateFormat } from "../../../options/datePicker";
 import { OptionSelect } from "../../../options/select";
-import { IApplicantionDocument } from "../../../models/types/applicantion.model";
+import { ReactNode, useEffect } from "react";
+import { IApplicantionDocument } from "../../../models/types/passportApplicantion.model";
 import { Button, DatePicker, Form, Input, Select, Space } from "antd";
 import dayjs from "dayjs";
 import FormBaseProps from "../../../models/props/FormBaseProps";
@@ -26,7 +26,6 @@ const FormApplicantionDocument = (props: FormApplicantionDocumentProps) => {
   const checkFields = () => {
     const values: IApplicantionDocument = props.form.getFieldsValue();
 
-    // if (values.full_name.first_name || values.full_name.last_name) {
     if (values.type_document === "Паспорт гражданина РФ" &&
       regExpPassport.test(values.document.series)) {
       props.form.submit();
@@ -42,8 +41,25 @@ const FormApplicantionDocument = (props: FormApplicantionDocumentProps) => {
       props.form.submit();
       return;
     }
-    // }
   }
+
+
+  useEffect(() => {
+    let key: keyof IApplicantionDocument;
+
+    if (props.document) {
+      for (key in props.document) {
+        if (key === "document") {
+          props.form.setFieldValue(["document", "series"], props.document.document.series);
+          props.form.setFieldValue(["document", "id"], props.document.document.id);
+        } else if (key === "date_of_issue") {
+          props.form.setFieldValue("date_of_issue", dayjs(props.document.date_of_issue));
+        } else {
+          props.form.setFieldValue(key, props.document[key])
+        }
+      }
+    }
+  }, [])
 
 
   return (
@@ -56,7 +72,6 @@ const FormApplicantionDocument = (props: FormApplicantionDocumentProps) => {
       <Form.Item
         label="Тип предъявленного документа"
         name="type_document"
-        initialValue={props.document ? props.document.type_document : null}
         rules={[
           {
             required: true,
@@ -79,7 +94,6 @@ const FormApplicantionDocument = (props: FormApplicantionDocumentProps) => {
             name={["document", "series"]}
             noStyle
             style={{ width: "50%" }}
-            initialValue={props.document ? props.document.document.series : null}
             rules={[
               {
                 required: true,
@@ -100,7 +114,6 @@ const FormApplicantionDocument = (props: FormApplicantionDocumentProps) => {
           <Form.Item
             name={["document", "id"]}
             noStyle
-            initialValue={props.document ? props.document.document.id : null}
             rules={[
               {
                 required: true,
@@ -123,7 +136,6 @@ const FormApplicantionDocument = (props: FormApplicantionDocumentProps) => {
       <Form.Item
         label="Дата выдачи документа"
         name="date_of_issue"
-        initialValue={props.document ? dayjs(props.document.date_of_issue) : null}
         rules={[
           {
             required: true,
@@ -141,7 +153,6 @@ const FormApplicantionDocument = (props: FormApplicantionDocumentProps) => {
       <Form.Item
         label="Кем выдан предъявленный документ"
         name="issued_by"
-        initialValue={props.document ? props.document.issued_by : null}
         rules={[
           {
             required: true,

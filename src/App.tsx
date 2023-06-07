@@ -1,25 +1,21 @@
 import './style/css/App.css';
 import { message } from "antd";
 import { observer } from "mobx-react";
-import { useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { useEffect, useRef } from "react";
 import { errorMessage, messageConfig } from "./configs/messageAntd.config";
 import Auth from "./pages/Auth";
-import Home from "./pages/Home";
-import Header from "./components/MainComponents/Header";
-import NotFound from "./pages/NotFound";
-import Applicantion from "./pages/applications/Applicantion";
+import Chief from "./pages/personalAccounts/Chief";
+import Officer from "./pages/personalAccounts/Officer";
 import loginStore from "./store/auth/LoginStore";
+import divisionMVD from "./store/other/DivisionMVDStore";
 import classifiersOKIN from "./store/other/ClassifiersStore";
 import ClassifiersServices from "./services/classifiers.service";
-import LostPassportApplicant from "./pages/applications/LostPassport";
-
-
-message.config(messageConfig);
+import DivisionMVDServices from "./services/divisionMVD.service";
 
 
 const App = observer(() => {
-  const [messageApi, contextHolder] = message.useMessage();
+  const [messageApi, contextHolder] = message.useMessage(messageConfig);
+  const firstRender = useRef<boolean>(true);
 
 
   const loadPage = async () => {
@@ -28,13 +24,16 @@ const App = observer(() => {
     Promise.all([
       ClassifiersServices.getClassifierSex(),
       ClassifiersServices.getClassifierFamilyStatus(),
+      DivisionMVDServices.getDivisionMVD()
     ]).then(([
       classifiersSex,
       classifierFamilyStatus,
+      division
     ]) => {
       classifiersOKIN.setClassifierSex(classifiersSex);
       classifiersOKIN.setClassifierFamilyStatus(classifierFamilyStatus);
-      console.log("Классификаторы загружены!");
+      divisionMVD.setDivisionMVD(division);
+      console.log("Классификаторы и что-то ещё загружены!");
     }).catch(() => {
       setTimeout(() => {
         loginStore.setIsLogin(false)
@@ -45,9 +44,17 @@ const App = observer(() => {
 
 
   useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+
     if (loginStore.isLogin) {
       loadPage();
-      console.log("Загружаем классификаторы...");
+      console.log("Загружаем классификаторы и многое другое...");
+    } else {
+      classifiersOKIN.clearStore();
+      console.log("Чистим классификаторы и многое другое!");
     }
   }, [loginStore.isLogin])
 
@@ -57,21 +64,13 @@ const App = observer(() => {
       {contextHolder}
       {loginStore.isLogin ?
         <>
-          <header className="header">
-            <Header />
-          </header>
-          <div className="wrapper">
-            <main className="main">
-              <Routes>
-                <Route index path="/" element={<Home />} />
-                <Route path="/issue_passport" element={<Applicantion />} />
-                <Route path="/lost_passport" element={<LostPassportApplicant />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </main>
-          </div>
-          <footer className="footer" style={{ height: "100px" }}>
-          </footer>
+          {loginStore.user!.post === "Сотрудник" &&
+            <Officer />
+          }
+          {loginStore.user!.post === "Начальник" &&
+            <Chief />
+          }
+          <footer className="footer" style={{ height: "100px" }} />
         </>
         : <Auth />
       }

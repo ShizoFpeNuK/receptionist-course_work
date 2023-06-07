@@ -2,14 +2,14 @@ import { message } from "antd";
 import { observer } from "mobx-react";
 import { clearTimer } from "../../options/clearTimer";
 import { useEffect, useState } from "react";
-import { errorMessage, successMessage } from "../../configs/messageAntd.config";
+import { errorMessage, messageConfig, successMessage } from "../../configs/messageAntd.config";
 import {
-  applicantStartValues, documentStartValues,
+  applicantStartValues,
   lostPassportStartValues,
-  passportApplicationStartValues, temporaryCertificateStartValues
+  temporaryCertificateStartValues
 } from "../../startValues/applicantion";
 import ButtonStep from "../../components/others/Buttons/ButtonStep";
-import ApplicantionStore from "../../store/applications/ApplicantStore";
+import ApplicantionStore from "../../store/applications/ApplicantionStore";
 import DialogTimerReturn from "../../components/others/Dialogs/DialogTimerReturn";
 import LostPassportStore from "../../store/applications/LostPassportStore";
 import ApplicationsServices from "../../services/applications.service";
@@ -28,17 +28,14 @@ const temporaryCertificateStore = new TemporaryCertificateStore();
 const startValues = () => {
   lostPassportStore.setLostPassportInfo(lostPassportStartValues);
   applicantionStore.setApplicantionApplicant(applicantStartValues);
-  applicantionStore.setApplicantionDocument(documentStartValues);
-  applicantionStore.setApplicationPassportApplication(passportApplicationStartValues);
   temporaryCertificateStore.setTemporaryCertificate(temporaryCertificateStartValues);
 }
 
 startValues();
-console.log(lostPassportStore.lostPassportInfo);
 
 
 const LostPassport = observer(() => {
-  const [messageApi, contextHolder] = message.useMessage();
+  const [messageApi, contextHolder] = message.useMessage(messageConfig);
   const [isOpenLostPassport, setIsOpenLostPassport] = useState<boolean>(true);
   const [isOpenApplication, setIsOpenApplication] = useState<boolean>(false);
   const [isOpenTemporaryCertificate, setIsOpenTemporaryCertificate] = useState<boolean>(false);
@@ -147,7 +144,7 @@ const LostPassport = observer(() => {
       }
       {isOpenApplication &&
         <ApplicationWithNotification
-          isDocument={false}
+          isLostPassport={true}
           applicantionStore={applicantionStore}
           sendPassportApplication={sendPassportApplication}
           continuePassportApplication={continuePassportApplication}

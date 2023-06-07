@@ -1,5 +1,5 @@
 import { ILostPassport } from "../models/types/lostPassport.model";
-import { IApplicantionCreate } from "../models/types/applicantion.model";
+import { IApplicantionCreate } from "../models/types/passportApplicantion.model";
 import { ITemporaryCertificate } from "../models/types/temporaryCertificate.model";
 import axiosToDataBase from "../configs/axios.config";
 

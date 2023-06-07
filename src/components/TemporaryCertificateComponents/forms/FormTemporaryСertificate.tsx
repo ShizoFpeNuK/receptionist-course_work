@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
 import { dateFormat } from "../../../options/datePicker";
+import { ReactNode, useEffect } from "react";
 import { ITemporaryCertificate } from "../../../models/types/temporaryCertificate.model";
 import { Button, DatePicker, Form, Input, Space } from "antd";
 import dayjs from "dayjs";
@@ -23,6 +23,24 @@ const FormTemporaryCertificate = (props: FormTemporaryCertificateProps) => {
   }
 
 
+  useEffect(() => {
+    let key: keyof ITemporaryCertificate;
+
+    if (props.temporaryCertificate) {
+      for (key in props.temporaryCertificate) {
+        if (key === "document") {
+          props.form.setFieldValue(["document", "series"], props.temporaryCertificate.document.series);
+          props.form.setFieldValue(["document", "id"], props.temporaryCertificate.document.id);
+        } else if (key === "valid_until") {
+          props.form.setFieldValue("valid_until", dayjs(props.temporaryCertificate.valid_until));
+        } else {
+          props.form.setFieldValue(key, props.temporaryCertificate[key]);
+        }
+      }
+    }
+  }, [])
+
+
   return (
     <Form
       layout="vertical"
@@ -30,17 +48,16 @@ const FormTemporaryCertificate = (props: FormTemporaryCertificateProps) => {
       onFinish={props.onFinish}
       onFinishFailed={props.onFinishFailed}
     >
-      <Form.Item label="Серия и номер паспорта" >
+      <Form.Item label="Серия и номер паспорта" required={true} >
         <Space.Compact direction="horizontal" style={{ width: "100%" }}>
           <Form.Item
             name={["document", "series"]}
             noStyle
-            initialValue={
-              props.temporaryCertificate
-                ? props.temporaryCertificate.document.series
-                : null
-            }
             rules={[
+              {
+                required: true,
+                message: "Это поле является обязательным!",
+              },
               {
                 pattern: new RegExp(/^[А-Я]+$/),
                 message: `Серия может состоять из римских или 
@@ -56,12 +73,11 @@ const FormTemporaryCertificate = (props: FormTemporaryCertificateProps) => {
           <Form.Item
             name={["document", "id"]}
             noStyle
-            initialValue={
-              props.temporaryCertificate
-                ? props.temporaryCertificate.document.id
-                : null
-            }
             rules={[
+              {
+                required: true,
+                message: "Это поле является обязательным!",
+              },
               {
                 pattern: new RegExp(/^\d{6}$/),
                 message: "Номер состоит из 6 цифр!"
@@ -80,8 +96,11 @@ const FormTemporaryCertificate = (props: FormTemporaryCertificateProps) => {
       <Form.Item
         label="Причина выдачи временного удостоверения"
         name="reason"
-        initialValue={props.temporaryCertificate ? props.temporaryCertificate.reason : null}
         rules={[
+          {
+            required: true,
+            message: "Это поле является обязательным!",
+          },
           {
             pattern: new RegExp(/^[а-яА-Я\s]+$/),
             message: "Только буквы русского алфавита!"
@@ -95,7 +114,12 @@ const FormTemporaryCertificate = (props: FormTemporaryCertificateProps) => {
       <Form.Item
         label="Удостоверение действительно до"
         name="valid_until"
-        initialValue={props.temporaryCertificate ? dayjs(props.temporaryCertificate.valid_until) : null}
+        rules={[
+          {
+            required: true,
+            message: "Это поле является обязательным!",
+          }
+        ]}
       >
         <DatePicker
           format={dateFormat}

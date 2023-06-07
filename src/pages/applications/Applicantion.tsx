@@ -2,13 +2,13 @@ import { message } from "antd";
 import { observer } from "mobx-react";
 import { clearTimer } from "../../options/clearTimer";
 import { useEffect, useState } from "react";
-import { errorMessage, successMessage } from "../../configs/messageAntd.config";
+import { errorMessage, messageConfig, successMessage } from "../../configs/messageAntd.config";
 import {
   applicantStartValues, documentStartValues,
   passportApplicationStartValues, temporaryCertificateStartValues
 } from "../../startValues/applicantion";
 import ButtonStep from "../../components/others/Buttons/ButtonStep";
-import ApplicantionStore from "../../store/applications/ApplicantStore";
+import ApplicantionStore from "../../store/applications/ApplicantionStore";
 import DialogTimerReturn from "../../components/others/Dialogs/DialogTimerReturn";
 import ApplicationsServices from "../../services/applications.service";
 import TemporaryCertificateStore from "../../store/applications/TemporaryCertificateStore";
@@ -32,7 +32,7 @@ startValues();
 
 
 const Applicantion = observer(() => {
-  const [messageApi, contextHolder] = message.useMessage();
+  const [messageApi, contextHolder] = message.useMessage(messageConfig);
   const [isOpenApplication, setIsOpenApplication] = useState<boolean>(true);
   const [isOpenTemporaryCertificate, setIsOpenTemporaryCertificate] = useState<boolean>(false);
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
@@ -116,7 +116,6 @@ const Applicantion = observer(() => {
       </h1>
       {isOpenApplication &&
         <ApplicationWithNotification
-          isDocument={true}
           applicantionStore={applicantionStore}
           sendPassportApplication={sendPassportApplication}
           continuePassportApplication={continuePassportApplication}

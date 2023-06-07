@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import CardNotification from "../others/Cards/CardNotification";
-import ApplicantionStore from "../../store/applications/ApplicantStore";
+import ApplicantionStore from "../../store/applications/ApplicantionStore";
 import ApplicantionComponent from "../ApplicantionComponents/ApplicantionComponent";
 
 
@@ -11,7 +11,7 @@ interface ApplicationWithNotificationProps {
   continuePassportApplication?: () => void,
   isOpenNotification: boolean,
   buttonCancel?: ReactNode,
-  isDocument: boolean,
+  isLostPassport?: boolean,
 }
 
 
@@ -24,7 +24,7 @@ const ApplicationWithNotification = (props: ApplicationWithNotificationProps) =>
   return (
     <>
       <ApplicantionComponent
-        isDocument={props.isDocument}
+        isLostPassport={props.isLostPassport}
         applicantionStore={props.applicantionStore}
         buttonCancel={props.buttonCancel}
       />
