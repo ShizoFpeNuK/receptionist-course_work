@@ -12,6 +12,7 @@ import loginStore from "../../store/auth/LoginStore";
 import Applicantion from "../applications/Applicantion";
 import LostPassport from "../applications/LostPassport";
 import ApplicationFind from "../applications/ApplicationFind";
+import ErrorApplication from "../applications/ErrorApplication";
 
 
 const items: MenuProps["items"] = [
@@ -36,6 +37,11 @@ const items: MenuProps["items"] = [
     icon: <FolderAddOutlined />,
   },
   {
+    label: <Link to="/error_application"> Заявление об ошибках </Link>,
+    key: "error_application",
+    icon: <FileAddOutlined />,
+  },
+  {
     label: <Link to="/find_application"> Заявления выдачи/замены паспорта </Link>,
     key: "find_application",
     icon: <SearchOutlined />,
@@ -56,6 +62,7 @@ const Chief = () => {
             <Route path="/issue_passport" element={<Applicantion />} />
             <Route path="/lost_passport" element={<LostPassport />} />
             <Route path="/find_application" element={<ApplicationFind />} />
+            <Route path="/error_application" element={<ErrorApplication />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>

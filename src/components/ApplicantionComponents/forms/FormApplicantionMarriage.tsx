@@ -24,7 +24,6 @@ const FormApplicantionMarriage = (props: FormApplicantionMarriageProps) => {
     }
 
     const values: IApplicantionMarriage = props.form.getFieldsValue();
-    console.log(values);
 
     if (
       values.full_name_spouse &&

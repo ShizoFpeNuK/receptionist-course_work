@@ -135,6 +135,10 @@ const FormApplicantionPassportApplicantion = (props: FormApplicantionPassportApp
             required: true,
             message: "Это поле является обязательным!",
           },
+          {
+            pattern: new RegExp(/^[а-яА-Я\s\d\-]+$/),
+            message: "Только буквы русского алфавита, цифры, пробелы и дефисы!"
+          }
         ]}
       >
         <Input placeholder="Введите причину выдачи/замены" />
@@ -201,6 +205,12 @@ const FormApplicantionPassportApplicantion = (props: FormApplicantionPassportApp
       <Form.Item
         label="Старое место рождения"
         name="place_of_birth"
+        rules={[
+          {
+            pattern: new RegExp(/^[а-яА-Я\d\s\-\,\.]+$/),
+            message: "Только буквы русского алфавита, цифры, пробелы, дефисы, запятые и точки!"
+          }
+        ]}
       >
         <Input
           placeholder="Введите место рождения"

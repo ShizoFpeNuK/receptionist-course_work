@@ -2,6 +2,7 @@ import { ILostPassport } from "../models/types/lostPassport.model";
 import { IApplicantionCreate } from "../models/types/passportApplicantion.model";
 import { ITemporaryCertificate } from "../models/types/temporaryCertificate.model";
 import axiosToDataBase from "../configs/axios.config";
+import { IErrorApplication } from "../models/types/errorApplication";
 
 
 export default class ApplicationsServices {
@@ -29,6 +30,21 @@ export default class ApplicationsServices {
         application,
         { temporary_certificate: temporaryCertificate },
         { lost_passport_application: lostPassport }
+      )
+    );
+  }
+
+  static async createErrorApplication(
+    errorApplication: IErrorApplication,
+    application: IApplicantionCreate,
+    temporaryCertificate: ITemporaryCertificate | null
+  ): Promise<void> {
+    await axiosToDataBase.post(
+      `${this.pathDefault}/error_application`,
+      Object.assign(
+        application,
+        { error_application: errorApplication },
+        { temporary_certificate: temporaryCertificate },
       )
     );
   }

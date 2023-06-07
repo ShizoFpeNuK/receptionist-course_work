@@ -158,6 +158,10 @@ const FormApplicantionDocument = (props: FormApplicantionDocumentProps) => {
             required: true,
             message: "Это поле является обязательным!",
           },
+          {
+            pattern: new RegExp(/^[а-яА-Я\d\s\-\,\.]+$/),
+            message: "Только буквы русского алфавита, цифры, пробелы, дефисы, запятые и точки!"
+          }
         ]}
       >
         <Input placeholder="Введите кем выдан документ" />

@@ -117,6 +117,12 @@ const FormLostPassportApplication = (props: FormLostPassportApplicationProps) =>
       <Form.Item
         label="Кем был выдан паспорт"
         name="issued_by"
+        rules={[
+          {
+            pattern: new RegExp(/^[а-яА-Я\d\s\-\,\.]+$/),
+            message: "Только буквы русского алфавита, цифры, пробелы, дефисы, запятые и точки!"
+          }
+        ]}
       >
         <Input placeholder="Введите кем выдан документ" />
       </Form.Item>
@@ -146,6 +152,10 @@ const FormLostPassportApplication = (props: FormLostPassportApplicationProps) =>
             required: true,
             message: "Это поле является обязательным!",
           },
+          {
+            pattern: new RegExp(/^[а-яА-Я\d\s\-\,\.]+$/),
+            message: "Только буквы русского алфавита, цифры, пробелы, дефисы, запятые и точки!"
+          }
         ]}
       >
         <Input placeholder="Введите место потери" />
@@ -159,6 +169,10 @@ const FormLostPassportApplication = (props: FormLostPassportApplicationProps) =>
             required: true,
             message: "Это поле является обязательным!",
           },
+          {
+            pattern: new RegExp(/^[а-яА-Я\d\s\-\,\.]+$/),
+            message: "Только буквы русского алфавита, цифры, пробелы, дефисы, запятые и точки!"
+          }
         ]}
       >
         <Input placeholder="Введите обстоятельства потери" />
@@ -183,6 +197,10 @@ const FormLostPassportApplication = (props: FormLostPassportApplicationProps) =>
             required: true,
             message: "Это поле является обязательным!",
           },
+          {
+            pattern: new RegExp(/^[а-яА-Я\s]+$/),
+            message: "Только буквы русского алфавита и пробелы!"
+          }
         ]}
       >
         <Input placeholder="Напишите метод ответа" />
@@ -191,6 +209,12 @@ const FormLostPassportApplication = (props: FormLostPassportApplicationProps) =>
       <Form.Item
         label="Наименование организации по факту похищения"
         name="name_of_organization_on_FOA"
+        rules={[
+          {
+            pattern: new RegExp(/^[а-яА-Я\d\s\-\,\.]+$/),
+            message: "Только буквы русского алфавита, цифры, пробелы, дефисы, запятые и точки!"
+          }
+        ]}
       >
         <Input placeholder="Введите наименование организации" />
       </Form.Item>

@@ -171,6 +171,10 @@ const FormApplicantionApplicant = observer((props: FormApplicantionApplicant) =>
             required: true,
             message: "Это поле является обязательным!",
           },
+          {
+            pattern: new RegExp(/^[а-яА-Я\d\s\-\,\.]+$/),
+            message: "Только буквы русского алфавита, цифры, пробелы, дефисы, запятые и точки!"
+          }
         ]}
       >
         <Input placeholder="Введите место рождения" />
@@ -201,6 +205,10 @@ const FormApplicantionApplicant = observer((props: FormApplicantionApplicant) =>
             required: true,
             message: "Это поле является обязательным!",
           },
+          {
+            pattern: new RegExp(/^[а-яА-Я\d\s\-\,\.]+$/),
+            message: "Только буквы русского алфавита, цифры, пробелы, дефисы, запятые и точки!"
+          }
         ]}
       >
         <Input placeholder="Введите место проживания/пребывания" />
@@ -226,6 +234,12 @@ const FormApplicantionApplicant = observer((props: FormApplicantionApplicant) =>
       <Form.Item
         label="Иностранное гражданство"
         name="other_nationality"
+        rules={[
+          {
+            pattern: new RegExp(/^[а-яА-Я\s\-]+$/),
+            message: "Только буквы русского алфавита, пробелы, дефисы!"
+          }
+        ]}
       >
         <Input placeholder="Выберите гражданство" />
       </Form.Item>

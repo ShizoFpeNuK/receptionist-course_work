@@ -72,6 +72,7 @@ const ApplicantionComponent = ({ applicantionStore, ...props }: ApplicantionComp
       "date_of_birth": values["date_of_birth"].format("YYYY-MM-DD"),
     }
     applicantionStore.setApplicantionApplicant(correctValues);
+    
 
     setIsOpenFormApplicant(false);
     if (props.isLostPassport) {
